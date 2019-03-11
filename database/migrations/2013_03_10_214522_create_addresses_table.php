@@ -21,8 +21,8 @@ class CreateAddressesTable extends Migration
             $table->string('street2', 50);
             $table->string('city', 100);
             $table->string('state', 2);
-            $table->string('postal', 5);
-            $table->decimal('longitude', 10, 8);
+            $table->string('postal', 11);
+            $table->decimal('longitude', 12, 8);
             $table->decimal('latitude', 11, 8);
             $table->timestamps();
         });
@@ -36,53 +36,5 @@ class CreateAddressesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('addresses');
-
-        // /**
-        // * Adding foreign key constraints to users table
-        // */
-        // if (Schema::hasTable('users')) {
-        //     Schema::table('users', function (Blueprint $table) {
-        //         $table->dropForeign(['address_id', 'restaurant_id', 'driver_id']);
-                
-        //     });
-        // }
-        
-        
-        // /**
-        // * Adding foreign key constraints to restaurants table
-        // */
-        // if (Schema::hasTable('restaurants')) {
-        //     Schema::table('restaurants', function (Blueprint $table) {
-        //         $table->dropForeign(['user_id']);
-        //     });
-        // }
-        
-        // /**
-        // * Adding foreign key constraints to drivers table
-        // */
-        // if (Schema::hasTable('drivers')) {
-        //     Schema::table('drivers', function (Blueprint $table) {
-        //         $table->dropForeign(['location_id', 'order_id']);
-        //     });
-        // }
-        
-        // /**
-        // * Adding foreign key constraints to orders table
-        // */
-        // if (Schema::hasTable('orders')) {
-        //     Schema::table('orders', function (Blueprint $table) {
-        //         $table->dropForeign(['address_id', 'restaurant_id', 'driver_id']);
-        //     });
-        // }
-        
-        // /**
-        // * Adding foreign key constraints to orders archive table
-        // */
-        // if (Schema::hasTable('orders_archive')) {
-        //     Schema::table('orders_archive', function (Blueprint $table) {
-        //         $table->dropForeign(['address_id', 'restaurant_id', 'driver_id']);
-
-        //     });
-        // }
     }
 }

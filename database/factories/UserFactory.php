@@ -1,6 +1,7 @@
 <?php
 
 use App\User;
+use App\Address;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
@@ -21,6 +22,9 @@ $factory->define(User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        'phone_number' => $faker->numerify('##########'),
+        'type' => $faker->randomElement(['DRIVER', 'RESTAURANT']),
+        'address_id' => $faker->unique()->numberBetween(1, Address::count()),
         'remember_token' => Str::random(10),
     ];
 });

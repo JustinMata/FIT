@@ -18,7 +18,8 @@ class CreateRestaurantsTable extends Migration
             $table->bigInteger('user_id')->unsigned()->unique();
             $table->enum('provider', ['VISA', 'AMEX', 'DISCOVERY']);
             $table->string('CC_name', 50);
-            $table->string('CC_number');
+            $table->string('CC_number', 16);
+            $table->date('CC_expiration');
             $table->string('CC_CVC', 3);
             $table->timestamps();
         });
