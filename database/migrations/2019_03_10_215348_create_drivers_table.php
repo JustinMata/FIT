@@ -20,13 +20,19 @@ class CreateDriversTable extends Migration
             $table->string('account_number');
             $table->string('account_routing');
             $table->boolean('is_available')->comment('false not available, true available');
-            $table->bigInteger('order_id')->unsigned()->nullable();
             $table->json('car');
             $table->string('license_plate');
             $table->string('license_number');
             $table->date('license_expiration');
             $table->string('insurance_number');
             $table->timestamps();
+        });
+
+        /**
+         * Adding foreign key constraints to drivers table
+         */
+        Schema::table('drivers', function (Blueprint $table) {
+            $table->foreign('location_id')->references('id')->on('addresses');
         });
     }
 
@@ -36,7 +42,7 @@ class CreateDriversTable extends Migration
      * @return void
      */
     public function down()
-    {
+    {   
         Schema::dropIfExists('drivers');
     }
 }

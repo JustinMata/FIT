@@ -30,6 +30,15 @@ class CreateOrdersTable extends Migration
             $table->boolean('is_payed', false);
             $table->timestamps();
         });
+
+        /**
+         * Adding foreign key constraints to orders table
+         */
+        Schema::table('orders', function (Blueprint $table) {
+            $table->foreign('address_id')->references('id')->on('addresses');
+            $table->foreign('restaurant_id')->references('id')->on('restaurants');
+            $table->foreign('driver_id')->references('id')->on('drivers');
+        });
     }
 
     /**

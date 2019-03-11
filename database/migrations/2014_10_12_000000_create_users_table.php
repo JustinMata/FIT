@@ -22,10 +22,15 @@ class CreateUsersTable extends Migration
             $table->string('phone_number', 10);
             $table->enum('type', ['DRIVER', 'RESTAURANT'])->nullable();
             $table->bigInteger('address_id')->unsigned();
-            $table->bigInteger('restaurant_id')->unsigned()->nullable()->unique();
-            $table->bigInteger('driver_id')->unsigned()->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
+        });
+
+        /**
+         * Adding foreign key constraints to users table
+         */
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('address_id')->references('id')->on('addresses');
         });
     }
 

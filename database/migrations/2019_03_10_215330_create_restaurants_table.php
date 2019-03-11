@@ -22,6 +22,13 @@ class CreateRestaurantsTable extends Migration
             $table->string('CC_CVC', 3);
             $table->timestamps();
         });
+
+        /**
+         * Adding foreign key constraints to restaurants table
+         */
+        Schema::table('restaurants', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users');
+        });
     }
 
     /**
