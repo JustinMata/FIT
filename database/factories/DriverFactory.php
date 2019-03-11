@@ -1,14 +1,10 @@
 <?php
 
-use App\Driver;
-use App\Address;
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
-
-$factory->define(Driver::class, function (Faker $faker) {
+$factory->define(App\Driver::class, function (Faker $faker) {
     return [
-        'location_id' => $faker->unique()->numberBetween(1, Address::count()),
+        'location_id' => $faker->numberBetween(1, App\Address::count()),
         'schedule' => '{}',
         'account_number' => $faker->bankAccountNumber,
         'account_routing' => $faker->bankRoutingNumber,
@@ -21,10 +17,3 @@ $factory->define(Driver::class, function (Faker $faker) {
     ];
 });
 
-
-$factory->define(App\Profile::class, function (Faker\Generator $faker) {
-    return [
-        'user_id' => $faker->unique()->numberBetween(1, App\User::count()),
-        // Rest of attributes...
-    ];
-});

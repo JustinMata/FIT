@@ -1,11 +1,8 @@
 <?php
 
-use App\Address;
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
-
-$factory->define(Address::class, function (Faker $faker) {
+$factory->define(App\Address::class, function (Faker $faker) {
     return [
         'name' => $faker->word,
         'number' => $faker->buildingNumber,

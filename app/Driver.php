@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Database\Eloquent\Model;
 
-class Driver extends Model
+class Driver extends User
 {
     /**
      * Get the user that is associated with the driver.

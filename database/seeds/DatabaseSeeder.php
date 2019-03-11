@@ -1,9 +1,5 @@
 <?php
 
-use App\Address;
-use App\User;
-use App\Driver;
-use App\Restaurant;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,14 +13,17 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
 
+        // Fresh migration
         Artisan::call('migrate:fresh', [
             '--force' => true,
         ]);
 
-        factory(Address::class, env('DUMMY_ADDRESSES'))->create();
-        factory(User::class, env('DUMMY_USERS'))->create();
-        factory(Driver::class, env('DUMMY_DRIVERS'))->create();
-        factory(Restaurant::class, env('DUMMY_RESTAURANTS'))->create();
+        factory(App\Address::class, env('DUMMY_ADDRESSES'))->create();
+        factory(App\User::class, env('DUMMY_USERS'))->create();
+        factory(App\Driver::class, env('DUMMY_DRIVERS'))->create();
+        factory(App\Restaurant::class, env('DUMMY_RESTAURANTS'))->create();
+        factory(App\Order::class, env('DUMMY_ACTIVE_ORDERS'))->create();
+        factory(App\OrderArchive::class, env('DUMMY_ARCHIVED_ORDERS'))->create();
 
     }
 }

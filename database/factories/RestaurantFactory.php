@@ -1,15 +1,10 @@
 <?php
 
-use App\Restaurant;
-use App\User;
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
-
-$factory->define(Restaurant::class, function (Faker $faker) {
+$factory->define(App\Restaurant::class, function (Faker $faker) {
     return [
-        // 'user_id' => $faker->numberBetween(1, 25),
-        'user_id' => $faker->unique()->numberBetween(1, User::count()),
+        'user_id' => $faker->numberBetween(1, App\User::count()),
         'provider' => $faker->randomElement(['VISA', 'AMEX', 'DISCOVERY']),
         'CC_name' => $faker->name,
         'CC_number' => $faker->creditCardNumber,

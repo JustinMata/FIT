@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OrderArchive extends Model implements Order
+class OrderArchive extends Order
 {
     
     /**
