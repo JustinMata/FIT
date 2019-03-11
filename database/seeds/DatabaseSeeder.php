@@ -21,10 +21,10 @@ class DatabaseSeeder extends Seeder
             '--force' => true,
         ]);
 
-        factory(Address::class, 200)->create();
-        factory(User::class, 100)->create();
-        factory(Driver::class, 25)->create();
-        factory(Restaurant::class, 25)->create();
+        factory(Address::class, env('DUMMY_ADDRESSES'))->create();
+        factory(User::class, env('DUMMY_USERS'))->create();
+        factory(Driver::class, env('DUMMY_DRIVERS'))->create();
+        factory(Restaurant::class, env('DUMMY_RESTAURANTS'))->create();
 
     }
 }
