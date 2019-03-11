@@ -19,8 +19,18 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('phone_number', 10);
+            $table->enum('type', ['DRIVER', 'RESTAURANT'])->nullable();
+            $table->bigInteger('address_id')->unsigned();
             $table->rememberToken();
             $table->timestamps();
+        });
+
+        /**
+         * Adding foreign key constraints to users table
+         */
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('address_id')->references('id')->on('addresses');
         });
     }
 
