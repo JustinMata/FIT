@@ -16,11 +16,11 @@ class CreateDriversTable extends Migration
         Schema::create('drivers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('location_id')->unsigned();
-            $table->json('schedule');
+            $table->longText('schedule');
             $table->string('account_number');
             $table->string('account_routing');
             $table->boolean('is_available')->comment('false not available, true available');
-            $table->json('car');
+            $table->longText('car');
             $table->string('license_plate');
             $table->string('license_number');
             $table->date('license_expiration');

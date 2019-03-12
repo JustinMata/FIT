@@ -18,12 +18,43 @@ class DatabaseSeeder extends Seeder
             '--force' => true,
         ]);
 
-        factory(App\Address::class, env('DUMMY_ADDRESSES'))->create();
-        factory(App\User::class, env('DUMMY_USERS'))->create();
-        factory(App\Driver::class, env('DUMMY_DRIVERS'))->create();
-        factory(App\Restaurant::class, env('DUMMY_RESTAURANTS'))->create();
-        factory(App\Order::class, env('DUMMY_ACTIVE_ORDERS'))->create();
-        factory(App\OrderArchive::class, env('DUMMY_ARCHIVED_ORDERS'))->create();
+        // factory(App\Address::class, 400)->create();
+
+        // $addresses = App\Address::all()->pluck('id')->toArray();
+        // // factory(App\User::class, 50)->create();
+
+        // factory(App\User::class, 200)->state($addresses)->create()->each(
+        //     function($user) use ($addresses) {
+        //         $user->address_id = Arr::pull(Arr::random($addresses));
+        //     }
+        // );
+        // // factory(App\Driver::class, 50)->create();
+        // // factory(App\Restaurant::class, 50)->create();
+        // // factory(App\Order::class, 15)->create();
+        // // factory(App\OrderArchive::class, 100)->create();
+
+        // // factory(App\Order::class, 15)->create()->each(
+        // //     function($order) {
+        // //         $order->restaurant()->save(
+        // //             factory(App\Restaurant::class)->create()->each(
+        // //                 function($restaurant) {
+        // //                     $restaurant->user()->create()->each(
+        // //                         function($address) {
+
+        // //                         }
+        // //                     );
+        // //                 }
+        // //             ));
+        // //         $order->driver()->save(factory('App\Driver')->make());
+        // //     });
+
+        // // factory(App\Order::class, 15)->create()->each(
+        // //     function($order) {
+        // //         factory(App\Restaurant::class)->create()->each(
+
+        // //         )
+        // //     }
+        // // );
 
     }
 }
