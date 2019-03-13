@@ -15,6 +15,7 @@ class CreateDriversTable extends Migration
     {
         Schema::create('drivers', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('user_id')->unsigned()->unique();
             $table->bigInteger('location_id')->unsigned();
             $table->longText('schedule');
             $table->string('account_number');
