@@ -16,7 +16,9 @@ use Faker\Generator as Faker;
 
 $factory->define(App\User::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
+        'username' => $faker->username,
+        'first_name' => $faker->firstName,
+        'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -26,3 +28,21 @@ $factory->define(App\User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
     ];
 });
+
+$factory->state(\App\User::class, 'admin', function (Faker $faker) {
+    return [
+    'type' => '',
+    ];
+  });
+
+  $factory->state(\App\User::class, 'driver', function (Faker $faker) {
+    return [
+    'type' => 'DRIVER',
+    ];
+  });
+
+  $factory->state(\App\User::class, 'restaurant', function (Faker $faker) {
+    return [
+    'type' => 'RESTAURANT',
+    ];
+  });

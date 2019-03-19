@@ -14,6 +14,14 @@ try {
     require('bootstrap');
 } catch (e) {}
 
+rs.intiate({_id:"km-mongo-repset", members:[{"_id":1, "host":"192.168.33.12:27017"}]})
+rs.add("192.168.33.14:27017");
+rs.add("192.168.33.16:27017");
+
+for (var i = 0; i < 100000 ; i++) {
+    db.testcollection.insert({"username": "user"+1})
+}
+
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
