@@ -24,3 +24,11 @@ Route::get('/about', function()
 {
    return View::make('pages.contact');
 });
+
+Route::get('/order', function () {
+    return view('orderForm');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
