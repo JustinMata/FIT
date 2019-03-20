@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Register')
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -79,8 +81,11 @@
                             <label for="type" class="col-md-4 col-form-label text-md-right">Type</label>
 
                             <div class="col-md-6">
-                                <input id="type" type="type" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type" value="{{ old('type') }}" required>
-
+                                <select id="type" type="type" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type" value="{{ old('type') }}" required>
+                                    <option value="Driver">Driver</option>
+                                    <option value="Restaurant">Restaurant</option>
+                                </select>
+                                
                                 @if ($errors->has('type'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('type') }}</strong>

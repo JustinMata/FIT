@@ -28,4 +28,8 @@ class Address extends Model
     {
         return $this->belongsTo('App\Order');
     }
+
+    protected $fillable = [
+        'name', 'number', 'street1', 'city', 'state', 'postal',
+    ];
 }
