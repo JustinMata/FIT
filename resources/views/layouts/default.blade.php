@@ -9,8 +9,6 @@
 
     @yield('header')
 
-    @yield('title')
-
     @yield('content')
 
     @include('layouts.partials.footer')
