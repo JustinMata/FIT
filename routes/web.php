@@ -20,6 +20,12 @@ Route::get('/', function()
    return View::make('pages.home');
 });
 
+//@REMOVE
+Route::get('/app', function()
+{
+   return View::make('layouts.app');
+});
+
 Route::get('/about', function()
 {
    return View::make('pages.contact');

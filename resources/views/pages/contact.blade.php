@@ -1,5 +1,9 @@
 @extends('layouts.default')
 
+@section('title')
+
+@endsection
+
 @section('content')
 
 <div class="album text-muted">

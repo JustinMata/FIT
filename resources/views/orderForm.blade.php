@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.default')
 
 @section('content')
 <h1 class='title'>Place an Order</h1>

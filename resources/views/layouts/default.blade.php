@@ -6,7 +6,10 @@
 <body>
 
     @include('layouts.partials.nav')
-    @include('layouts.partials.header')
+
+    @yield('header')
+
+    @yield('title')
 
     @yield('content')
 
