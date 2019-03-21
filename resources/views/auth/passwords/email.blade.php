@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Reset Password')
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -14,7 +16,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('password.email') }}">
+                    <form method="POST" action="{{ route('password.update') }}">
                         @csrf
 
                         <div class="form-group row">
