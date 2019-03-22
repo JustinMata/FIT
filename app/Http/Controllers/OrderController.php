@@ -63,7 +63,9 @@ class OrderController extends Controller
         $order->setMileageRateAttribute(null);
 
         //calculate delivery price
-        $deliveryPrice = env('BASE_RATE') + env('MILEAGE_RATE') * $dist;
+        if ($dist > 1) $deliveryPrice = env('BASE_RATE') + env('MILEAGE_RATE') * ($dist - 1);
+        else $deliveryPrice = env('BASE_RATE');
+
         $deliveryPrice += $deliveryPrice * (env('TAXES') / 100);
         $order->delivery_price = $deliveryPrice;
 
