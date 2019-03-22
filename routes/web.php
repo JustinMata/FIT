@@ -13,47 +13,67 @@
 
 Route::get('/', function()
 {
-   return View::make('pages.home');
+    return View::make('pages.home');
+});
+
+
+
+/**
+* @TODO: move the logic to a controller and maybe create an adapter
+*/
+Route::get('/googleApi', function () {
+
+    $client = new Google_Client();
+    $client->setApplicationName("Client_Library_Examples");
+    $client->setDeveloperKey("YOUR_APP_KEY");
+
+    $service = new Google_Service_Books($client);
+    $optParams = array('filter' => 'free-ebooks');
+    $results = $service->volumes->listVolumes('Henry David Thoreau', $optParams);
+
+    foreach ($results as $item) {
+        echo $item['volumeInfo']['title'], "<br /> \n";
+    }
 });
 
 
 /***************************
- * STATIC PAGES
- ***************************/
+* STATIC PAGES
+***************************/
 Route::any('/about', function()
 {
-   return View::make('pages.about');
+    return View::make('pages.about');
 });
 
 Route::get('/coverage', function()
 {
-   return View::make('pages.coverage');
+    return View::make('pages.coverage');
 });
 
 Route::get('/pricing', function()
 {
-   return View::make('pages.pricing');
+    return View::make('pages.pricing');
 });
 
 Route::get('/faq', function()
 {
-   return View::make('pages.faq');
+    return View::make('pages.faq');
 });
 
 Route::get('/help', function()
 {
-   return View::make('pages.help');
+    return View::make('pages.help');
 });
 /***************************
- * END
- ***************************/
+* END
+***************************/
 
 /***************************
- * TESTING PAGES
- ***************************/
+* TESTING PAGES
+***************************/
 Route::get('/app', function()
 {
-   return View::make('layouts.app');
+    return View::make('layouts.app');
 });
 
 
@@ -67,5 +87,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 /***************************
- * END
- ***************************/
+* END
+***************************/
