@@ -15,23 +15,7 @@ Route::get('/', function () {
    return View::make('pages.home');
 });
 
-/**
-* @TODO: move the logic to a controller and maybe create an adapter
-*/
-Route::get('/googleApi', function () {
 
-    $client = new Google_Client();
-    $client->setApplicationName("Client_Library_Examples");
-    $client->setDeveloperKey("YOUR_APP_KEY");
-
-    $service = new Google_Service_Books($client);
-    $optParams = array('filter' => 'free-ebooks');
-    $results = $service->volumes->listVolumes('Henry David Thoreau', $optParams);
-
-    foreach ($results as $item) {
-        echo $item['volumeInfo']['title'], "<br /> \n";
-    }
-});
 
 /***************************
 * STATIC PAGES
@@ -63,6 +47,8 @@ Route::get('/help', function () {
 * TESTING PAGES
 ***************************/
 
+Route::get('/queryTest', 'QueryController@index');
+
 //currently working on them but should be able to successfully create an order and address
 Route::get('/order', 'OrderController@make');
 
@@ -72,7 +58,7 @@ Route::get('/cart', function () {
 
 Route::post('/cart', 'OrderController@store');
 
-
+Route::get('/queryTest', 'QueryController@index');
 
 Auth::routes();
 
@@ -81,3 +67,33 @@ Route::get('/home', 'HomeController@index')->name('home');
 /***************************
 * END
 ***************************/
+
+
+/**
+* @TODO: move the logic to a controller and maybe create an adapter
+*/
+Route::get('/googleApi', function () {
+
+    $params = [
+        'origins'        => '1 hacker way, menlo park',
+        'destinations'   => '1961 Vining Drive, San Leandro',
+
+    ];
+
+    $response = \GoogleMaps::load('distanceMatrix')
+    ->setParam($params)
+     ->get();
+
+     var_dump($response);
+
+     $response = \GoogleMaps::load('geocoding')
+		->setParam ([
+		    'address'    =>'santa cruz',
+         	    'components' => [
+                     	'administrative_area'  => 'TX',
+                     	'country'              => 'US',
+                      ]
+
+                ])
+                ->get();
+});
