@@ -11,25 +11,52 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::get('/', function()
 {
    return View::make('pages.home');
 });
 
-//@REMOVE
+
+/***************************
+ * STATIC PAGES
+ ***************************/
+Route::any('/about', function()
+{
+   return View::make('pages.about');
+});
+
+Route::get('/coverage', function()
+{
+   return View::make('pages.coverage');
+});
+
+Route::get('/pricing', function()
+{
+   return View::make('pages.pricing');
+});
+
+Route::get('/faq', function()
+{
+   return View::make('pages.faq');
+});
+
+Route::get('/help', function()
+{
+   return View::make('pages.help');
+});
+/***************************
+ * END
+ ***************************/
+
+/***************************
+ * TESTING PAGES
+ ***************************/
 Route::get('/app', function()
 {
    return View::make('layouts.app');
 });
 
-Route::get('/about', function()
-{
-   return View::make('pages.contact');
-});
+
 
 Route::get('/order', function () {
     return view('orderForm');
@@ -38,3 +65,7 @@ Route::get('/order', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+/***************************
+ * END
+ ***************************/
