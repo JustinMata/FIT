@@ -15,24 +15,25 @@
 //     return view('welcome');
 // });
 
-Route::get('/', function()
-{
+Route::get('/', function () {
    return View::make('pages.home');
 });
 
+Route::get('/order', 'OrderController@make');
+
+Route::get('/cart', function () {
+   return View::make('pages.cart');
+});
+
+Route::post('/cart', 'OrderController@store');
+
 //@REMOVE
-Route::get('/app', function()
-{
+Route::get('/app', function () {
    return View::make('layouts.app');
 });
 
-Route::get('/about', function()
-{
+Route::get('/about', function () {
    return View::make('pages.contact');
-});
-
-Route::get('/order', function () {
-    return view('orderForm');
 });
 
 Auth::routes();
