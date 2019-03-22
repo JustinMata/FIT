@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use DB;
-use App\Address;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
