@@ -15,6 +15,23 @@ Route::get('/', function () {
    return View::make('pages.home');
 });
 
+/**
+* @TODO: move the logic to a controller and maybe create an adapter
+*/
+Route::get('/googleApi', function () {
+
+    $client = new Google_Client();
+    $client->setApplicationName("Client_Library_Examples");
+    $client->setDeveloperKey("YOUR_APP_KEY");
+
+    $service = new Google_Service_Books($client);
+    $optParams = array('filter' => 'free-ebooks');
+    $results = $service->volumes->listVolumes('Henry David Thoreau', $optParams);
+
+    foreach ($results as $item) {
+        echo $item['volumeInfo']['title'], "<br /> \n";
+    }
+});
 
 /***************************
 * STATIC PAGES
@@ -45,10 +62,6 @@ Route::get('/help', function () {
 /***************************
 * TESTING PAGES
 ***************************/
-Route::get('/app', function () {
-   return View::make('layouts.app');
-});
-
 
 //currently working on them but should be able to successfully create an order and address
 Route::get('/order', 'OrderController@make');

@@ -32,6 +32,8 @@ class OrderController extends Controller
 
         $address->save();
 
+
+        //@TODO: USE GOOGLE API WRAPPER
         //use google api to calculate wait time and mileage
         $origin = "345+E+William+St,CA";
         $destination = str_replace(" ", "+", request('street1'));
