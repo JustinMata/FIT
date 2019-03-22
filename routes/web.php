@@ -17,8 +17,8 @@ Route::get('/', function () {
 
 
 /***************************
- * STATIC PAGES
- ***************************/
+* STATIC PAGES
+***************************/
 Route::any('/about', function () {
    return View::make('pages.about');
 });
@@ -39,12 +39,12 @@ Route::get('/help', function () {
    return View::make('pages.help');
 });
 /***************************
- * END
- ***************************/
+* END
+***************************/
 
 /***************************
- * TESTING PAGES
- ***************************/
+* TESTING PAGES
+***************************/
 Route::get('/app', function () {
    return View::make('layouts.app');
 });
@@ -66,5 +66,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 /***************************
- * END
- ***************************/
+* END
+***************************/
