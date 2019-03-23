@@ -44,10 +44,31 @@ Route::get('/help', function () {
 ***************************/
 
 /***************************
-* TESTING PAGES
+* Authentication Auth::routes();
+***************************/
+// Authentication Routes...
+Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('admin/login', 'Auth\LoginController@login');
+Route::post('admin/logout', 'Auth\LoginController@logout')->name('logout');
+// Password Reset Routes...
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
+// Registration Routes...
+Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+Route::post('register', 'Auth\RegisterController@register');
+
+//temp, change to driver and restaurant later
+Route::get('/home', 'HomeController@index')->name('home');
+
+/***************************
+* END
 ***************************/
 
-Route::get('/queryTest', 'QueryController@index');
+/***************************
+* TESTING PAGES
+***************************/
 
 //currently working on them but should be able to successfully create an order and address
 Route::get('/order', 'OrderController@make');
@@ -57,12 +78,6 @@ Route::get('/cart', function () {
 });
 
 Route::post('/cart', 'OrderController@store');
-
-Route::get('/queryTest', 'QueryController@index');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 /***************************
 * END

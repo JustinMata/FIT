@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('title', 'Reset Password')
+@extends('layouts.default')
 
 @section('content')
 <div class="container">
@@ -16,7 +14,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('password.update') }}">
+                    <form method="POST" action="{{ route('password.email') }}">
                         @csrf
 
                         <div class="form-group row">
