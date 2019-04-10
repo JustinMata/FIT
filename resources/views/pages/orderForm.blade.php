@@ -28,7 +28,7 @@
                         <div class="form-group row">
                             <label for="street2" class="col-md-4 col-form-label text-md-right">Street 2</label>
                             <div class="col-md-6">
-                                <input id="street2" type="text" class="form-control" name="street2" value="{{ old('street2') }}" required autofocus>
+                                <input id="street2" type="text" class="form-control" name="street2" value="{{ old('street2') }}" autofocus>
                             </div>
                         </div>
 
@@ -60,7 +60,7 @@
                             <label for="delivery_comments" class="col-md-4 col-form-label text-md-right">Comment</label>
                             <div class="col-md-6">
                                 <textarea id="delivery_comments" type="text" class="form-control" name="delivery_comments" rows="3" value="{{ old('delivery_comments') }}"
-                                    required autofocus></textarea>
+                                    autofocus></textarea>
                             </div>
                         </div>
 
