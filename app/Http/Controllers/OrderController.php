@@ -6,6 +6,7 @@ use App\Order;
 use App\Address;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class OrderController extends Controller
 {
@@ -83,6 +84,7 @@ class OrderController extends Controller
         $order->save();
 
         //redirects to the cart view which still needs to be created. For now it just displays 'order created' if successful
-        return redirect('/cart');
+        $destination = request('street1') . "," . request('state');
+        return view('pages.cart', compact('destination'));
     }
 }
