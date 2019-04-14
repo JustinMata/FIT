@@ -10,33 +10,33 @@ class DatabaseSeeder extends Seeder
     * @return void
     */
     public function run()
-    {        
+    {
         $migrate = (bool)$this->command->ask('Do you want to migrate:fresh the database?', 'yes');
-        
+
         // Fresh migration
         if ($migrate == 'yes') {
             Artisan::call('migrate:fresh', ['--force' => true]);
         }
-        
+
         $this->command->info('Migration complete!');
-        
-        
+
+
         $entryNumber = (int)$this->command->ask('How many entries do you want to create?', env('GENERATED_USERS_NUMBER'));
-        
+
         // Generating addresses
         $addresses = factory(App\Address::class, $entryNumber)->create();
-        
+
         $this->command->info('Addresses generated!');
-        
-        
+
+
         // Generate users, drivers and restaurants
         $addresses->each(function($address) {
             // creating a user for each address
             $user = factory(App\User::class, 1)
             ->create(['address_id' => $address->id]);
-            
+
             // creating equal number of drivers and restaurants
-            if ($user[0]->id % 2 == 0) {        
+            if ($user[0]->id % 2 == 0) {
                 DB::table('users')
                 ->where('id', $user[0]->id)
                 ->update(['type' => 'DRIVER']);
@@ -59,24 +59,24 @@ class DatabaseSeeder extends Seeder
                 );
             }
         });
-        
+
         $this->command->info('Drivers and Restaurants generated!');
-        
+
         // Generate addresses for deliveries
         $addresses = factory(App\Address::class, $entryNumber)->create();
-        
+
         // Getting list of restaurants and drivers id's
         $restaurants = App\User::select('id')->where('type', '=', 'RESTAURANT')->get()->shuffle();
         $drivers = App\User::select('id')->where('type', '=', 'DRIVER')->get()->shuffle();
-        
-        
+
+
         // @TESTING
         // $headers = ['id'];
         // $this->command->table($headers, $drivers->pluck('id')->all());
         // $this->command->info($restaurants->pop()->id);
-        
+
         $addresses->each(function($address) use ($drivers, $restaurants){
-            
+
             // creating an order for each address
             factory(App\Order::class, 1)
             ->create([
@@ -89,43 +89,60 @@ class DatabaseSeeder extends Seeder
                 ]
             );
         });
-        
+
         $this->command->info('Orders generated!');
+
+        $password = Hash::make('password');
 
         // Generating Admins
         factory(App\User::class, 1)
         ->create([
             'first_name' => 'Jean',
             'last_name' => 'Marcellin',
-            'password' => ''
+            'email' => 'jamarcellin@gmail.com',
+            'password' => $password,
+            'phone_number' => '6503538639',
+            'type' => 'ADMIN'
         ]);
 
         factory(App\User::class, 1)
         ->create([
             'first_name' => 'Tien',
             'last_name' => '',
-            'password' => ''
+            'email' => 'temp1@gmail.com',
+            'password' => $password,
+            'phone_number' => '',
+            'type' => 'ADMIN'
         ]);
 
         factory(App\User::class, 1)
         ->create([
             'first_name' => 'Justin',
             'last_name' => '',
-            'password' => ''
+            'email' => 'temp2@gmail.com',
+            'password' => $password,
+            'phone_number' => '',
+            'type' => 'ADMIN'
         ]);
 
         factory(App\User::class, 1)
         ->create([
             'first_name' => 'Sang',
             'last_name' => '',
-            'password' => ''
+            'email' => 'temp3@gmail.com',
+            'password' => $password,
+            'phone_number' => '',
+            'type' => 'ADMIN'
         ]);
 
         factory(App\User::class, 1)
         ->create([
             'first_name' => 'Chico',
             'last_name' => '',
-            'password' => ''
+            'email' => 'temp4@gmail.com',
+            'password' => $password,
+            'phone_number' => '',
+            'type' => 'ADMIN'
         ]);
     }
 }
