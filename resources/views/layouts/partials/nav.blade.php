@@ -8,11 +8,11 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav mr-auto">
-                {{-- <a class="nav-item nav-link {{ Request::is('about*') ? 'active' : '' }}" href="{{ route('about') }}">About <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link {{ Request::is('about*') ? 'active' : '' }}" href="{{ route('about') }}">About <span class="sr-only">(current)</span></a>
                 <a class="nav-item nav-link {{ Request::is('coverage*') ? 'active' : '' }}" href="{{ route('coverage') }}">Coverage</a>
                 <a class="nav-item nav-link {{ Request::is('pricing*') ? 'active' : '' }}" href="{{ route('pricing') }}">Pricing</a>
                 <a class="nav-item nav-link {{ Request::is('faq*') ? 'active' : '' }}" href="{{ route('faq') }}">FAQ</a>
-                <a class="nav-item nav-link {{ Request::is('help*') ? 'active' : '' }}" href="{{ route('help') }}">Help</a> --}}
+                <a class="nav-item nav-link {{ Request::is('help*') ? 'active' : '' }}" href="{{ route('help') }}">Help</a>
             </div>
             <div class="navbar-nav form-inline my-2 my-lg-0">
 
