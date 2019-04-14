@@ -6,6 +6,7 @@ use App\Order;
 use App\Address;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class OrderController extends Controller
 {
@@ -32,14 +33,12 @@ class OrderController extends Controller
 
         $address->save();
 
-
         //@TODO: USE GOOGLE API WRAPPER
         //use google api to calculate wait time and mileage
-        $origin = "345+E+William+St,CA";
-        $destination = str_replace(" ", "+", request('street1'));
-        $destination .= "," . str_replace(" ", "+", request('city'));
+        $driverLocation = "345+E+William+St,CA";
+        $restaurantLocation = "140+E+San+Carlos+St,CA";
 
-        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=$origin&destinations=$destination&key=AIzaSyB2i3tIi6Yn9DOzeUQJf3DUcFbFh9IOcOY";
+        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=$driverLocation&destinations=$restaurantLocation&key=AIzaSyB2i3tIi6Yn9DOzeUQJf3DUcFbFh9IOcOY";
 
         //fetch json response from googleapis.com:
         $ch = curl_init();
@@ -55,6 +54,28 @@ class OrderController extends Controller
             $time = $response['rows'][0]['elements'][0]['duration']['text'];
         }
 
+
+        //@TODO: USE GOOGLE API WRAPPER
+        //use google api to calculate wait time and mileage
+        $destination = str_replace(" ", "+", request('street1'));
+        $destination .= "," . str_replace(" ", "+", request('city'));
+
+        $url2 = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=$restaurantLocation&destinations=$destination&key=AIzaSyB2i3tIi6Yn9DOzeUQJf3DUcFbFh9IOcOY";
+
+        //fetch json response from googleapis.com:
+        $ch2 = curl_init();
+        curl_setopt($ch2, CURLOPT_URL, $url2);
+        curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
+        $response2 = json_decode(curl_exec($ch2), true);
+
+        //If google responds with a status of OK
+        //Extract the distance text:
+        if ($response2['status'] == "OK") {
+            $dist2 = $response2['rows'][0]['elements'][0]['distance']['text'];
+            $dist2 = (double)str_replace(" mi", "", $dist2);
+            $dist += $dist2;
+            $time = $response['rows'][0]['elements'][0]['duration']['text'];
+        }
 
         //create a new order
         $order = new Order();
@@ -83,6 +104,7 @@ class OrderController extends Controller
         $order->save();
 
         //redirects to the cart view which still needs to be created. For now it just displays 'order created' if successful
-        return redirect('/cart');
+        $destination = request('street1') . "," . request('state');
+        return view('pages.cart', compact('destination'));
     }
 }
