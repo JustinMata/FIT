@@ -15,4 +15,15 @@ class DriverController extends UserController
     {
         return view('driver.pages.dashboard');
     }
+
+
+    /**
+     * Show the orders in table.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function show()
+    {
+        return view('driver.pages.orders');
+    }
 }

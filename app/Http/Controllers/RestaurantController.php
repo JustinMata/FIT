@@ -15,4 +15,14 @@ class RestaurantController extends UserController
     {
         return view('restaurant.pages.dashboard');
     }
+
+    /**
+     * Show the admin application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function show()
+    {
+        return view('restaurant.pages.orders', ['orders'=> \App\Order::all()->take(10)]);
+    }
 }

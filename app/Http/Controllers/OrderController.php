@@ -17,11 +17,12 @@ class OrderController extends Controller
 
     public function make()
     {
-        $user = Auth::user()->type;
-        if ($user == 'DRIVER') {
+        if (Auth::user()->hasAnyRole(['restaurant', 'admin']) && request()->is('restaurant*')) {
+            return view('restaurant.pages.orderForm');
+        } else if (Auth::user()->hasAnyRole(['driver', 'admin']) && request()->is('driver*')){
+            return view('driver.pages.orderForm');
+        }else{
             return redirect('/');
-        } else {
-            return view('pages.orderForm');
         }
     }
 

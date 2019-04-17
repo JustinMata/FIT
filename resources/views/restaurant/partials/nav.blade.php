@@ -9,6 +9,9 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav mr-auto">
                 <a class="nav-item nav-link {{ Request::is('*dashboard') ? 'active' : '' }}" href="{{ route('restaurantDashboard') }}">Dashboard <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link {{ Request::is('*order') ? 'active' : '' }}" href="{{ route('restaurantOrder') }}">Order <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link {{ Request::is('*orders') ? 'active' : '' }}" href="{{ route('restaurantOrders') }}">Orders <span class="sr-only">(current)</span></a>
+
             </div>
             <div class="navbar-nav form-inline my-2 my-lg-0">
 

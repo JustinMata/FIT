@@ -7,9 +7,9 @@
 
     @include('driver.partials.nav')
 
-    @yield('driver.header')
+    @yield('header')
 
-    @yield('driver.content')
+    @yield('content')
 
     @include('driver.partials.footer')
     @include('driver.partials.footer-scripts')

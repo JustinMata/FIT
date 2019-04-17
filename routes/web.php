@@ -62,9 +62,20 @@ Route::post('register', 'Auth\RegisterController@register');
 //temp, change to driver and restaurant later
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+// admin routes
 Route::get('/admin/dashboard', 'AdminController@index')->name('adminDashboard');
+
+
+// driver routes
 Route::get('/driver/dashboard', 'DriverController@index')->name('driverDashboard');
+Route::get('/driver/orders', 'DriverController@show')->name('driverOrders');
+
+
+// restaurant routes
 Route::get('/restaurant/dashboard', 'RestaurantController@index')->name('restaurantDashboard');
+Route::get('/restaurant/order', 'OrderController@make')->name('restaurantOrder');
+Route::get('/restaurant/orders', 'RestaurantController@show')->name('restaurantOrders');
 
 /***************************
  * END
@@ -75,7 +86,7 @@ Route::get('/restaurant/dashboard', 'RestaurantController@index')->name('restaur
  ***************************/
 
 //currently working on them but should be able to successfully create an order and address
-Route::get('/order', 'OrderController@make');
+Route::get('/order', 'OrderController@make')->name('order');
 
 Route::get('/directions', function () {
    return View::make('pages.directions');

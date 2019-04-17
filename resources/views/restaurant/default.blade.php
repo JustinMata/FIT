@@ -7,9 +7,9 @@
 
     @include('restaurant.partials.nav')
 
-    @yield('restaurant.header')
+    @yield('header')
 
-    @yield('restaurant.content')
+    @yield('content')
 
     @include('restaurant.partials.footer')
     @include('restaurant.partials.footer-scripts')
