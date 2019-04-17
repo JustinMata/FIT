@@ -52,6 +52,7 @@ class OrderController extends Controller
             $dist = $response['rows'][0]['elements'][0]['distance']['text'];
             $dist = (double)str_replace(" mi", "", $dist);
             $time = $response['rows'][0]['elements'][0]['duration']['text'];
+            $time = explode(" ", $time);
         }
 
 
@@ -74,7 +75,25 @@ class OrderController extends Controller
             $dist2 = $response2['rows'][0]['elements'][0]['distance']['text'];
             $dist2 = (double)str_replace(" mi", "", $dist2);
             $dist += $dist2;
-            $time = $response['rows'][0]['elements'][0]['duration']['text'];
+            $time2 = $response2['rows'][0]['elements'][0]['duration']['text'];
+            $time2 = explode(" ", $time2);
+        }
+
+        $waitTime = 0;
+        if (sizeof($time) > 2) {
+            $waitTime = ($time[0] * 60) + $time[2];
+        } else {
+            $waitTime = $time[0];
+        }
+
+        if (sizeof($time2) > 2) {
+            $waitTime += ($time2[0] * 60) + $time2[2];
+        } else {
+            $waitTime += $time2[0];
+        }
+
+        if ($waitTime > 30) {
+            //do something
         }
 
         //create a new order
@@ -105,6 +124,6 @@ class OrderController extends Controller
 
         //redirects to the cart view which still needs to be created. For now it just displays 'order created' if successful
         $destination = request('street1') . "," . request('state');
-        return view('pages.cart', compact('destination'));
+        return view('pages.directions', compact('destination'));
     }
 }

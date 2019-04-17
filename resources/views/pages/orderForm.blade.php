@@ -7,7 +7,7 @@
                 <div class="card-header">Place an Order</div>
 
                 <div class="card-body">
-                    <form method="POST" action="/cart">
+                    <form method="POST" action="/directions">
                         @csrf
 
                         <div class="form-group row">
