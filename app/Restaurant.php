@@ -6,7 +6,7 @@ namespace App;
 
 class Restaurant extends User
 {
-    
+
     /**
      * Get the user that is associated with the restaurant.
      */

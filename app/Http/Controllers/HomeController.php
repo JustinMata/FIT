@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -24,5 +25,29 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function dashboard()
+    {
+        $user = Auth::user();
+
+        if($user->hasRole('driver')){
+            return redirect( '/driver/dashboard');
+        }
+
+        if($user->hasRole('restaurant')){
+            return redirect( '/restaurant/dashboard');
+        }
+
+        if($user->hasRole('admin')){
+            return redirect( '/admin/dashboard');
+        }
+
+        return redirect('/home');
     }
 }

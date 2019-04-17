@@ -62,6 +62,10 @@ Route::post('register', 'Auth\RegisterController@register');
 //temp, change to driver and restaurant later
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/admin/dashboard', 'AdminController@index')->name('adminDashboard');
+Route::get('/driver/dashboard', 'DriverController@index')->name('driverDashboard');
+Route::get('/restaurant/dashboard', 'RestaurantController@index')->name('restaurantDashboard');
+
 /***************************
 * END
 ***************************/
@@ -78,6 +82,9 @@ Route::get('/cart', function () {
 });
 
 Route::post('/cart', 'OrderController@store');
+
+
+Route::get('/test', 'TestController@test')->name('test');
 
 /***************************
 * END

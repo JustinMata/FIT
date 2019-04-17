@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +13,8 @@ class DatabaseSeeder extends Seeder
     */
     public function run()
     {
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+
         $migrate = (bool)$this->command->ask('Do you want to migrate:fresh the database?', 'yes');
 
         // Fresh migration
@@ -92,6 +96,27 @@ class DatabaseSeeder extends Seeder
 
         $this->command->info('Orders generated!');
 
+        // create permissions
+        Permission::create(['name' => 'user_create']);
+        Permission::create(['name' => 'user_update']);
+        Permission::create(['name' => 'user_delete']);
+        Permission::create(['name' => 'order_create']);
+        Permission::create(['name' => 'order_cancel']);
+        Permission::create(['name' => 'order_accept']);
+        Permission::create(['name' => 'order_decline']);
+
+        // create roles and assign created permissions
+        $role = Role::create(['name' => 'admin'])
+        ->givePermissionTo(Permission::all());
+
+        // create roles and assign created permissions
+        $role = Role::create(['name' => 'restaurant'])
+        ->givePermissionTo(['order_create', 'order_cancel']);
+
+        // create roles and assign created permissions
+        $role = Role::create(['name' => 'driver'])
+        ->givePermissionTo(['order_accept', 'order_decline']);
+
         $password = Hash::make('password');
 
         // Generating Admins
@@ -103,7 +128,8 @@ class DatabaseSeeder extends Seeder
             'password' => $password,
             'phone_number' => '6503538639',
             'type' => 'ADMIN'
-        ]);
+            ]
+        );
 
         factory(App\User::class, 1)
         ->create([
@@ -113,7 +139,8 @@ class DatabaseSeeder extends Seeder
             'password' => $password,
             'phone_number' => '',
             'type' => 'ADMIN'
-        ]);
+            ]
+        );
 
         factory(App\User::class, 1)
         ->create([
@@ -123,7 +150,8 @@ class DatabaseSeeder extends Seeder
             'password' => $password,
             'phone_number' => '',
             'type' => 'ADMIN'
-        ]);
+            ]
+        );
 
         factory(App\User::class, 1)
         ->create([
@@ -133,7 +161,8 @@ class DatabaseSeeder extends Seeder
             'password' => $password,
             'phone_number' => '',
             'type' => 'ADMIN'
-        ]);
+            ]
+        );
 
         factory(App\User::class, 1)
         ->create([
@@ -143,6 +172,12 @@ class DatabaseSeeder extends Seeder
             'password' => $password,
             'phone_number' => '',
             'type' => 'ADMIN'
-        ]);
+            ]
+        );
+
+        $user = App\User::where('email', '=', 'jamarcellin@gmail.com')->first();
+
+        $user->assignRole('admin');
+
     }
 }

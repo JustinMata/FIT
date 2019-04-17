@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
         GoogleMaps\ServiceProvider\GoogleMapsServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /*
          * Application Service Providers...
