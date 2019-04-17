@@ -18,8 +18,8 @@ Route::get('/', function () {
 
 
 /***************************
-* STATIC PAGES
-***************************/
+ * STATIC PAGES
+ ***************************/
 Route::any('/about', function () {
    return View::make('pages.about');
 })->name('about');
@@ -40,12 +40,12 @@ Route::get('/help', function () {
    return View::make('pages.help');
 })->name('help');
 /***************************
-* END
-***************************/
+ * END
+ ***************************/
 
 /***************************
-* Authentication Auth::routes();
-***************************/
+ * Authentication Auth::routes();
+ ***************************/
 // Authentication Routes...
 Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('admin/login', 'Auth\LoginController@login');
@@ -67,55 +67,55 @@ Route::get('/driver/dashboard', 'DriverController@index')->name('driverDashboard
 Route::get('/restaurant/dashboard', 'RestaurantController@index')->name('restaurantDashboard');
 
 /***************************
-* END
-***************************/
+ * END
+ ***************************/
 
 /***************************
-* TESTING PAGES
-***************************/
+ * TESTING PAGES
+ ***************************/
 
 //currently working on them but should be able to successfully create an order and address
 Route::get('/order', 'OrderController@make');
 
-Route::get('/cart', function () {
-   return View::make('pages.cart');
+Route::get('/directions', function () {
+   return View::make('pages.directions');
 });
 
-Route::post('/cart', 'OrderController@store');
+Route::post('/directions', 'OrderController@store');
 
 
 Route::get('/test', 'TestController@test')->name('test');
 
 /***************************
-* END
-***************************/
+ * END
+ ***************************/
 
 
 /**
-* @TODO: move the logic to a controller and maybe create an adapter
-*/
+ * @TODO: move the logic to a controller and maybe create an adapter
+ */
 Route::get('/googleApi', function () {
 
-    $params = [
-        'origins'        => '1 hacker way, menlo park',
-        'destinations'   => '1961 Vining Drive, San Leandro',
+   $params = [
+      'origins'        => '1 hacker way, menlo park',
+      'destinations'   => '1961 Vining Drive, San Leandro',
 
-    ];
+   ];
 
-    $response = \GoogleMaps::load('distanceMatrix')
-    ->setParam($params)
-     ->get();
+   $response = \GoogleMaps::load('distanceMatrix')
+      ->setParam($params)
+      ->get();
 
-     var_dump($response);
+   var_dump($response);
 
-     $response = \GoogleMaps::load('geocoding')
-		->setParam ([
-		    'address'    =>'santa cruz',
-         	    'components' => [
-                     	'administrative_area'  => 'TX',
-                     	'country'              => 'US',
-                      ]
+   $response = \GoogleMaps::load('geocoding')
+      ->setParam([
+         'address'    => 'santa cruz',
+         'components' => [
+            'administrative_area'  => 'TX',
+            'country'              => 'US',
+         ]
 
-                ])
-                ->get();
+      ])
+      ->get();
 });
