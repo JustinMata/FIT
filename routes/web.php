@@ -70,12 +70,13 @@ Route::get('/admin/dashboard', 'AdminController@index')->name('adminDashboard');
 // driver routes
 Route::get('/driver/dashboard', 'DriverController@index')->name('driverDashboard');
 Route::get('/driver/orders', 'DriverController@show')->name('driverOrders');
-
+Route::get('/driver/map','OrderController@store')->name('driverMap');
 
 // restaurant routes
 Route::get('/restaurant/dashboard', 'RestaurantController@index')->name('restaurantDashboard');
 Route::get('/restaurant/order', 'OrderController@make')->name('restaurantOrder');
 Route::get('/restaurant/orders', 'RestaurantController@show')->name('restaurantOrders');
+Route::post('/restaurant/map', 'OrderController@store')->name('driverStore');
 
 /***************************
  * END
@@ -87,13 +88,6 @@ Route::get('/restaurant/orders', 'RestaurantController@show')->name('restaurantO
 
 //currently working on them but should be able to successfully create an order and address
 Route::get('/order', 'OrderController@make')->name('order');
-
-Route::get('/directions', function () {
-   return View::make('pages.directions');
-});
-
-Route::post('/directions', 'OrderController@store');
-
 
 Route::get('/test', 'TestController@test')->name('test');
 

@@ -135,6 +135,6 @@ class OrderController extends Controller
 
         //redirects to the cart view which still needs to be created. For now it just displays 'order created' if successful
         $destination = request('street1') . "," . request('state');
-        return view('pages.directions', compact('destination'));
+        return view('driver.pages.map', compact('destination'));
     }
 }
