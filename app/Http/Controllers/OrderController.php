@@ -5,14 +5,24 @@ namespace App\Http\Controllers;
 use App\Order;
 use App\Address;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function make()
     {
-        return view('pages.orderForm');
+        $user = Auth::user()->type;
+        if ($user == 'DRIVER') {
+            return redirect('/');
+        } else {
+            return view('pages.orderForm');
+        }
     }
 
     public function store()
