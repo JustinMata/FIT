@@ -179,5 +179,21 @@ class DatabaseSeeder extends Seeder
 
         $user->assignRole('admin');
 
+        $user = App\User::where('email', '=', 'temp1@gmail.com')->first();
+
+        $user->assignRole('admin');
+
+        $user = App\User::where('email', '=', 'temp2@gmail.com')->first();
+
+        $user->assignRole('admin');
+
+        $user = App\User::where('email', '=', 'temp3@gmail.com')->first();
+
+        $user->assignRole('admin');
+
+        $user = App\User::where('email', '=', 'temp4@gmail.com')->first();
+
+        $user->assignRole('admin');
+
     }
 }
