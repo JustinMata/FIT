@@ -61,6 +61,7 @@ Route::post('register', 'Auth\RegisterController@register');
 
 //temp, change to driver and restaurant later
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/test', 'QueryController@index');
 
 
 // admin routes
