@@ -11,17 +11,17 @@
   <title>FIT - Fast in Time</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
   <!-- Custom fonts for this template -->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
   <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
   <!-- Custom styles for this template -->
-  <link href="css/agency.min.css" rel="stylesheet">
+  <link href="{{ asset('css/agency.min.css') }}" rel="stylesheet">
 
 </head>
 
@@ -219,7 +219,7 @@
                 <i class="fas fa-plus fa-3x"></i>
               </div>
             </div>
-            <img class="img-fluid" src="img/portfolio/2.jpg" alt="">
+            <img class="img-fluid" src="{{ asset('img/portfolio/2.jpg') }}" alt="">
           </a>
           <div class="portfolio-caption">
             <h5>"the 30 mins delivery time was on-point"</h5>
@@ -233,7 +233,7 @@
                   <i class="fas fa-plus fa-3x"></i>
                 </div>
               </div>
-              <img class="img-fluid" src="img/portfolio/5.jpg" alt="">
+              <img class="img-fluid" src="{{ asset('img/portfolio/5.jpg') }}" alt="">
             </a>
             <div class="portfolio-caption">
               <h5>"There was a problem in my order, but the FIT team made it sure that my order was smooth throughout the whole process"</h5>
@@ -247,7 +247,7 @@
                     <i class="fas fa-plus fa-3x"></i>
                   </div>
                 </div>
-                <img class="img-fluid" src="img/portfolio/4.jpg" alt="">
+                <img class="img-fluid" src="{{ asset('img/portfolio/4.jpg') }}" alt="">
               </a>
               <div class="portfolio-caption">
                 <h5>"The customer service is second to none"</h5>
@@ -261,7 +261,7 @@
                 <i class="fas fa-plus fa-3x"></i>
               </div>
             </div>
-            <img class="img-fluid" src="img/portfolio/3.jpg" alt="">
+            <img class="img-fluid" src="{{ asset('img/portfolio/3.jpg') }}" alt="">
           </a>
           <div class="portfolio-caption">
             <h5>"I don't think I'm going to cook ever again"</h5>
@@ -275,7 +275,7 @@
                 <i class="fas fa-plus fa-3x"></i>
               </div>
             </div>
-            <img class="img-fluid" src="img/portfolio/10.jpg" alt="">
+            <img class="img-fluid" src="{{ asset('img/portfolio/10.jpg') }}" alt="">
           </a>
           <div class="portfolio-caption">
             <h5>"The pizza that I ordered was so hot it's like it was just taken out of the oven"</h5>
@@ -289,7 +289,7 @@
                 <i class="fas fa-plus fa-3x"></i>
               </div>
             </div>
-            <img class="img-fluid" src="img/portfolio/6.jpg" alt="">
+            <img class="img-fluid" src="{{ asset('img/portfolio/6.jpg') }}" alt="">
           </a>
           <div class="portfolio-caption">
             <h5>"It's the best thing that has ever happened to food delivery"</h5>
@@ -312,7 +312,7 @@
       <div class="row">
         <div class="col-sm-4">
           <div class="team-member">
-            <img class="mx-auto rounded-circle" src="img/team/7.jpg" alt="">
+            <img class="mx-auto rounded-circle" src="{{ asset('img/team/7.jpg') }}" alt="">
             <h4>Chico Malto</h4>
             <p class="text-muted">Front-End Engineer</p>
             <ul class="list-inline social-buttons">
@@ -327,7 +327,7 @@
 
         <div class="col-sm-4">
           <div class="team-member">
-            <img class="mx-auto rounded-circle" src="img/team/5.jpg" alt="">
+            <img class="mx-auto rounded-circle" src="{{ asset('img/team/5.jpg') }}" alt="">
             <h4>Jean Marcellin</h4>
             <p class="text-muted">Lead Developer</p>
             <ul class="list-inline social-buttons">
@@ -342,7 +342,7 @@
 
         <div class="col-sm-4">
           <div class="team-member">
-            <img class="mx-auto rounded-circle" src="img/team/6.jpg" alt="">
+            <img class="mx-auto rounded-circle" src="{{ asset('img/team/6.jpg') }}" alt="">
             <h4>Justin Mata</h4>
             <p class="text-muted">Back-End Engineer</p>
             <ul class="list-inline social-buttons">
@@ -357,7 +357,7 @@
 
         <div class="col-sm-4">
           <div class="team-member">
-            <img class="mx-auto rounded-circle" src="img/team/9.jpg" alt="">
+            <img class="mx-auto rounded-circle" src="{{ asset('img/team/9.jpg') }}" alt="">
             <h4>Sang Nguyen</h4>
             <p class="text-muted">Database Engineer</p>
             <ul class="list-inline social-buttons">
@@ -372,7 +372,7 @@
 
         <div class="col-sm-4">
           <div class="team-member">
-            <img class="mx-auto rounded-circle" src="img/team/8.jpg" alt="">
+            <img class="mx-auto rounded-circle" src="{{ asset('img/team/8.jpg') }}" alt="">
             <h4>Tien Ly</h4>
             <p class="text-muted">Database Manager</p>
             <ul class="list-inline social-buttons">
@@ -399,22 +399,22 @@
       <div class="row">
         <div class="col-md-3 col-sm-6">
           <a href="#">
-            <img class="img-fluid d-block mx-auto" src="img/logos/bs2.png" alt="">
+            <img class="img-fluid d-block mx-auto" src="{{ asset('img/logos/bs2.png') }}" alt="">
           </a>
         </div>
         <div class="col-md-3 col-sm-6">
           <a href="#">
-            <img class="img-fluid d-block mx-auto" src="img/logos/gm3.png" alt="">
+            <img class="img-fluid d-block mx-auto" src="{{ asset('img/logos/gm3.png') }}" alt="">
           </a>
         </div>
         <div class="col-md-3 col-sm-6">
           <a href="#">
-            <img class="img-fluid d-block mx-auto" src="img/logos/nn1.png" alt="">
+            <img class="img-fluid d-block mx-auto" src="{{ asset('img/logos/nn1.png') }}" alt="">
           </a>
         </div>
         <div class="col-md-3 col-sm-6">
           <a href="#">
-            <img class="img-fluid d-block mx-auto" src="img/logos/laravel.png" alt="">
+            <img class="img-fluid d-block mx-auto" src="{{ asset('img/logos/laravel.png') }}" alt="">
           </a>
         </div>
       </div>
@@ -522,7 +522,7 @@
             <div class="col-lg-8 mx-auto">
               <div class="modal-body">
                 <!-- Project Details Go Here -->
-                <img class="img-fluid d-block mx-auto" src="img/portfolio/2.jpg" alt="">
+                <img class="img-fluid d-block mx-auto" src="{{ asset('img/portfolio/2.jpg') }}" alt="">
                 <p>This Wingstop is located next Panda Express, Noah's Bagels, and Starbucks. There's little to no parking during the evenings since a lot of people line up to eat at Panda Express. So while they're doing that, I and a few other people stroll on in to Wing Stop.
 
                     My family and I can never get tired of their wings, so having their family pack from 30 pieces to 75 pieces is a deal. My favorite is their mango habañero and their garlic parmesan. My wings come out hot every time and every bite is full of flavor. They also offer ranch, honey mustard, and ketchup.
@@ -561,7 +561,7 @@
             <div class="col-lg-8 mx-auto">
               <div class="modal-body">
                 <!-- Project Details Go Here -->
-                <img class="img-fluid d-block mx-auto" src="img/portfolio/5.jpg" alt="">
+                <img class="img-fluid d-block mx-auto" src="{{ asset('img/portfolio/5.jpg') }}" alt="">
                 <p>When we're craving Chinese fast food, we come here.  We keep a copy of their to-go menu in our car and also at home for those call-in orders.  No matter where you are, call your order in.  That will save you from a longer wait if you order as a walk-in.  
 
                     They have a full menu but we usually order from the lunch combo specials menu which has 8 choices, carrying your basic "touristy" Chinese food of chow mein, fried rice, sweet and sour pork, egg rolls, Mongolian beef, fried chicken wings, etc.  These range from $7.25 to $8.50.
@@ -599,7 +599,7 @@
               <div class="modal-body">
                 <!-- Project Details Go Here -->
 
-                <img class="img-fluid d-block mx-auto" src="img/portfolio/4.jpg" alt="">
+                <img class="img-fluid d-block mx-auto" src="{{ asset('img/portfolio/4.jpg') }}" alt="">
                 <p>I'm still full from the burrito I had here two weeks ago.
 
                     Wife and I ordered a Cali Burrito w/Carne Asada (smothered in Chipotle Sauce) to go along with an Al Pastor Quesadilla and glass of Horchata. This place does not skimp on anything, especially portions and flavors. Everything was delicious. And don't forget to drench everything with their creamy green sauce (it's in their tiny 'salsa bar' off to the side) that is refreshingly fresh and pretty spicy all at once.
@@ -636,7 +636,7 @@
             <div class="col-lg-8 mx-auto">
               <div class="modal-body">
                 <!-- Project Details Go Here -->
-                <img class="img-fluid d-block mx-auto" src="img/portfolio/3.jpg" alt="">
+                <img class="img-fluid d-block mx-auto" src="{{ asset('img/portfolio/3.jpg') }}" alt="">
                 <p>Amazing Greek Food! The pictures are what lured me into trying this place out and I am so happy to report that they did not disappoint. 10/10 absolutely would come here again and this is coming from a person who isn't a big fan of Greek cuisine.
 
                     The falafels here are made of high quality chickpeas! This was surprising as it satisfied even my picky hubby who absolutely loves Greek food and is a falafel fiend. I have never been that into Falafel, but I found myself stealing his falafel pita whenever he turned around. It was just that good!
@@ -675,7 +675,7 @@
             <div class="col-lg-8 mx-auto">
               <div class="modal-body">
                 <!-- Project Details Go Here -->
-                <img class="img-fluid d-block mx-auto" src="img/portfolio/10.jpg" alt="">
+                <img class="img-fluid d-block mx-auto" src="{{ asset('img/portfolio/10.jpg') }}" alt="">
                 <p>I've made it a personal mission of mine to try all the pizza places in and around SJ to find the best one. A Slice of New York is certainly near the top at my list (probably second).
 
                     What to expect: The place is small, and you'll see people coming and going often. Pick-up business seems to be going strong. There are something like six stools inside if you'd like to eat inside and two tables outside. You order at the counter, where you can see some slices waiting for you.
@@ -715,7 +715,7 @@
             <div class="col-lg-8 mx-auto">
               <div class="modal-body">
                 <!-- Project Details Go Here -->
-                <img class="img-fluid d-block mx-auto" src="img/portfolio/6.jpg" alt="">
+                <img class="img-fluid d-block mx-auto" src="{{ asset('img/portfolio/6.jpg') }}" alt="">
                 <p>This place is a wonderful lunch spot. I go here at least once a week. All my friends and co-workers that have gone to this place with me are in love with their absolutely fresh and delicious salad dishes. They have variety of options to choose from and all of their ingredients look so fresh and healthy.
                     They also have a very polite and friendly staff that take care of you right when you arrive.
                     One thing that I really appreciate about this place is the hospitality of the owners. They are the actual reason I have been going back so many times and have introduced them to everyone I know. They are so wonderfully kind and make you feel so welcomed at their place. Now I am finished writing I can go get my favorite salad which is health protein. It's lunch time in San Jose people :)</p>
@@ -735,18 +735,18 @@
   </div>
 
   <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
   <!-- Plugin JavaScript -->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
   <!-- Contact form JavaScript -->
-  <script src="js/jqBootstrapValidation.js"></script>
-  <script src="js/contact_me.js"></script>
+  <script src="{{ asset('js/jqBootstrapValidation.js') }}"></script>
+  <script src="{{ asset('js/contact_me.js') }}"></script>
 
   <!-- Custom scripts for this template -->
-  <script src="js/agency.min.js"></script>
+  <script src="{{ asset('js/agency.min.js') }}"></script>
 
 </body>
 
