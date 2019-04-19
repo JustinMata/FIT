@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Address;
+use DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -28,7 +31,25 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected function redirectTo()
+    {
+
+        $user = Auth::user();
+
+        if($user->hasRole('driver')){
+            return '/driver/dashboard';
+        }
+
+        if($user->hasRole('restaurant')){
+            return '/restaurant/dashboard';
+        }
+
+        if($user->hasRole('admin')){
+            return '/admin/dashboard';
+        }
+
+        return '/home';
+    }
 
     /**
      * Create a new controller instance.
@@ -52,7 +73,7 @@ class RegisterController extends Controller
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'confirmed'],
+            'password' => ['required', 'string', 'confirmed', 'min:8'],
         ]);
     }
 
@@ -64,6 +85,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $id = DB::table('addresses')->insertGetId(
+            array('name' => '', 'number' => '0', 'street1' => $data['street1'], 'street2' => $data['street2'], 'city' => $data['city'], 'state' => $data['state'], 'postal' => $data['zip'])
+        );
+
         return User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
@@ -71,6 +96,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'phone_number' => $data['phone_number'],
             'type' => $data['type'],
+            'address_id' => $id,
         ]);
     }
 }
