@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 class RestaurantController extends UserController
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Show the admin application dashboard.
      *
@@ -23,6 +27,12 @@ class RestaurantController extends UserController
      */
     public function show()
     {
-        return view('restaurant.pages.orders', ['orders'=> \App\Order::all()->take(10)]);
+        if (\Auth::user()->hasAnyRole(['admin']) && request()->is('restaurant*')) {
+            return view('restaurant.pages.orders', ['orders' => \App\Order::all()->take(10)]);
+        } else {
+            $restaurant = \App\Restaurant::where('user_id', auth()->id())->first();
+            $restaurantID = $restaurant->id;
+            return view('restaurant.pages.orders', ['orders' => \App\Order::where('restaurant_id', $restaurantID)->get()]);
+        }
     }
 }
