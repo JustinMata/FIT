@@ -15,6 +15,8 @@ Route::get('/', function () {
    return View::make('pages.index');
 });
 
+Route::get('/home', 'HomeController@index')->name('home');
+
 
 
 /***************************
@@ -61,7 +63,7 @@ Route::post('register', 'Auth\RegisterController@register');
 
 //temp, change to driver and restaurant later
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/test', 'QueryController@index');
+
 
 
 // admin routes
@@ -91,6 +93,8 @@ Route::post('/restaurant/map', 'OrderController@store')->name('driverStore');
 Route::get('/order', 'OrderController@make')->name('order');
 
 Route::get('/test', 'TestController@test')->name('test');
+
+Route::get('/queries', 'QueryController@index')->name('queries');
 
 /***************************
  * END

@@ -14,5 +14,7 @@
     @include('restaurant.partials.footer')
     @include('restaurant.partials.footer-scripts')
 
+    @yield('map')
+
 </body>
 </html>

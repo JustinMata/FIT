@@ -14,5 +14,7 @@
     @include('driver.partials.footer')
     @include('driver.partials.footer-scripts')
 
+    @yield('map')
+
 </body>
 </html>
