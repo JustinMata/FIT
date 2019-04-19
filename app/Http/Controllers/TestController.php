@@ -11,20 +11,20 @@ class TestController extends Controller
 
         // var_dump($user);
 
-        // $driverLocation = "345+E+William+St,CA";
-        // $restaurantLocation = "140+E+San+Carlos+St,CA";
-        // $clientLocation = "san+jose+state+university";
+        $driverLocation = "345+E+William+St,CA";
+        $restaurantLocation = "140+E+San+Carlos+St,CA";
+        $clientLocation = "san+jose+state+university";
 
-        // $response = \GoogleMaps::load('directions')
-		// ->setParam ([
-        //     'origin' => $driverLocation,
-        //     'waypoints' => ['optimize:true',$restaurantLocation],
-        //     'destination' => $clientLocation,
-        //     'departure_time' => 'now'
-        //     ])
-        //  ->get();
+        $response = \GoogleMaps::load('directions')
+		->setParam ([
+            'origin' => $driverLocation,
+            'waypoints' => ['optimize:true',$restaurantLocation],
+            'destination' => $clientLocation,
+            'departure_time' => 'now'
+            ])
+         ->get();
 
-        //  dd($response);
+         dd($response);
 
 
     }

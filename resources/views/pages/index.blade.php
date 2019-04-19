@@ -11,10 +11,10 @@
   <title>FIT - Fast in Time</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
   <!-- Custom fonts for this template -->
-  <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+  <link href="{{ asset('css/all.min.css') }}" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
   <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
@@ -28,7 +28,7 @@
 <body id="page-top">
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav"> 
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
     <div class="container">
       <a class="navbar-brand js-scroll-trigger" href="#page-top">Fast in Time</a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,7 +117,7 @@
           <h4 class="service-heading">Anywhere</h4>
           <p class="text-muted">FIT is available in 30 states and is still growing. So anywhere you are, FIT will most likely be there!</p>
         </div>
-      </div> 
+      </div>
     </div>
   </section>
 
@@ -201,7 +201,7 @@
         </div>
       </div>
     </section>
-  
+
   <!-- Portfolio Grid -->
   <section id="portfolio">
     <div class="container">
@@ -526,11 +526,11 @@
                 <p>This Wingstop is located next Panda Express, Noah's Bagels, and Starbucks. There's little to no parking during the evenings since a lot of people line up to eat at Panda Express. So while they're doing that, I and a few other people stroll on in to Wing Stop.
 
                     My family and I can never get tired of their wings, so having their family pack from 30 pieces to 75 pieces is a deal. My favorite is their mango habañero and their garlic parmesan. My wings come out hot every time and every bite is full of flavor. They also offer ranch, honey mustard, and ketchup.
-                    
+
                     Their service is a hit or miss. Some days I'll get the awesome dude that'll pack my stuff nicely and say, "have a good night" or I'll get the lady that says, "what do you want to order" as if I'm burden for even stopping by.
-                    
+
                     Whatever the service may be that night, I always get crispy flavorful chicken. My orders never come out wrong and I always walk out satisfied.
-                    
+
                     Oh P.S. their cheesy fries are to die for!</p>
                 <ul class="list-inline">
                   <li>Date: January 2019</li>
@@ -562,12 +562,12 @@
               <div class="modal-body">
                 <!-- Project Details Go Here -->
                 <img class="img-fluid d-block mx-auto" src="{{ asset('img/portfolio/5.jpg') }}" alt="">
-                <p>When we're craving Chinese fast food, we come here.  We keep a copy of their to-go menu in our car and also at home for those call-in orders.  No matter where you are, call your order in.  That will save you from a longer wait if you order as a walk-in.  
+                <p>When we're craving Chinese fast food, we come here.  We keep a copy of their to-go menu in our car and also at home for those call-in orders.  No matter where you are, call your order in.  That will save you from a longer wait if you order as a walk-in.
 
                     They have a full menu but we usually order from the lunch combo specials menu which has 8 choices, carrying your basic "touristy" Chinese food of chow mein, fried rice, sweet and sour pork, egg rolls, Mongolian beef, fried chicken wings, etc.  These range from $7.25 to $8.50.
-                    
+
                     The real reason why we come here...the massive amount of food they give you!  I like bang for my buck and I get it here!  I like to weigh my food boxes when I get home and they average over 2 lbs. per box, depending on what you've ordered.  That's a lot of food!  My husband and I can usually make two or three meals out of one order.
-                    
+
                     This used to be a small counter order establishment with maybe two tables to dine at.  They have since renovated and expanded to seat many more.  We still just grab and go but it's nice to know we can sit in comfort if we wanted to.</p>
                 <ul class="list-inline">
                   <li>Date: February 2019</li>
@@ -603,9 +603,9 @@
                 <p>I'm still full from the burrito I had here two weeks ago.
 
                     Wife and I ordered a Cali Burrito w/Carne Asada (smothered in Chipotle Sauce) to go along with an Al Pastor Quesadilla and glass of Horchata. This place does not skimp on anything, especially portions and flavors. Everything was delicious. And don't forget to drench everything with their creamy green sauce (it's in their tiny 'salsa bar' off to the side) that is refreshingly fresh and pretty spicy all at once.
-                    
+
                     Burrito was bomb and the size of an infant. Chipotle Sauce had a nice smoky kick to it and was perfect for soaking up the fries that spilled out the burrito once you cut into it--yes it's a fork and knife burrito, that's for sure. Biggest surprise tho was the Quesadilla, which was super simple with Cheese & Al Pastor and nothing else. We didn't finish everything--the burrito probs woulda been plenty enough for the both of us--but no regrets with anything we ordered.
-                    
+
                     A cool spot that I'm sure is a big hit with students in the area.</p>
                 <ul class="list-inline">
                   <li>Date: January 2019</li>
@@ -640,11 +640,11 @@
                 <p>Amazing Greek Food! The pictures are what lured me into trying this place out and I am so happy to report that they did not disappoint. 10/10 absolutely would come here again and this is coming from a person who isn't a big fan of Greek cuisine.
 
                     The falafels here are made of high quality chickpeas! This was surprising as it satisfied even my picky hubby who absolutely loves Greek food and is a falafel fiend. I have never been that into Falafel, but I found myself stealing his falafel pita whenever he turned around. It was just that good!
-                    
+
                     My gyro plate with beef/lamb was sooo delish! The hand cut French fries were scrumptious and the side salad was to die for! The dressing was so well balanced and the salad was so fresh! The hubby generally dislikes Greek salads but even he was fighting me to get in on that salad action.
-                    
+
                     Omg, and the pita!! How do I even begin to describe the heavenly bites of crispy bread seasoned perfectly?
-                    
+
                     Just come here. You won't regret it. (Or maybe you will, because it'll be your new addiction, lol.)</p>
                 <ul class="list-inline">
                   <li>Date: March 2019</li>
@@ -679,11 +679,11 @@
                 <p>I've made it a personal mission of mine to try all the pizza places in and around SJ to find the best one. A Slice of New York is certainly near the top at my list (probably second).
 
                     What to expect: The place is small, and you'll see people coming and going often. Pick-up business seems to be going strong. There are something like six stools inside if you'd like to eat inside and two tables outside. You order at the counter, where you can see some slices waiting for you.
-                    
+
                     The pizza: Pick from these slices in the front or order something different. If you get a slice from the front, they'll put it back in the oven to heat it up for you. Yummy! The crust is delicious, the toppings are plenty, and the sauce is tomato-y and bright. We also ordered the garlic knots. They're not really knots so much as dough blobs, but they're good too.
-                    
+
                     The real star of the show, at least for me, was the cannoli. I admit, I haven't eaten many cannoli in general, but I really enjoyed this one. That cannoli will probably bring me back to Slice of NY pretty quickly.
-                    
+
                     Service/People: Friendly people, ready to help and customize things to your liking. They've got a wall of shame where they refute some poor ratings on Yelp/Google, and I don't really love that since it seems to go against as the positive vibe that the rest of the place has. But the rest of the restaurant was decorated with NY memorabilia and was fun to check out.</p>
                 <ul class="list-inline">
                   <li>Date: April 2019</li>
@@ -735,11 +735,11 @@
   </div>
 
   <!-- Bootstrap core JavaScript -->
-  <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-  <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('js/jquery.min.js') }}"></script>
+  <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 
   <!-- Plugin JavaScript -->
-  <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+  <script src="{{ asset('js/jquery.easing.min.js') }}"></script>
 
   <!-- Contact form JavaScript -->
   <script src="{{ asset('js/jqBootstrapValidation.js') }}"></script>
