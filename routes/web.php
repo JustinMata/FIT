@@ -15,8 +15,6 @@ Route::get('/', function () {
    return View::make('pages.index');
 });
 
-
-
 /***************************
  * STATIC PAGES
  ***************************/
