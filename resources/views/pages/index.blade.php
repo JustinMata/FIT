@@ -56,6 +56,7 @@
                         @else
                         <a class="nav-link" href="{{ route('login') }}" data-toggle="modal" data-target="#portfolioModal7">Login</a>
                         @endauth
+                        
                         {{-- <a href="{{ route('login') }}" data-toggle="modal" data-target="#portfolioModal7">Login</a> --}}
                     </li>
                     @endif
@@ -810,11 +811,11 @@
                                                     {{ __('Login') }}
                                                 </button>
 
-                                                @if (Route::has('password.request'))
-                                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                                {{--@if (Route::has('password.request'))
+                                                <a class="btn btn-link" href="{{ route('password.request') }}" data-toggle="modal" data-target="#portfolioModal9">
                                                     {{ __('Forgot Your Password?') }}
                                                 </a>
-                                                @endif
+                                                @endif--}}
                                             </div>
                                         </div>
                                     </form>
@@ -957,6 +958,24 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal 9 -->
+    {{--<div class="portfolio-modal modal fade" id="portfolioModal9" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl"></div>
+                    </div>
+
+                    <!--contents of reset.blade.php goes here -->
+
+
+                </div>
+            </div>
+        </div>
+    </div>--}}
+    
 
     <!-- Bootstrap core JavaScript -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
