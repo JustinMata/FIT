@@ -32,7 +32,7 @@ class RestaurantController extends UserController
         } else {
             $restaurant = \App\Restaurant::where('user_id', auth()->id())->first();
             $restaurantID = $restaurant->id;
-            return view('restaurant.pages.orders', ['orders' => \App\Order::where('restaurant_id', $restaurantID)->paginate(10)->get(), 'drivers' => \App\Driver::all(), 'users' => \App\User::all()]);
+            return view('restaurant.pages.orders', ['orders' => \App\Order::where('restaurant_id', $restaurantID)->paginate(10), 'drivers' => \App\Driver::all(), 'users' => \App\User::all()]);
         }
     }
 }
