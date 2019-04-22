@@ -29,11 +29,11 @@ class DriverController extends UserController
     public function show()
     {
         if (\Auth::user()->hasAnyRole(['admin']) && request()->is('driver*')) {
-            return view('driver.pages.orders', ['orders' => \App\Order::all()->take(10)]);
+            return view('driver.pages.orders', ['orders' => \App\Order::paginate(10)]);
         } else {
             $driver = \App\Driver::where('user_id', auth()->id())->first();
             $driverID = $driver->id;
-            return view('driver.pages.orders', ['orders' => \App\Order::where('driver_id', $driverID)->get()]);
+            return view('driver.pages.orders', ['orders' => \App\Order::where('driver_id', $driverID)->paginate(10)->get()]);
         }
     }
 }

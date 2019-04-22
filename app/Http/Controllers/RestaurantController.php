@@ -28,11 +28,11 @@ class RestaurantController extends UserController
     public function show()
     {
         if (\Auth::user()->hasAnyRole(['admin']) && request()->is('restaurant*')) {
-            return view('restaurant.pages.orders', ['orders' => \App\Order::all()->take(10)]);
+            return view('restaurant.pages.orders', ['orders' => \App\Order::paginate(10), 'drivers' => \App\Driver::all(), 'users' => \App\User::all()]);
         } else {
             $restaurant = \App\Restaurant::where('user_id', auth()->id())->first();
             $restaurantID = $restaurant->id;
-            return view('restaurant.pages.orders', ['orders' => \App\Order::where('restaurant_id', $restaurantID)->get()]);
+            return view('restaurant.pages.orders', ['orders' => \App\Order::where('restaurant_id', $restaurantID)->paginate(10)->get(), 'drivers' => \App\Driver::all(), 'users' => \App\User::all()]);
         }
     }
 }
