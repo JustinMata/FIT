@@ -5,6 +5,12 @@
         <h1>Restaurant Orders</h1>
     </div>
 </div>
+
+<div class="container text-muted">
+    <div class="row">
+        <h3>Showing {{ $orders->firstItem() }} to {{ $orders->lastItem() }} of {{$orders->total()}} total orders</h3>
+    </div>
+</div>
 @endsection
  
 @section('content')
@@ -23,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                @php $row = 1; 
+                @php $row = $orders->firstItem(); 
 @endphp @foreach ($orders as $order)
                 <tr>
                     <th scope="{{ $row }}">{{ $row }}</th>
@@ -34,7 +40,6 @@
                     <td>{{ $users[$drivers[$order->driver_id - 1]->user_id - 1]->first_name }} {{ $users[$drivers[$order->driver_id
                         - 1]->user_id - 1]->last_name }}</td>
                 </tr>
-
                 @php $row++; 
 @endphp @endforeach
             </tbody>
