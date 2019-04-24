@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Address;
 use DB;
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -82,7 +83,6 @@ class RegisterController extends Controller
     {
         $id = DB::table('addresses')->insertGetId([
             'name' => '',
-            'number' => '0',
             'street1' => $data['street1'],
             'street2' => $data['street2'],
             'city' => $data['city'],
@@ -94,10 +94,12 @@ class RegisterController extends Controller
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
+            'email_verified_at' => now(),
             'password' => Hash::make($data['password']),
             'phone_number' => $data['phone_number'],
             'type' => $data['type'],
             'address_id' => $id,
+            'remember_token' => Str::random(10),
         ]);
     }
 }

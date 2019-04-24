@@ -5,7 +5,6 @@ use Faker\Generator as Faker;
 $factory->define(App\Address::class, function (Faker $faker) {
     return [
         'name' => $faker->word,
-        'number' => $faker->buildingNumber,
         'street1' => $faker->streetAddress,
         'street2' => '',
         'city' => $faker->city,

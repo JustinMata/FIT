@@ -7,9 +7,9 @@
 
     @include('admin.partials.nav')
 
-    @yield('admin.header')
+    @yield('header')
 
-    @yield('admin.content')
+    @yield('content')
 
     @include('admin.partials.footer')
     @include('admin.partials.footer-scripts')

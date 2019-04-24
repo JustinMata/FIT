@@ -49,10 +49,10 @@ class DriverController extends UserController
         DB::table('drivers')->insert([
             'user_id' => auth()->id(),
             'location_id' => $addressID,
-            'schedule' => '',
             'account_number' => $data['account_number'],
             'account_routing' => $data['account_routing'],
-            'is_available' => true, 'car' => $data['car'],
+            'is_available' => true,
+            'car' => $data['car'],
             'license_plate' => $data['license_plate'],
             'license_number' => $data['license_number'],
             'license_expiration' => $data['license_expiration'],

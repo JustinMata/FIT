@@ -1,19 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="mainNav">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name', 'FIT') }}</a>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <a class="navbar-brand" href="{{ url('/') }}">Fast in Time</a>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link {{ Request::is('about*') ? 'active' : '' }}" href="{{ route('about') }}">About <span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link {{ Request::is('coverage*') ? 'active' : '' }}" href="{{ route('coverage') }}">Coverage</a>
-                <a class="nav-item nav-link {{ Request::is('pricing*') ? 'active' : '' }}" href="{{ route('pricing') }}">Pricing</a>
-                <a class="nav-item nav-link {{ Request::is('faq*') ? 'active' : '' }}" href="{{ route('faq') }}">FAQ</a>
-                <a class="nav-item nav-link {{ Request::is('help*') ? 'active' : '' }}" href="{{ route('help') }}">Help</a>
-            </div>
             <div class="navbar-nav form-inline my-2 my-lg-0">
 
                 @guest
@@ -29,12 +18,10 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    @if(Auth::user()->hasRole('admin'))
-                    <a class="dropdown-item" href="{{ route('adminDashboard')}}">{{ __('Dashboard') }}</a>
-                    @elseif(Auth::user()->hasRole('restaurant'))
-                    <a class="dropdown-item" href="{{route('restaurantDashboard')}}">{{ __('Dashboard') }}</a>
-                    @elseif(Auth::user()->hasRole('driver'))
-                    <a class="dropdown-item" href="{{route('driverDashboard')}}">{{ __('Dashboard') }}</a>
+                    @if (Auth::user()->hasRole('admin'))
+                    <a class="dropdown-item" href="{{ route('driverDashboard') }}">{{ __('Driver View') }}</a>
+                    <a class="dropdown-item" href="{{ route('restaurantDashboard') }}">{{ __('Restaurant View') }}</a>
+                    <a class="dropdown-item" href="{{ route('adminDashboard') }}">{{ __('Admin View') }}</a>
                     @endif
 
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
@@ -46,10 +33,6 @@
                 @endguest
 
             </div>
-            {{-- <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
-            </form> --}}
         </div>
     </div>
 </nav>

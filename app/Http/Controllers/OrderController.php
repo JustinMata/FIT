@@ -52,7 +52,6 @@ class OrderController extends Controller
         //     $address = new Address();
 
         //     $address->name = request('delivery_name');
-        //     $address->number = 0;
         //     $address->street1 = request('street1');
         //     if (!empty(request('street2'))) $address->street2 = request('street2');
         //     $address->city = request('city');

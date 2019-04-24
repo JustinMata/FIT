@@ -17,7 +17,6 @@ class CreateDriversTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned()->unique();
             $table->bigInteger('location_id')->unsigned();
-            $table->longText('schedule');
             $table->string('account_number');
             $table->string('account_routing');
             $table->boolean('is_available')->comment('false not available, true available');
