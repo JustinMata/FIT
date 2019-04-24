@@ -15,6 +15,8 @@ Route::get('/', function () {
    return View::make('pages.index');
 });
 
+Route::get('/home', 'HomeController@index')->name('home');
+
 /***************************
  * STATIC PAGES
  ***************************/
@@ -59,12 +61,13 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('passw
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
 
-//temp, change to driver and restaurant later
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/test', 'QueryController@index');
+Route::get('/driver/register', 'DriverController@showRegistrationForm')->name('registerDriver');
+Route::post('/driver/register', 'DriverController@register');
 
+Route::get('/restaurant/register', 'RestaurantController@showRegistrationForm')->name('registerRestaurant');
+Route::post('/restaurant/register', 'RestaurantController@register');
 
-// admin routes
+// admin routess
 Route::get('/admin/dashboard', 'AdminController@index')->name('adminDashboard');
 
 

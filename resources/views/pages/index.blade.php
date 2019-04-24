@@ -52,12 +52,11 @@
                     @if (Route::has('login'))
                     <li class="nav-item">
                         @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a class="nav-link" href="{{ url('/home') }}">Home</a>
                         @else
                         <a class="nav-link" href="{{ route('login') }}" data-toggle="modal" data-target="#portfolioModal7">Login</a>
                         @endauth
                         
-                        {{-- <a href="{{ route('login') }}" data-toggle="modal" data-target="#portfolioModal7">Login</a> --}}
                     </li>
                     @endif
                     @if (Route::has('register'))

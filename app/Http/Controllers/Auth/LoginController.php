@@ -29,21 +29,7 @@ class LoginController extends Controller
     // protected $redirectTo = '/';
     protected function redirectTo()
     {
-        $user = Auth::user();
-
-        if($user->hasRole('driver'))
-        {
-            return '/driver/dashboard';
-        }
-        else if($user->hasRole('restaurant'))
-        {
-            return '/restaurant/dashboard';
-        }
-        else if($user->hasRole('restaurant'))
-        {
-            return '/admin/dashboard';
-        }
-        else return '/home';
+        return '/home';
     }
 
     /**

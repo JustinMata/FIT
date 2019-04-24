@@ -30,6 +30,6 @@ class Address extends Model
     }
 
     protected $fillable = [
-        'name', 'number', 'street1', 'city', 'state', 'postal',
+        'name', 'number', 'street1', 'street2', 'city', 'state', 'postal',
     ];
 }
