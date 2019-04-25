@@ -40,6 +40,44 @@ class User extends Authenticatable
     ];
 
     /**
+     * Get the driver associated with the user.
+     */
+    public function driver()
+    {
+        return $this->hasOne('App\Driver');
+    }
+
+    /**
+     * Get the restaurant associated with the user.
+     */
+    public function restaurant()
+    {
+        return $this->hasOne('App\Restaurant');
+    }
+
+    /**
+     * Get the drivers associated with the order.
+     */
+    public function location()
+    {
+        // return $this->hasMany('App\Address', 'id', 'location_id');
+        return $this->hasManyThrough('App\Address', 'App\Driver');
+    }
+
+     /**
+     * Get the drivers associated with the order.
+     */
+    public function orders()
+    {
+        if($this->hasRole('driver'))
+            return $this->hasManyThrough('App\Address', 'App\Driver');
+
+        if ($this->hasRole('restaurant')) {
+            return $this->hasManyThrough('App\Address', 'App\Restaurant');
+        }
+    }
+
+    /**
     * Get the user's full name.
     *
     * @return string

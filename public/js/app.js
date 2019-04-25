@@ -49269,7 +49269,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue").default);
+Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -49297,27 +49297,11 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
  */
 
 try {
-  window.Popper = __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js").default;
+  window.Popper = __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js")["default"];
   window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
   __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
 } catch (e) {}
-
-rs.intiate({
-  _id: "km-mongo-repset",
-  members: [{
-    "_id": 1,
-    "host": "192.168.33.12:27017"
-  }]
-});
-rs.add("192.168.33.14:27017");
-rs.add("192.168.33.16:27017");
-
-for (var i = 0; i < 100000; i++) {
-  db.testcollection.insert({
-    "username": "user" + 1
-  });
-}
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
@@ -49443,8 +49427,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\chics\Documents\School\SJSU\Spring19\CS-160\FIT\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\chics\Documents\School\SJSU\Spring19\CS-160\FIT\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/jmarcellin/MEGA/Documents/_School/SJSU/CS160/Project/FIT/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/jmarcellin/MEGA/Documents/_School/SJSU/CS160/Project/FIT/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

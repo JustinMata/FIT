@@ -15,7 +15,7 @@ $factory->define(App\Order::class, function (Faker $faker) {
         'restaurant_id' => $faker->numberBetween(1, App\Restaurant::count()),
         'driver_id' => $faker->numberBetween(1, App\Driver::count()),
         'address_id' => $faker->numberBetween(1, App\Address::count()),
-        'is_archived' => false,
+        'is_archived' => $faker->boolean,
         'is_payed' => $faker->boolean,
     ];
 });

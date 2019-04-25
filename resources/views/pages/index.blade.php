@@ -49,22 +49,43 @@
                     <li class="nav-item">
                         <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
                     </li>
-                    @if (Route::has('login'))
-                    <li class="nav-item">
-                        @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                        @else
-                        <a class="nav-link" href="{{ route('login') }}" data-toggle="modal" data-target="#portfolioModal7">Login</a>
-                        @endauth
-                        
-                        {{-- <a href="{{ route('login') }}" data-toggle="modal" data-target="#portfolioModal7">Login</a> --}}
-                    </li>
-                    @endif
-                    @if (Route::has('register'))
-                    <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="{{ route('register') }}" data-toggle="modal" data-target="#portfolioModal8">Register</a>
-                    </li>
-                    @endif
+
+                    @auth
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ Auth::user()->first_name }} <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @if (auth()->user()->hasRole('admin'))
+                                <a class="dropdown-item" href="{{ route('driverDashboard') }}">{{ __('Driver View') }}</a>
+                                <a class="dropdown-item" href="{{ route('restaurantDashboard') }}">{{ __('Restaurant View') }}</a>
+                                <a class="dropdown-item" href="{{ route('adminDashboard') }}">{{ __('Admin View') }}</a>
+                                @else
+                                    @if (auth()->user()->hasRole('driver')&& Route::has('driverDashboard'))
+                                    <a class="nav-link" href="{{ route('driverDashboard') }}">Dashboard</a>
+                                    @elseif (auth()->user()->hasRole('restaurant')&& Route::has('restaurantDashboard'))
+                                    <a class="nav-link" href="{{ route('restaurantDashboard') }}">Dashboard</a>
+                                    @endif
+                                @endif
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                </form>
+                            </div>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            {{-- @if (Route::has('login')) --}}
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#portfolioModal7">Login</a>
+                            {{-- @endif --}}
+                        </li>
+                        <li class="nav-item">
+                            {{-- @if (Route::has('register')) --}}
+                            <a class="nav-link js-scroll-trigger" href="#" data-toggle="modal" data-target="#portfolioModal8">Register</a>
+                            {{-- @endif --}}
+                        </li>
+                    @endauth
                 </ul>
             </div>
             <!-- Registration Page -->
@@ -838,161 +859,161 @@
                     </div>
                 </div>
                 <div class="container">
-                        <div class="row justify-content-center my-5">
-                            <div class="col-md-8">
-                                <div class="card">
-                                    <div class="card-header">{{ __('Register') }}</div>
+                    <div class="row justify-content-center my-5">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">{{ __('Register') }}</div>
 
-                                    <div class="card-body">
-                                        <form method="POST" action="{{ route('register') }}">
-                                            @csrf
+                                <div class="card-body">
+                                    <form method="POST" action="{{ route('register') }}">
+                                        @csrf
 
-                                            <div class="form-group row">
-                                                <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('First name') }}</label>
+                                        <div class="form-group row">
+                                            <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('First name') }}</label>
 
-                                                <div class="col-md-6">
-                                                    <input id="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                                            <div class="col-md-6">
+                                                <input id="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ old('first_name') }}" required autofocus>
 
-                                                    @if ($errors->has('first_name'))
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $errors->first('first_name') }}</strong>
-                                                    </span>
-                                                    @endif
-                                                </div>
+                                                @if ($errors->has('first_name'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('first_name') }}</strong>
+                                                </span>
+                                                @endif
                                             </div>
+                                        </div>
 
-                                            <div class="form-group row">
-                                                <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('Last name') }}</label>
+                                        <div class="form-group row">
+                                            <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('Last name') }}</label>
 
-                                                <div class="col-md-6">
-                                                    <input id="last_name" type="text" class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                                            <div class="col-md-6">
+                                                <input id="last_name" type="text" class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ old('last_name') }}" required autofocus>
 
-                                                    @if ($errors->has('last_name'))
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $errors->first('last_name') }}</strong>
-                                                    </span>
-                                                    @endif
-                                                </div>
+                                                @if ($errors->has('last_name'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('last_name') }}</strong>
+                                                </span>
+                                                @endif
                                             </div>
+                                        </div>
 
-                                            <div class="form-group row">
-                                                <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                                        <div class="form-group row">
+                                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
-                                                <div class="col-md-6">
-                                                    <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+                                            <div class="col-md-6">
+                                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
 
-                                                    @if ($errors->has('email'))
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $errors->first('email') }}</strong>
-                                                    </span>
-                                                    @endif
-                                                </div>
+                                                @if ($errors->has('email'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('email') }}</strong>
+                                                </span>
+                                                @endif
                                             </div>
+                                        </div>
 
-                                            <div class="form-group row">
-                                                <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                                        <div class="form-group row">
+                                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
-                                                <div class="col-md-6">
-                                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                                            <div class="col-md-6">
+                                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
-                                                    @if ($errors->has('password'))
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $errors->first('password') }}</strong>
-                                                    </span>
-                                                    @endif
-                                                </div>
+                                                @if ($errors->has('password'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('password') }}</strong>
+                                                </span>
+                                                @endif
                                             </div>
+                                        </div>
 
-                                            <div class="form-group row">
-                                                <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                                        <div class="form-group row">
+                                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
-                                                <div class="col-md-6">
-                                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                                                </div>
+                                            <div class="col-md-6">
+                                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                                             </div>
+                                        </div>
 
-                                            <div class="form-group row">
-                                                <label for="phone_number" class="col-md-4 col-form-label text-md-right">Phone Number</label>
+                                        <div class="form-group row">
+                                            <label for="phone_number" class="col-md-4 col-form-label text-md-right">Phone Number</label>
 
-                                                <div class="col-md-6">
-                                                    <input id="phone_number" type="phone_number" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" name="phone_number" value="{{ old('phone_number') }}" required>
+                                            <div class="col-md-6">
+                                                <input id="phone_number" type="phone_number" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" name="phone_number" value="{{ old('phone_number') }}" required>
 
-                                                    @if ($errors->has('phone_number'))
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $errors->first('phone_number') }}</strong>
-                                                    </span>
-                                                    @endif
-                                                </div>
+                                                @if ($errors->has('phone_number'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('phone_number') }}</strong>
+                                                </span>
+                                                @endif
                                             </div>
+                                        </div>
 
-                                            <div class="form-group row">
-                                                <label for="type" class="col-md-4 col-form-label text-md-right">Type</label>
+                                        <div class="form-group row">
+                                            <label for="type" class="col-md-4 col-form-label text-md-right">Type</label>
 
-                                                <div class="col-md-6">
-                                                    <select id="type" type="type" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type" value="{{ old('type') }}" required>
-                                                        <option value="Driver">Driver</option>
-                                                        <option value="Restaurant">Restaurant</option>
-                                                    </select>
+                                            <div class="col-md-6">
+                                                <select id="type" type="type" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type" value="{{ old('type') }}" required>
+                                                    <option value="Driver">Driver</option>
+                                                    <option value="Restaurant">Restaurant</option>
+                                                </select>
 
-                                                    @if ($errors->has('type'))
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $errors->first('type') }}</strong>
-                                                    </span>
-                                                    @endif
-                                                </div>
+                                                @if ($errors->has('type'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('type') }}</strong>
+                                                </span>
+                                                @endif
                                             </div>
+                                        </div>
 
-                                            <div class="form-group row">
-                                                <label for="street1" class="col-md-4 col-form-label text-md-right">Street 1</label>
-                                                <div class="col-md-6">
-                                                    <input id="street1" type="text" class="form-control" name="street1" value="{{ old('street1') }}" required autofocus>
-                                                </div>
+                                        <div class="form-group row">
+                                            <label for="street1" class="col-md-4 col-form-label text-md-right">Street 1</label>
+                                            <div class="col-md-6">
+                                                <input id="street1" type="text" class="form-control" name="street1" value="{{ old('street1') }}" required autofocus>
                                             </div>
+                                        </div>
 
-                                            <div class="form-group row">
-                                                <label for="street2" class="col-md-4 col-form-label text-md-right">Street 2</label>
-                                                <div class="col-md-6">
-                                                    <input id="street2" type="text" class="form-control" name="street2" value="{{ old('street2') }}" autofocus>
-                                                </div>
+                                        <div class="form-group row">
+                                            <label for="street2" class="col-md-4 col-form-label text-md-right">Street 2</label>
+                                            <div class="col-md-6">
+                                                <input id="street2" type="text" class="form-control" name="street2" value="{{ old('street2') }}" autofocus>
                                             </div>
+                                        </div>
 
-                                            <div class="form-group row">
-                                                <label for="city" class="col-md-4 col-form-label text-md-right">City</label>
-                                                <div class="col-md-6">
-                                                    <input id="city" type="text" class="form-control" name="city" value="{{ old('city') }}" required autofocus>
-                                                </div>
+                                        <div class="form-group row">
+                                            <label for="city" class="col-md-4 col-form-label text-md-right">City</label>
+                                            <div class="col-md-6">
+                                                <input id="city" type="text" class="form-control" name="city" value="{{ old('city') }}" required autofocus>
                                             </div>
+                                        </div>
 
-                                            <div class="form-group row">
-                                                <label for="state" class="col-md-4 col-form-label text-md-right">State</label>
+                                        <div class="form-group row">
+                                            <label for="state" class="col-md-4 col-form-label text-md-right">State</label>
 
-                                                <div class="col-md-6">
-                                                    <select id="state" type="type" class="form-control" name="state" value="{{ old('state') }}" required>
-                                                        @include('layouts.partials.states')
-                                                    </select>
-                                                </div>
+                                            <div class="col-md-6">
+                                                <select id="state" type="type" class="form-control" name="state" value="{{ old('state') }}" required>
+                                                    @include('layouts.partials.states')
+                                                </select>
                                             </div>
+                                        </div>
 
-                                            <div class="form-group row">
-                                                <label for="zip" class="col-md-4 col-form-label text-md-right">Zip Code</label>
-                                                <div class="col-md-6">
-                                                    <input id="zip" type="text" class="form-control" name="zip" value="{{ old('zip') }}" required autofocus>
-                                                </div>
+                                        <div class="form-group row">
+                                            <label for="zip" class="col-md-4 col-form-label text-md-right">Zip Code</label>
+                                            <div class="col-md-6">
+                                                <input id="zip" type="text" class="form-control" name="zip" value="{{ old('zip') }}" required autofocus>
                                             </div>
+                                        </div>
 
-                                            <div class="form-group row mb-0">
-                                                <div class="col-md-6 offset-md-4">
-                                                    <button type="submit" class="btn btn-primary">
-                                                        {{ __('Register') }}
-                                                    </button>
-                                                </div>
+                                        <div class="form-group row mb-0">
+                                            <div class="col-md-6 offset-md-4">
+                                                <button type="submit" class="btn btn-primary">
+                                                    {{ __('Register') }}
+                                                </button>
                                             </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1013,7 +1034,7 @@
             </div>
         </div>
     </div>--}}
-    
+
 
     <!-- Bootstrap core JavaScript -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>

@@ -12,45 +12,43 @@
 */
 
 Route::get('/', function () {
-   return View::make('pages.index');
-});
+    return View::make('pages.index');
+})->name('home');
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-
+// Route::get('/home', 'HomeController@index')->name('home');
 
 /***************************
- * STATIC PAGES
- ***************************/
+* STATIC PAGES
+***************************/
 Route::any('/about', function () {
-   return View::make('pages.about');
+    return View::make('pages.about');
 })->name('about');
 
 Route::get('/coverage', function () {
-   return View::make('pages.coverage');
+    return View::make('pages.coverage');
 })->name('coverage');
 
 Route::get('/pricing', function () {
-   return View::make('pages.pricing');
+    return View::make('pages.pricing');
 })->name('pricing');
 
 Route::get('/faq', function () {
-   return View::make('pages.faq');
+    return View::make('pages.faq');
 })->name('faq');
 
 Route::get('/help', function () {
-   return View::make('pages.help');
+    return View::make('pages.help');
 })->name('help');
 /***************************
- * END
- ***************************/
+* END
+***************************/
 
 /***************************
- * Authentication Auth::routes();
- ***************************/
+* Authentication Auth::routes();
+***************************/
 // Authentication Routes...
-Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('admin/login', 'Auth\LoginController@login');
+// Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('admin/login', 'Auth\LoginController@login')->name('login');
 Route::post('admin/logout', 'Auth\LoginController@logout')->name('logout');
 
 // Password Reset Routes...
@@ -62,34 +60,35 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('passw
 // Registration Routes...
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
-
-//temp, change to driver and restaurant later
-Route::get('/home', 'HomeController@index')->name('home');
-
-
-
-// admin routes
-Route::get('/admin/dashboard', 'AdminController@index')->name('adminDashboard');
-
-
-// driver routes
-Route::get('/driver/dashboard', 'DriverController@index')->name('driverDashboard');
-Route::get('/driver/orders', 'DriverController@show')->name('driverOrders');
-Route::get('/driver/map','OrderController@store')->name('driverMap');
-
-// restaurant routes
-Route::get('/restaurant/dashboard', 'RestaurantController@index')->name('restaurantDashboard');
-Route::get('/restaurant/order', 'OrderController@make')->name('restaurantOrder');
-Route::get('/restaurant/orders', 'RestaurantController@show')->name('restaurantOrders');
-Route::post('/restaurant/map', 'OrderController@store')->name('driverStore');
+/***************************
+* END
+***************************/
 
 /***************************
- * END
- ***************************/
+* Authenticated routes
+***************************/
+Route::middleware(['auth'])->group(function () {
+    // admin routes
+    Route::get('/admin/dashboard', 'AdminController@index')->name('adminDashboard');
+
+    // driver routes
+    Route::get('/driver/dashboard', 'DriverController@index')->name('driverDashboard');
+    Route::get('/driver/orders', 'DriverController@show')->name('driverOrders');
+    Route::get('/driver/map','MapController@show')->name('driverMap');
+
+    // restaurant routes
+    Route::get('/restaurant/dashboard', 'RestaurantController@index')->name('restaurantDashboard');
+    Route::get('/restaurant/order', 'OrderController@make')->name('restaurantOrder');
+    Route::get('/restaurant/orders', 'RestaurantController@show')->name('restaurantOrders');
+    Route::post('/restaurant/map', 'MapController@show')->name('restaurantMap');
+});
+/***************************
+* END
+***************************/
 
 /***************************
- * TESTING PAGES
- ***************************/
+* TESTING PAGES
+***************************/
 
 //currently working on them but should be able to successfully create an order and address
 Route::get('/order', 'OrderController@make')->name('order');
@@ -98,36 +97,38 @@ Route::get('/test', 'TestController@test')->name('test');
 
 Route::get('/queries', 'QueryController@index')->name('queries');
 
-/***************************
- * END
- ***************************/
-
-
 /**
- * @TODO: move the logic to a controller and maybe create an adapter
- */
+* @TODO: move the logic to a controller and maybe create an adapter
+*/
 Route::get('/googleApi', function () {
 
-   $params = [
-      'origins'        => '1 hacker way, menlo park',
-      'destinations'   => '1961 Vining Drive, San Leandro',
+    $params = [
+        'origins'        => '1 hacker way, menlo park',
+        'destinations'   => '1961 Vining Drive, San Leandro',
 
-   ];
+    ];
 
-   $response = \GoogleMaps::load('distanceMatrix')
-      ->setParam($params)
-      ->get();
+    $response = \GoogleMaps::load('distanceMatrix')
+    ->setParam($params)
+    ->get();
 
-   var_dump($response);
+    var_dump($response);
 
-   $response = \GoogleMaps::load('geocoding')
-      ->setParam([
-         'address'    => 'santa cruz',
-         'components' => [
+    $response = \GoogleMaps::load('geocoding')
+    ->setParam([
+        'address'    => 'santa cruz',
+        'components' => [
             'administrative_area'  => 'TX',
             'country'              => 'US',
-         ]
+            ]
 
-      ])
-      ->get();
-});
+            ])
+            ->get();
+        });
+
+        /***************************
+        * END
+        ***************************/
+
+
+

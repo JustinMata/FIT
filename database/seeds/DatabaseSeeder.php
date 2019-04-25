@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Migration complete!');
 
 
-        $entryNumber = (int)$this->command->ask('How many entries do you want to create?', env('GENERATED_USERS_NUMBER'));
+        $entryNumber = (int)$this->command->ask('How many entries do you want to create?', 200);
 
         // Generating addresses
         $addresses = factory(App\Address::class, $entryNumber)->create();
@@ -70,26 +70,26 @@ class DatabaseSeeder extends Seeder
         $addresses = factory(App\Address::class, $entryNumber)->create();
 
         // Getting list of restaurants and drivers id's
-        $restaurants = App\User::select('id')->where('type', '=', 'RESTAURANT')->get()->shuffle();
-        $drivers = App\User::select('id')->where('type', '=', 'DRIVER')->get()->shuffle();
+        $restaurants = App\Restaurant::pluck('id')->shuffle()->all();
+        $drivers = App\Driver::pluck('id')->shuffle()->all();
 
 
         // @TESTING
-        // $headers = ['id'];
-        // $this->command->table($headers, $drivers->pluck('id')->all());
-        // $this->command->info($restaurants->pop()->id);
+        $headers = ['id'];
+        // $this->command->table($headers, $drivers);
+        // $this->command->info($drivers);
 
         $addresses->each(function($address) use ($drivers, $restaurants){
 
             // creating an order for each address
             factory(App\Order::class, 1)
             ->create([
-                'base_rate' => env('BASE_RATE'),
-                'mileage_rate' => env('MILEAGE_RATE'),
-                'taxes' => env('TAXES'),
+                'base_rate' => config('api.BASE_RATE'),
+                'mileage_rate' => config('api.MILEAGE_RATE'),
+                'taxes' => config('api.TAXES'),
                 'address_id' => $address->id,
-                // 'restaurant_id' => (int)$restaurants->pop()->id,
-                // 'driver_id' => (int)$drivers->pop()->id,
+                'restaurant_id' => (int)array_pop($restaurants),
+                'driver_id' => (int)array_pop($drivers)
                 ]
             );
         });
@@ -105,6 +105,8 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'order_accept']);
         Permission::create(['name' => 'order_decline']);
 
+        $this->command->info('Permissions generated!');
+
         // create roles and assign created permissions
         $role = Role::create(['name' => 'admin'])
         ->givePermissionTo(Permission::all());
@@ -117,17 +119,44 @@ class DatabaseSeeder extends Seeder
         $role = Role::create(['name' => 'driver'])
         ->givePermissionTo(['order_accept', 'order_decline']);
 
+        $this->command->info('Roles generated!');
+
         $password = Hash::make('password');
 
+        // $address = App\Address::first();
+
         // Generating Admins
-        factory(App\User::class, 1)
+        $user = factory(App\User::class, 1)
         ->create([
             'first_name' => 'Jean',
             'last_name' => 'Marcellin',
             'email' => 'jamarcellin@gmail.com',
             'password' => $password,
             'phone_number' => '6503538639',
-            'type' => 'ADMIN'
+            'type' => 'ADMIN',
+            'address_id' => $addresses[1]->id
+            ]
+        );
+
+        $driver = factory(App\Driver::class, 1)
+        ->create([
+            'user_id' => $user[0]->id,
+            'location_id' => $addresses[10]->id,
+            'is_available' => true
+            ]
+        );
+
+        $restaurant = factory(App\Restaurant::class, 1)
+        ->create([
+            'user_id' => $user[0]->id,
+            ]
+        );
+
+        factory(App\Order::class, 2)
+        ->create([
+            'driver_id' => $driver[0]->id,
+            'restaurant_id' => $restaurant[0]->id,
+            'is_archived' => false
             ]
         );
 
