@@ -12,75 +12,81 @@ class MapController extends Controller
 {
 
     /**
-     * Undocumented function
-     *
-     * @return void
-     */
+    * Undocumented function
+    *
+    * @return void
+    */
     public function show(){
 
-        // dd(\App\User::where('id', 4)->driver());
-
-        // $driverLocationID = Driver::where('user_id', auth()->user()->id)->first()->location_id;
-        // $driverLocation = Address::where('id', $driverLocationID)->first();
-        // $driverLocation = $driverLocation->google_geocode_address;
-
-
-
-        // $orderIDs[] = Order::where([
-        //     'driver_id' => Driver::where('user_id', auth()->user()->id)->first()->id,
-        //     'is_archived' => false
-        //     ])->get();
-
-        // dd($orderIDs);
-
-        // dd(\App\Address::first()->order()->);
 
         if (auth()->check() && (auth()->user()->hasRole('driver') || (auth()->user()->hasRole('admin')) && request()->is('*driver*'))) {
 
-            $destinations = collect([]);
+            $destinations = [];
 
             $userID = auth()->user()->id;
             // Getting driver location
             $driver = Driver::where('user_id', $userID)->first();
             $driverLocation = Address::where('id', $driver->location_id)->first();
-            $destinations->push('push', $driverLocation->google_geocode_address);
+            data_fill($destinations, 'driver', $driverLocation->google_geocode_address);
 
             // Getting orders from driver
-            $orders = Order::where([
-                'driver_id' => $driver->id,
-                'is_archived' => false
-                ])->take(2)->get();
+            $orders = Order::where(['driver_id' => $driver->id,'is_archived' => false])->limit(2)->get();
 
             // Getting restaurant location
             $restaurantID = $orders->first()->restaurant_id;
             $restaurant = Restaurant::where('id', $restaurantID)->first();
             $restaurantLocation = Address::where('id', $restaurant->user()->first()->address_id)->first();
             // $destinations['restaurant'] = $restaurantLocation->google_geocode_address;
-            $destinations->push($restaurantLocation->google_geocode_address);
+            data_fill($destinations, 'restaurant', $restaurantLocation->google_geocode_address);
 
-            $orders->each(function($order, $key) use ( $destinations) {
-                // var_dump($order);
-                // $destinations['delivery'][] = Address::where('id', $order->address_id)->first();
+            // Setting the delivery addresses
+            $orders->each(function($order, $key) use ( &$destinations) {
+                data_fill($destinations, "delivery.$key", Address::where('id', $order->address_id)->first()->google_geocode_address);
             });
 
-            dd($destinations);
-            // $restaurantLocation = "140+E+San+Carlos+St,CA";
-            // $driverLocationID = Driver::where('user_id', auth()->user()->id)->first()->location_id;
-            // $clientLocation = "san+jose+state+university";
+            if (count($destinations['delivery']) == 1) {
+                $directions[] =  $this->getDirections($destinations['driver'], $destinations['restaurant'], $destinations['delivery'][0]);
+            } else {
+                $directions[] =  $this->getDirections($destinations['driver'], $destinations['restaurant'], $destinations['delivery'][0], $destinations['delivery'][1]);
+                $directions[] =  $this->getDirections($destinations['driver'], $destinations['restaurant'], $destinations['delivery'][1], $destinations['delivery'][0]);
+            }
+
+            if (count($directions) == 1 ) {
+                return view('driver.pages.map', ['directions' => $directions[0]]);
+            }
+
+            if ($this->totalDuration($directions[0]) <= $this->totalDuration($directions[1])) {
+                return view('driver.pages.map', ['directions' => $directions[0]]);
+            }
+
+            return view('driver.pages.map', ['directions' => $directions[1]]);
         }
 
+        return view('driver.pages.map', ['directions' => null])->withErrors(['warning' => 'There was an error retrieving your location']);
+    }
+
+    private function getDirections($driver, $restaurant, $firstDestination, $secondDestination = null){
+        $directions =  \GoogleMaps::load('directions')->setParam([
+            'origin' => $driver,
+            'waypoints' => [$restaurant, $secondDestination],
+            'destination' => $firstDestination,
+            'departure_time' => 'now'
+        ])->get();
+
+        return json_decode($directions);
+    }
 
 
-        // $directions = \GoogleMaps::load('directions')
-		// ->setParam ([
-        //     'origin' => $driverLocation,
-        //     'waypoints' => ['optimize:true',$restaurantLocation],
-        //     'destination' => $clientLocation,
-        //     'departure_time' => 'now'
-        //     ])
-        //  ->get();
+    private function totalDuration($direction){
 
-        // return view('driver.pages.map', ['directions' => json_decode($directions)]);
+        $duration = 0;
 
+        if($direction->status == 'OK'){
+            foreach (data_get($direction, 'routes.*.legs') as $key => $value) {
+                $duration += data_get($value, 'duration.value');
+            }
+        }
+
+        return $duration;
     }
 }

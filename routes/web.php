@@ -69,18 +69,23 @@ Route::post('register', 'Auth\RegisterController@register');
 ***************************/
 Route::middleware(['auth'])->group(function () {
     // admin routes
-    Route::get('/admin/dashboard', 'AdminController@index')->name('adminDashboard');
+    Route::middleware(['admin'])->group(function () {
+        Route::get('/admin/dashboard', 'AdminController@index')->name('adminDashboard');
+    });
 
-    // driver routes
-    Route::get('/driver/dashboard', 'DriverController@index')->name('driverDashboard');
-    Route::get('/driver/orders', 'DriverController@show')->name('driverOrders');
-    Route::get('/driver/map','MapController@show')->name('driverMap');
-
+    // Route::middleware(['admin'])->group(function () {
+        // driver routes
+        Route::get('/driver/dashboard', 'DriverController@index')->name('driverDashboard');
+        Route::get('/driver/orders', 'DriverController@show')->name('driverOrders');
+        Route::get('/driver/map','MapController@show')->name('driverMap');
+    // });
     // restaurant routes
-    Route::get('/restaurant/dashboard', 'RestaurantController@index')->name('restaurantDashboard');
-    Route::get('/restaurant/order', 'OrderController@make')->name('restaurantOrder');
-    Route::get('/restaurant/orders', 'RestaurantController@show')->name('restaurantOrders');
-    Route::post('/restaurant/map', 'MapController@show')->name('restaurantMap');
+    // Route::middleware(['restaurant'])->group(function () {
+        Route::get('/restaurant/dashboard', 'RestaurantController@index')->name('restaurantDashboard');
+        Route::get('/restaurant/order', 'OrderController@make')->name('restaurantOrder');
+        Route::get('/restaurant/orders', 'RestaurantController@show')->name('restaurantOrders');
+        Route::post('/restaurant/map', 'MapController@show')->name('restaurantMap');
+    // });
 });
 /***************************
 * END

@@ -60,6 +60,10 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        // custom middleware
+        'admin' => \App\Http\Middleware\Admin::class,
+        'driver' => \App\Http\Middleware\Driver::class,
+        'restaurant' => \App\Http\Middleware\Restaurant::class,
         // spatie/laravel-permission
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
