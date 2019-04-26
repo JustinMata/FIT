@@ -11,28 +11,28 @@ class Order extends Model
      * Setting default base rate value from *env file
      */
     public function setBaseRateAttribute($value) {
-        $this->attributes['base_rate'] = !empty($value)?$value:env('BASE_RATE');
+        $this->attributes['base_rate'] = !empty($value)?$value:config('api.BASE_RATE');
     }
 
     /**
      * Setting default mileage rate value from *env file
      */
     public function setMileageRateAttribute($value) {
-        $this->attributes['mileage_rate'] = !empty($value)?$value:env('MILEAGE_RATE');
+        $this->attributes['mileage_rate'] = !empty($value)?$value:config('api.MILEAGE_RATE');
     }
 
     /**
      * Setting default tax value from *env file
      */
     public function setTaxesAttribute($value) {
-        $this->attributes['taxes'] = !empty($value)?$value:env('TAXES');
+        $this->attributes['taxes'] = !empty($value)?$value:config('api.TAXES');
     }
 
     /**
      * Setting default trip mileage value from *env file
      */
     public function setMileageTripAttribute($value) {
-        $this->attributes['mileage_trip'] = !empty($value)?$value:env('MILEAGE_TRIP');
+        $this->attributes['mileage_trip'] = !empty($value)?$value:config('api.MILEAGE_TRIP');
     }
 
     /**

@@ -1,4 +1,4 @@
-@extends('restaurant.default') 
+@extends('restaurant.default')
 @section('header')
 <div class="container text-muted">
     <div class="row">
@@ -12,7 +12,7 @@
     </div>
 </div>
 @endsection
- 
+
 @section('content')
 
 <div class="container text-muted">
@@ -29,8 +29,8 @@
                 </tr>
             </thead>
             <tbody>
-                @php $row = $orders->firstItem(); 
-@endphp @foreach ($orders as $order)
+                @php $row = $orders->firstItem();
+                @endphp @foreach ($orders as $order)
                 <tr>
                     <th scope="{{ $row }}">{{ $row }}</th>
                     <td>{{ explode(" ", $order->delivery_name)[0] }}</td>
@@ -39,13 +39,13 @@
                     <td>${{ $order->delivery_price }}</td>
                     <td>{{ $users[$drivers[$order->driver_id - 1]->user_id - 1]->first_name }} {{ $users[$drivers[$order->driver_id
                         - 1]->user_id - 1]->last_name }}</td>
-                </tr>
-                @php $row++; 
-@endphp @endforeach
-            </tbody>
-        </table>
-        {{ $orders->links() }}
+                    </tr>
+                    @php $row++;
+                    @endphp @endforeach
+                </tbody>
+            </table>
+            {{ $orders->links() }}
+        </div>
     </div>
-</div>
 </P>
 @endsection

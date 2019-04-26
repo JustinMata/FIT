@@ -87,8 +87,8 @@ class User extends Authenticatable
         return "{$this->first_name} {$this->last_name}";
     }
 
-    public function hasRole($role)
-    {
-        return User::where('id', $this->id)->value('type') == strtoupper($role);
-    }
+    // public function hasRole($role)
+    // {
+    //     return User::where('id', $this->id)->value('type') == strtoupper($role);
+    // }
 }
