@@ -43,4 +43,8 @@ class Driver extends User
     {
         return $this->hasMany('App\Order');
     }
+
+    protected $fillable = [
+        'account_number', 'account_routing', 'car', 'license_plate', 'license_number', 'license_expiration', 'insurance_number',
+    ];
 }

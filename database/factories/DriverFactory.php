@@ -5,7 +5,6 @@ use Faker\Generator as Faker;
 $factory->define(App\Driver::class, function (Faker $faker) {
     return [
         'location_id' => $faker->numberBetween(1, App\Address::count()),
-        'schedule' => '{}',
         'account_number' => $faker->bankAccountNumber,
         'account_routing' => $faker->bankRoutingNumber,
         'is_available' => $faker->boolean,
@@ -16,4 +15,3 @@ $factory->define(App\Driver::class, function (Faker $faker) {
         'insurance_number' => $faker->bothify('########'),
     ];
 });
-

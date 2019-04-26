@@ -24,30 +24,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function dashboard()
-    {
         $user = Auth::user();
 
-        if($user->hasRole('driver')){
-            return redirect( '/driver/dashboard');
+        if($user->hasRole('driver'))
+        {
+            return redirect('/driver/dashboard');
         }
-
-        if($user->hasRole('restaurant')){
-            return redirect( '/restaurant/dashboard');
+        else if($user->hasRole('restaurant'))
+        {
+            return redirect('/restaurant/dashboard');
         }
-
-        if($user->hasRole('admin')){
-            return redirect( '/admin/dashboard');
+        else if($user->hasRole('admin')){
+            return redirect('/admin/dashboard');
         }
-
-        return redirect('/home');
+        else return redirect('/');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Address;
 use DB;
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -33,22 +34,17 @@ class RegisterController extends Controller
      */
     protected function redirectTo()
     {
-
         $user = Auth::user();
 
-        if($user->hasRole('driver')){
-            return '/driver/dashboard';
+        if($user->hasRole('driver'))
+        {
+            return '/driver/register';
         }
-
-        if($user->hasRole('restaurant')){
-            return '/restaurant/dashboard';
+        else if($user->hasRole('restaurant'))
+        {
+            return '/restaurant/register';
         }
-
-        if($user->hasRole('admin')){
-            return '/admin/dashboard';
-        }
-
-        return '/home';
+        else return '/home';
     }
 
     /**
@@ -85,18 +81,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $id = DB::table('addresses')->insertGetId(
-            array('name' => '', 'number' => '0', 'street1' => $data['street1'], 'street2' => $data['street2'], 'city' => $data['city'], 'state' => $data['state'], 'postal' => $data['zip'])
-        );
+        $id = DB::table('addresses')->insertGetId([
+            'name' => '',
+            'street1' => $data['street1'],
+            'street2' => $data['street2'],
+            'city' => $data['city'],
+            'state' => $data['state'],
+            'postal' => $data['zip'],
+        ]);
 
         return User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
+            'email_verified_at' => now(),
             'password' => Hash::make($data['password']),
             'phone_number' => $data['phone_number'],
             'type' => $data['type'],
             'address_id' => $id,
+            'remember_token' => Str::random(10),
         ]);
     }
 }

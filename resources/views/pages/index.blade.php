@@ -1017,25 +1017,7 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal 9 -->
-    {{--<div class="portfolio-modal modal fade" id="portfolioModal9" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl"></div>
-                    </div>
-
-                    <!--contents of reset.blade.php goes here -->
-
-
-                </div>
-            </div>
-        </div>
-    </div>--}}
-
-
+    
     <!-- Bootstrap core JavaScript -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>

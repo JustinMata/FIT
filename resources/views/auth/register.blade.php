@@ -1,9 +1,5 @@
 @extends('layouts.default')
 
-@section('header')
-
-@endsection
-
 @section('content')
 <div class="container">
     <div class="row justify-content-center my-5">
@@ -113,8 +109,14 @@
                         <div class="form-group row">
                             <label for="street1" class="col-md-4 col-form-label text-md-right">Street 1</label>
                             <div class="col-md-6">
-                                <input id="street1" type="text" class="form-control" name="street1" value="{{ old('street1') }}" required autofocus>
+                                <input id="street1" type="text" class="form-control{{ $errors->has('street1') ? ' is-invalid' : '' }}" name="street1" value="{{ old('street1') }}" required autofocus>
                             </div>
+
+                            @if ($errors->has('street1'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('street1') }}</strong>
+                                </span>
+                            @endif
                         </div>
 
                         <div class="form-group row">
@@ -127,25 +129,43 @@
                         <div class="form-group row">
                             <label for="city" class="col-md-4 col-form-label text-md-right">City</label>
                             <div class="col-md-6">
-                                <input id="city" type="text" class="form-control" name="city" value="{{ old('city') }}" required autofocus>
+                                <input id="city" type="text" class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}" name="city" value="{{ old('city') }}" required autofocus>
                             </div>
+
+                            @if ($errors->has('city'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('city') }}</strong>
+                                </span>
+                            @endif
                         </div>
 
                         <div class="form-group row">
                             <label for="state" class="col-md-4 col-form-label text-md-right">State</label>
 
                             <div class="col-md-6">
-                                <select id="state" type="type" class="form-control" name="state" value="{{ old('state') }}" required>
+                                <select id="state" type="type" class="form-control{{ $errors->has('state') ? ' is-invalid' : '' }}" name="state" value="{{ old('state') }}" required>
                                     @include('layouts.partials.states')
                                 </select>
                             </div>
+
+                            @if ($errors->has('state'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('state') }}</strong>
+                                </span>
+                            @endif
                         </div>
 
                         <div class="form-group row">
                             <label for="zip" class="col-md-4 col-form-label text-md-right">Zip Code</label>
                             <div class="col-md-6">
-                                <input id="zip" type="text" class="form-control" name="zip" value="{{ old('zip') }}" required autofocus>
+                                <input id="zip" type="text" class="form-control{{ $errors->has('zip') ? ' is-invalid' : '' }}" name="zip" value="{{ old('zip') }}" required autofocus>
                             </div>
+
+                            @if ($errors->has('zip'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('zip') }}</strong>
+                                </span>
+                            @endif
                         </div>
 
                         <div class="form-group row mb-0">

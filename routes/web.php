@@ -17,31 +17,6 @@ Route::get('/', function () {
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
-/***************************
-* STATIC PAGES
-***************************/
-Route::any('/about', function () {
-    return View::make('pages.about');
-})->name('about');
-
-Route::get('/coverage', function () {
-    return View::make('pages.coverage');
-})->name('coverage');
-
-Route::get('/pricing', function () {
-    return View::make('pages.pricing');
-})->name('pricing');
-
-Route::get('/faq', function () {
-    return View::make('pages.faq');
-})->name('faq');
-
-Route::get('/help', function () {
-    return View::make('pages.help');
-})->name('help');
-/***************************
-* END
-***************************/
 
 /***************************
 * Authentication Auth::routes();

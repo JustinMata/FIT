@@ -31,4 +31,7 @@ class Restaurant extends User
         return $this->hasOne('App\Address');
     }
 
+    protected $fillable = [
+        'provider', 'CC_name', 'CC_number', 'CC_expiration', 'CC_CVC',
+    ];
 }
