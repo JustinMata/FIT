@@ -35,6 +35,12 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('passw
 // Registration Routes...
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
+
+Route::get('/driver/register', 'DriverController@showRegistrationForm')->name('registerDriver');
+Route::post('/driver/register', 'DriverController@register');
+
+Route::get('/restaurant/register', 'RestaurantController@showRegistrationForm')->name('registerRestaurant');
+Route::post('/restaurant/register', 'RestaurantController@register');
 /***************************
 * END
 ***************************/

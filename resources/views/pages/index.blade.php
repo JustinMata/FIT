@@ -51,40 +51,40 @@
                     </li>
 
                     @auth
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ Auth::user()->first_name }} <span class="caret"></span>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                @if (auth()->user()->hasRole('admin'))
-                                <a class="dropdown-item" href="{{ route('driverDashboard') }}">{{ __('Driver View') }}</a>
-                                <a class="dropdown-item" href="{{ route('restaurantDashboard') }}">{{ __('Restaurant View') }}</a>
-                                <a class="dropdown-item" href="{{ route('adminDashboard') }}">{{ __('Admin View') }}</a>
-                                @else
-                                    @if (auth()->user()->hasRole('driver')&& Route::has('driverDashboard'))
-                                    <a class="nav-link" href="{{ route('driverDashboard') }}">Dashboard</a>
-                                    @elseif (auth()->user()->hasRole('restaurant')&& Route::has('restaurantDashboard'))
-                                    <a class="nav-link" href="{{ route('restaurantDashboard') }}">Dashboard</a>
-                                    @endif
-                                @endif
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                </form>
-                            </div>
-                        </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ Auth::user()->first_name }} <span class="caret"></span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            @if (auth()->user()->hasRole('admin'))
+                            <a class="dropdown-item" href="{{ route('driverDashboard') }}">{{ __('Driver View') }}</a>
+                            <a class="dropdown-item" href="{{ route('restaurantDashboard') }}">{{ __('Restaurant View') }}</a>
+                            <a class="dropdown-item" href="{{ route('adminDashboard') }}">{{ __('Admin View') }}</a>
+                            @else
+                            @if (auth()->user()->hasRole('driver')&& Route::has('driverDashboard'))
+                            <a class="nav-link" href="{{ route('driverDashboard') }}">Dashboard</a>
+                            @elseif (auth()->user()->hasRole('restaurant')&& Route::has('restaurantDashboard'))
+                            <a class="nav-link" href="{{ route('restaurantDashboard') }}">Dashboard</a>
+                            @endif
+                            @endif
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
                     @else
-                        <li class="nav-item">
-                            {{-- @if (Route::has('login')) --}}
-                            <a class="nav-link" href="#" data-toggle="modal" data-target="#portfolioModal7">Login</a>
-                            {{-- @endif --}}
-                        </li>
-                        <li class="nav-item">
-                            {{-- @if (Route::has('register')) --}}
-                            <a class="nav-link js-scroll-trigger" href="#" data-toggle="modal" data-target="#portfolioModal8">Register</a>
-                            {{-- @endif --}}
-                        </li>
+                    <li class="nav-item">
+                        {{-- @if (Route::has('login')) --}}
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#login-modal">Login</a>
+                        {{-- @endif --}}
+                    </li>
+                    <li class="nav-item">
+                        {{-- @if (Route::has('register')) --}}
+                        <a class="nav-link js-scroll-trigger" href="#" data-toggle="modal" data-target="#register-modal">Register</a>
+                        {{-- @endif --}}
+                    </li>
                     @endauth
                 </ul>
             </div>
@@ -95,7 +95,7 @@
                     @auth
                     <a href="{{ url('/home') }}">Home</a>
                     @else
-                    <a href="{{ route('login') }}" data-toggle="modal" data-target="#portfolioModal7">Login</a>
+                    <a href="{{ route('login') }}" data-toggle="modal" data-target="#login-modal">Login</a>
                 </div>
                 <div class="flex-center position-ref full-height">
                     @if (Route::has('register'))
@@ -768,7 +768,7 @@
     </div>
 
     <!-- Modal 7 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal7" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="portfolio-modal modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="close-modal" data-dismiss="modal">
@@ -850,7 +850,7 @@
     </div>
 
     <!-- Modal 8 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal8" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="portfolio-modal modal fade" id="register-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="close-modal" data-dismiss="modal">
@@ -1017,7 +1017,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Bootstrap core JavaScript -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
@@ -1033,10 +1033,19 @@
     <script src="{{ asset('js/agency.min.js') }}"></script>
 
     <script>
-        $('#portfolioModal7').on('shown.bs.modal', function () {
+        $('#login-modal').on('shown.bs.modal', function () {
             $('#myInput').trigger('focus')
         })
+
     </script>
+
+    @if (count($errors) > 0)
+    <script>
+        $( document ).ready(function() {
+            $('#login-modal').modal('show');
+        });
+    </script>
+    @endif
 
 </body>
 

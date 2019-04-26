@@ -34,17 +34,17 @@ class RegisterController extends Controller
      */
     protected function redirectTo()
     {
-        $user = Auth::user();
 
-        if($user->hasRole('driver'))
+        if(auth()->user()->hasRole('driver'))
         {
             return '/driver/register';
         }
-        else if($user->hasRole('restaurant'))
+        else if(auth()->user()->hasRole('restaurant'))
         {
             return '/restaurant/register';
         }
-        else return '/';
+
+        return '/';
     }
 
     /**

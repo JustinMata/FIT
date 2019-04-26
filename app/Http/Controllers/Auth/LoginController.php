@@ -36,6 +36,7 @@ class LoginController extends Controller
         } else if(auth()->user()->hasRole('restaurant')) {
             return 'restaurant/dashboard';
         }
+
         return '/';
     }
 
