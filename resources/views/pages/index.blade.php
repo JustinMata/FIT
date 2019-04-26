@@ -477,7 +477,7 @@
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" id="email" type="email" placeholder="Your Email *" required="required" data-validation-required-message="Please enter your email address.">
+                                    <input class="form-control" id="email-contact" type="email" placeholder="Your Email *" required="required" data-validation-required-message="Please enter your email address.">
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
@@ -787,10 +787,10 @@
                                         @csrf
 
                                         <div class="form-group row">
-                                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                                            <label for="login-email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                                             <div class="col-md-6">
-                                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                                                <input id="login-email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required >
 
                                                 @if ($errors->has('email'))
                                                 <span class="invalid-feedback" role="alert">
@@ -801,10 +801,10 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                                            <label for="login-password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                                             <div class="col-md-6">
-                                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                                                <input id="login-password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
                                                 @if ($errors->has('password'))
                                                 <span class="invalid-feedback" role="alert">
@@ -886,7 +886,7 @@
                                             <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('Last name') }}</label>
 
                                             <div class="col-md-6">
-                                                <input id="last_name" type="text" class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                                                <input id="last_name" type="text" class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ old('last_name') }}" required >
 
                                                 @if ($errors->has('last_name'))
                                                 <span class="invalid-feedback" role="alert">
@@ -897,10 +897,10 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                                            <label for="register-email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                                             <div class="col-md-6">
-                                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+                                                <input id="register-email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
 
                                                 @if ($errors->has('email'))
                                                 <span class="invalid-feedback" role="alert">
@@ -911,10 +911,10 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                                            <label for="register-password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                                             <div class="col-md-6">
-                                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                                                <input id="register-password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
                                                 @if ($errors->has('password'))
                                                 <span class="invalid-feedback" role="alert">
@@ -947,12 +947,13 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label for="type" class="col-md-4 col-form-label text-md-right">Type</label>
+                                            <label for="type" class="col-md-4 col-form-label text-md-right">Role</label>
 
                                             <div class="col-md-6">
                                                 <select id="type" type="type" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type" value="{{ old('type') }}" required>
-                                                    <option value="Driver">Driver</option>
-                                                    <option value="Restaurant">Restaurant</option>
+                                                    <option value="" class="input-xlarge">Select your role</option>
+                                                    <option value="driver">Driver</option>
+                                                    <option value="restaurant">Restaurant</option>
                                                 </select>
 
                                                 @if ($errors->has('type'))
@@ -966,21 +967,21 @@
                                         <div class="form-group row">
                                             <label for="street1" class="col-md-4 col-form-label text-md-right">Street 1</label>
                                             <div class="col-md-6">
-                                                <input id="street1" type="text" class="form-control" name="street1" value="{{ old('street1') }}" required autofocus>
+                                                <input id="street1" type="text" class="form-control" name="street1" value="{{ old('street1') }}" required >
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
                                             <label for="street2" class="col-md-4 col-form-label text-md-right">Street 2</label>
                                             <div class="col-md-6">
-                                                <input id="street2" type="text" class="form-control" name="street2" value="{{ old('street2') }}" autofocus>
+                                                <input id="street2" type="text" class="form-control" name="street2" value="{{ old('street2') }}" >
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
                                             <label for="city" class="col-md-4 col-form-label text-md-right">City</label>
                                             <div class="col-md-6">
-                                                <input id="city" type="text" class="form-control" name="city" value="{{ old('city') }}" required autofocus>
+                                                <input id="city" type="text" class="form-control" name="city" value="{{ old('city') }}" required >
                                             </div>
                                         </div>
 
@@ -997,10 +998,174 @@
                                         <div class="form-group row">
                                             <label for="zip" class="col-md-4 col-form-label text-md-right">Zip Code</label>
                                             <div class="col-md-6">
-                                                <input id="zip" type="text" class="form-control" name="zip" value="{{ old('zip') }}" required autofocus>
+                                                <input id="zip" type="text" class="form-control" name="zip" value="{{ old('zip') }}" required >
                                             </div>
                                         </div>
 
+                                        <div class="form-group row driver-form collapse">
+                                            <label for="account_number" class="col-md-4 col-form-label text-md-right">{{ __('Account Number') }}</label>
+
+                                            <div class="col-md-6">
+                                                <input id="account_number" type="text" class="form-control{{ $errors->has('account_number') ? ' is-invalid' : '' }}" name="account_number" value="{{ old('account_number') }}"  >
+
+                                                @if ($errors->has('account_number'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('account_number') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row driver-form collapse">
+                                            <label for="account_routing" class="col-md-4 col-form-label text-md-right">{{ __('Account Routing') }}</label>
+
+                                            <div class="col-md-6">
+                                                <input id="account_routing" type="text" class="form-control{{ $errors->has('account_routing') ? ' is-invalid' : '' }}" name="account_routing" value="{{ old('account_routing') }}"  >
+
+                                                @if ($errors->has('account_routing'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('account_routing') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row driver-form collapse">
+                                            <label for="car" class="col-md-4 col-form-label text-md-right">Car</label>
+                                            <div class="col-md-6">
+                                                <input id="car" type="text" class="form-control{{ $errors->has('car') ? ' is-invalid' : '' }}" name="car" value="{{ old('car') }}"  >
+
+                                                @if ($errors->has('car'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('car') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row driver-form collapse">
+                                            <label for="license_plate" class="col-md-4 col-form-label text-md-right">License Plate</label>
+                                            <div class="col-md-6">
+                                                <input id="license_plate" type="text" class="form-control{{ $errors->has('license_plate') ? ' is-invalid' : '' }}" name="license_plate" value="{{ old('license_plate') }}"  >
+
+                                                @if ($errors->has('license_plate'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('license_plate') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row driver-form collapse">
+                                            <label for="license_number" class="col-md-4 col-form-label text-md-right">License Number</label>
+                                            <div class="col-md-6">
+                                                <input id="license_number" type="text" class="form-control{{ $errors->has('license_number') ? ' is-invalid' : '' }}" name="license_number" value="{{ old('license_number') }}"  >
+
+                                                @if ($errors->has('license_number'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('license_number') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row driver-form collapse">
+                                            <label for="license_expiration" class="col-md-4 col-form-label text-md-right">License Expiration</label>
+                                            <div class="col-md-6">
+                                                <input id="license_expiration" type="date" class="form-control{{ $errors->has('license_expiration') ? ' is-invalid' : '' }}" name="license_expiration" value="{{ old('license_expiration') }}"  >
+
+                                                @if ($errors->has('license_expiration'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('license_expiration') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row driver-form collapse">
+                                            <label for="insurance_number" class="col-md-4 col-form-label text-md-right">Insurance Number</label>
+                                            <div class="col-md-6">
+                                                <input id="insurance_number" type="text" class="form-control{{ $errors->has('insurance_number') ? ' is-invalid' : '' }}" name="insurance_number" value="{{ old('insurance_number') }}"  >
+
+                                                @if ($errors->has('insurance_number'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('insurance_number') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row restaurant-form collapse">
+                                            <label for="provider" class="col-md-4 col-form-label text-md-right">Provider</label>
+
+                                            <div class="col-md-6">
+                                                <select id="provider" type="type" class="form-control{{ $errors->has('provider') ? ' is-invalid' : '' }}" name="provider" value="{{ old('provider') }}" >
+                                                    <option value="VISA">VISA</option>
+                                                    <option value="AMEX">AMEX</option>
+                                                    <option value="DISCOVERY">DISCOVERY</option>
+                                                </select>
+
+                                                @if ($errors->has('provider'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('provider') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row restaurant-form collapse">
+                                            <label for="CC_name" class="col-md-4 col-form-label text-md-right">{{ __('CC Name') }}</label>
+
+                                            <div class="col-md-6">
+                                                <input id="CC_name" type="text" class="form-control{{ $errors->has('CC_name') ? ' is-invalid' : '' }}" name="CC_name" value="{{ old('CC_name') }}"  >
+
+                                                @if ($errors->has('CC_name'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('CC_name') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row restaurant-form collapse">
+                                            <label for="CC_number" class="col-md-4 col-form-label text-md-right">{{ __('CC Number') }}</label>
+
+                                            <div class="col-md-6">
+                                                <input id="CC_number" type="text" class="form-control{{ $errors->has('CC_number') ? ' is-invalid' : '' }}" name="CC_number" value="{{ old('CC_number') }}"  >
+
+                                                @if ($errors->has('CC_number'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('CC_number') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row restaurant-form collapse">
+                                            <label for="CC_expiration" class="col-md-4 col-form-label text-md-right">CC Expiration</label>
+                                            <div class="col-md-6">
+                                                <input id="CC_expiration" type="date" class="form-control{{ $errors->has('CC_expiration') ? ' is-invalid' : '' }}" name="CC_expiration" value="{{ old('CC_expiration') }}"  >
+
+                                                @if ($errors->has('CC_expiration'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('CC_expiration') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row restaurant-form collapse">
+                                            <label for="CC_CVC" class="col-md-4 col-form-label text-md-right">CC CVC</label>
+                                            <div class="col-md-6">
+                                                <input id="CC_CVC" type="text" class="form-control{{ $errors->has('CC_CVC') ? ' is-invalid' : '' }}" name="CC_CVC" value="{{ old('CC_CVC') }}"  >
+
+                                                @if ($errors->has('CC_CVC'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('CC_CVC') }}</strong>
+                                                </span>
+                                                @endif
+                                            </div>
+                                        </div>
                                         <div class="form-group row mb-0">
                                             <div class="col-md-6 offset-md-4">
                                                 <button type="submit" class="btn btn-primary">
@@ -1033,20 +1198,59 @@
     <script src="{{ asset('js/agency.min.js') }}"></script>
 
     <script>
-        $('#login-modal').on('shown.bs.modal', function () {
-            $('#myInput').trigger('focus')
-        })
+        // $('#login-modal').on('shown.bs.modal', function () {
+            //     $('#myInput').trigger('focus')
+            // })
 
-    </script>
+            $(document).on('change', '#type', function() {
+                var value = $("#type option:selected").val();
 
-    @if (count($errors) > 0)
-    <script>
-        $( document ).ready(function() {
-            $('#login-modal').modal('show');
-        });
-    </script>
-    @endif
+                if(value === ''){
+                    $('.driver-form').collapse('hide').find('input').removeAttr('required');
+                    $('.restaurant-form').collapse('hide').find('input').removeAttr('required');
+                    $('#register-modal').find('form').attr('action', '{{ route("register") }}');
+                }
 
-</body>
+                if(value === 'driver'){
+                    $('.driver-form').collapse('hide').find('input').removeAttr('required');
+                    $('.restaurant-form').collapse('hide').find('input').removeAttr('required');
+                    $('.driver-form').collapse('show').find('input').attr('required');
+                    $('#register-modal').find('form').attr('action', '{{ route("registerDriver") }}');
+                }
 
-</html>
+                if(value === 'restaurant'){
+                    $('.driver-form').collapse('hide').find('input').removeAttr('required');
+                    $('.restaurant-form').collapse('hide').find('input').removeAttr('required');
+                    $('.restaurant-form').collapse('show').find('input').attr('required');
+                    $('#register-modal').find('form').attr('action', '{{ route("registerRestaurant") }}');
+                }
+
+                $('#tip .ttip').show();
+            });
+
+            $("#type").change(function() {
+                var value = $("#type option:selected").val();
+
+
+
+            });
+
+            // $('#register-modal').find('button').click(function(){
+                //     $('#register-modal').find('form').submit();
+                // });
+
+
+
+            </script>
+
+            @if (count($errors) > 0)
+            <script>
+                $( document ).ready(function() {
+                    $('#login-modal').modal('show');
+                });
+            </script>
+            @endif
+
+        </body>
+
+        </html>
