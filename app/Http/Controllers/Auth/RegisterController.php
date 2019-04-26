@@ -44,7 +44,7 @@ class RegisterController extends Controller
         {
             return '/restaurant/register';
         }
-        else return '/home';
+        else return '/';
     }
 
     /**

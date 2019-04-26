@@ -52,17 +52,29 @@ class MapController extends Controller
             }
 
             if (count($directions) == 1 ) {
-                return view('driver.pages.map', ['directions' => $directions[0]]);
+                return view('driver.pages.map', [
+                    'directions' => $directions[0],
+                    'orders' => $orders
+                    ]);
             }
 
             if ($this->totalDuration($directions[0]) <= $this->totalDuration($directions[1])) {
-                return view('driver.pages.map', ['directions' => $directions[0]]);
+                return view('driver.pages.map', [
+                    'directions' => $directions[0],
+                    'orders' => $orders
+                    ]);
             }
 
-            return view('driver.pages.map', ['directions' => $directions[1]]);
+            return view('driver.pages.map', [
+                'directions' => $directions[1],
+                'orders' => $orders
+                ]);
         }
 
-        return view('driver.pages.map', ['directions' => null])->withErrors(['warning' => 'There was an error retrieving your location']);
+        return view('driver.pages.map', [
+            'directions' => null,
+            'orders' => $orders
+            ])->withErrors(['warning' => 'There was an error retrieving your location']);
     }
 
     private function getDirections($driver, $restaurant, $firstDestination, $secondDestination = null){
@@ -78,11 +90,10 @@ class MapController extends Controller
 
 
     private function totalDuration($direction){
-
         $duration = 0;
 
         if($direction->status == 'OK'){
-            foreach (data_get($direction, 'routes.*.legs') as $key => $value) {
+            foreach (data_get($direction, 'routes.*.legs') as $value) {
                 $duration += data_get($value, 'duration.value');
             }
         }

@@ -2,7 +2,7 @@
 
 @section('header')
 <div class="container text-muted">
-    <div class="row">
+    <div class="row my-4">
         <h1>Driver Map</h1>
     </div>
 </div>
@@ -10,15 +10,27 @@
 
 
 @section('content')
-<div class="container embed-responsive embed-responsive-16by9" >
+<div class="container embed-responsive embed-responsive-16by9 my-4" >
     <div id="map" class="col-9 embed-responsive-item"></div>
-    <div id="directionsPanel" class="offset-9 col-3 embed-responsive-item" style="overflow-y: scroll;"></div>
+    <div id="panels" class="offset-9 col-3 embed-responsive-item" style="overflow-y: scroll;">
+        <div id="selectPanel" class="mb-4">
+            <label for="orders"><b>Current orders:</b></label>
+            <select id="orders">
+                    <option value="#">Choose an order</option>
+                @foreach ($orders as $order)
+                <option value="{{$order->id}}">{{$order->name}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div id="directionsPanel">
+            <label for=""><b>Directions:</b></label>
+        </div>
+    </div>
 </div>
 @endsection
 
 @section('map')
 <script>
-
     var directions = {!! json_encode($directions) !!}
 
     console.log( directions)
@@ -63,21 +75,20 @@
         };
 
         // var marker = new google.maps.Marker({
-        //     position: myLatlng,
-        //     title:"Hello World!"
-        // });
+            //     position: myLatlng,
+            //     title:"Hello World!"
+            // });
 
-        directionsService.route(request, function(response, status) {
-            if (status == 'OK') {
-                directionsDisplay.setDirections(response);
-            }
-        });
-    }
+            directionsService.route(request, function(response, status) {
+                if (status == 'OK') {
+                    directionsDisplay.setDirections(response);
+                }
+            });
+        }
+    </script>
 
-</script>
-
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={{config('googlemaps.key')}}&callback=initMap"></script>
-@endsection
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{config('googlemaps.key')}}&callback=initMap"></script>
+    @endsection
 
 
 

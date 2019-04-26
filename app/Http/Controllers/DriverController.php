@@ -59,6 +59,6 @@ class DriverController extends UserController
             'insurance_number' => $data['insurance_number'],
         ]);
 
-        return redirect('/home');
+        return redirect('/');
     }
 }

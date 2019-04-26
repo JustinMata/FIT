@@ -20,10 +20,10 @@ class OrderController extends Controller
         if ((Auth::user()->hasAnyRole('admin') || Auth::user()->hasAnyRole('restaurant')) && request()->is('restaurant*'))
         {
             return view('restaurant.pages.orderForm');
-        } 
+        }
         else
         {
-            return redirect('/home');
+            return redirect('/');
         }
     }
 

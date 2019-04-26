@@ -54,6 +54,6 @@ class RestaurantController extends UserController
             'CC_CVC' => $data['CC_CVC'],
         ]);
 
-        return redirect('/home');
+        return redirect('/');
     }
 }

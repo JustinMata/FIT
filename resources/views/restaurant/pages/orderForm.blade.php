@@ -1,7 +1,7 @@
 @extends('restaurant.default')
 
 @section('header')
-<div class="container text-muted">
+<div class="container text-muted my-4">
     <div class="row">
         <h1>Restaurant Order Form</h1>
     </div>
@@ -10,7 +10,7 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center my-5">
+    <div class="row justify-content-center my-4">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Place an Order</div>

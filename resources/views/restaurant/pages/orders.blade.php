@@ -1,22 +1,21 @@
 @extends('restaurant.default')
 @section('header')
 <div class="container text-muted">
-    <div class="row">
-        <h1>Restaurant Orders</h1>
+        <div class="d-flex justify-content-between my-4">
+            <div>
+                <h1>Restaurant Orders</h1>
+            </div>
+            <div>
+                <h3>Showing {{ $orders->firstItem() }} to {{ $orders->lastItem() }} of {{$orders->total()}} total orders</h3>
+            </div>
+        </div>
     </div>
-</div>
-
-<div class="container text-muted">
-    <div class="row">
-        <h3>Showing {{ $orders->firstItem() }} to {{ $orders->lastItem() }} of {{$orders->total()}} total orders</h3>
-    </div>
-</div>
 @endsection
 
 @section('content')
 
 <div class="container text-muted">
-    <div class="row">
+    <div class="row  my-4">
         <table class="table">
             <thead>
                 <tr>
@@ -30,7 +29,8 @@
             </thead>
             <tbody>
                 @php $row = $orders->firstItem();
-                @endphp @foreach ($orders as $order)
+                @endphp
+                @foreach ($orders as $order)
                 <tr>
                     <th scope="{{ $row }}">{{ $row }}</th>
                     <td>{{ explode(" ", $order->delivery_name)[0] }}</td>
@@ -41,7 +41,8 @@
                         - 1]->user_id - 1]->last_name }}</td>
                     </tr>
                     @php $row++;
-                    @endphp @endforeach
+                    @endphp
+                    @endforeach
                 </tbody>
             </table>
             {{ $orders->links() }}

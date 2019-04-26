@@ -29,7 +29,7 @@ class LoginController extends Controller
     // protected $redirectTo = '/';
     protected function redirectTo()
     {
-        return '/home';
+        return '/';
     }
 
     /**
