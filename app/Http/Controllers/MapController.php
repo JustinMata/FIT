@@ -44,6 +44,7 @@ class MapController extends Controller
                 data_fill($destinations, "delivery.$key", Address::where('id', $order->address_id)->first()->google_geocode_address);
             });
 
+            // dd(count($destinations['delivery']));
             if (count($destinations['delivery']) == 1) {
                 $directions[] =  $this->getDirections($destinations['driver'], $destinations['restaurant'], $destinations['delivery'][0]);
             } else {
@@ -51,29 +52,36 @@ class MapController extends Controller
                 $directions[] =  $this->getDirections($destinations['driver'], $destinations['restaurant'], $destinations['delivery'][1], $destinations['delivery'][0]);
             }
 
+            // calculating the durations
+            $durations = [$this->totalDuration($directions[0]), $this->totalDuration($directions[1])];
+
             if (count($directions) == 1 ) {
                 return view('driver.pages.map', [
                     'directions' => $directions[0],
-                    'orders' => $orders
+                    'orders' => $orders,
+                    'duration' => $durations[0]
                     ]);
             }
 
-            if ($this->totalDuration($directions[0]) <= $this->totalDuration($directions[1])) {
+            if ($durations[0] <= $durations[1]) {
                 return view('driver.pages.map', [
                     'directions' => $directions[0],
-                    'orders' => $orders
+                    'orders' => $orders,
+                    'duration' => $durations[0]
                     ]);
             }
 
             return view('driver.pages.map', [
                 'directions' => $directions[1],
-                'orders' => $orders
+                'orders' => $orders,
+                'duration' => $durations[1]
                 ]);
         }
 
         return view('driver.pages.map', [
             'directions' => null,
-            'orders' => $orders
+            'orders' => $orders,
+            'duration' => []
             ])->withErrors(['warning' => 'There was an error retrieving your location']);
     }
 
@@ -85,19 +93,18 @@ class MapController extends Controller
             'departure_time' => 'now'
         ])->get();
 
+        // dd(json_decode($directions));
         return json_decode($directions);
     }
 
 
     private function totalDuration($direction){
-        $duration = 0;
+        $durations = [];
 
         if($direction->status == 'OK'){
-            foreach (data_get($direction, 'routes.*.legs') as $value) {
-                $duration += data_get($value, 'duration.value');
-            }
+            $durations = data_get($direction, 'routes.*.legs.*.duration.value');
         }
 
-        return $duration;
+        return array_sum($durations);
     }
 }

@@ -1225,15 +1225,8 @@
                     $('#register-modal').find('form').attr('action', '{{ route("registerRestaurant") }}');
                 }
 
-                $('#tip .ttip').show();
             });
 
-            $("#type").change(function() {
-                var value = $("#type option:selected").val();
-
-
-
-            });
 
             // $('#register-modal').find('button').click(function(){
                 //     $('#register-modal').find('form').submit();
