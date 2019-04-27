@@ -33,49 +33,52 @@ class MapController extends Controller
             $orders = Order::where(['driver_id' => $driver->id,'is_archived' => false])->limit(2)->get();
 
             // Getting restaurant location
-            $restaurantID = $orders->first()->restaurant_id;
-            $restaurant = Restaurant::where('id', $restaurantID)->first();
-            $restaurantLocation = Address::where('id', $restaurant->user()->first()->address_id)->first();
-            // $destinations['restaurant'] = $restaurantLocation->google_geocode_address;
-            data_fill($destinations, 'restaurant', $restaurantLocation->google_geocode_address);
+            if ($orders->count() > 0) {
 
-            // Setting the delivery addresses
-            $orders->each(function($order, $key) use ( &$destinations) {
-                data_fill($destinations, "delivery.$key", Address::where('id', $order->address_id)->first()->google_geocode_address);
-            });
+                $restaurantID = $orders->first()->restaurant_id;
+                $restaurant = Restaurant::where('id', $restaurantID)->first();
+                $restaurantLocation = Address::where('id', $restaurant->user()->first()->address_id)->first();
+                // $destinations['restaurant'] = $restaurantLocation->google_geocode_address;
+                data_fill($destinations, 'restaurant', $restaurantLocation->google_geocode_address);
 
-            // dd(count($destinations['delivery']));
-            if (count($destinations['delivery']) == 1) {
-                $directions[] =  $this->getDirections($destinations['driver'], $destinations['restaurant'], $destinations['delivery'][0]);
-            } else {
-                $directions[] =  $this->getDirections($destinations['driver'], $destinations['restaurant'], $destinations['delivery'][0], $destinations['delivery'][1]);
-                $directions[] =  $this->getDirections($destinations['driver'], $destinations['restaurant'], $destinations['delivery'][1], $destinations['delivery'][0]);
-            }
+                // Setting the delivery addresses
+                $orders->each(function($order, $key) use ( &$destinations) {
+                    data_fill($destinations, "delivery.$key", Address::where('id', $order->address_id)->first()->google_geocode_address);
+                });
 
-            // calculating the durations
-            $durations = [$this->totalDuration($directions[0]), $this->totalDuration($directions[1])];
+                // dd(count($destinations['delivery']));
+                if (count($destinations['delivery']) == 1) {
+                    $directions[] =  $this->getDirections($destinations['driver'], $destinations['restaurant'], $destinations['delivery'][0]);
+                } else {
+                    $directions[] =  $this->getDirections($destinations['driver'], $destinations['restaurant'], $destinations['delivery'][0], $destinations['delivery'][1]);
+                    $directions[] =  $this->getDirections($destinations['driver'], $destinations['restaurant'], $destinations['delivery'][1], $destinations['delivery'][0]);
+                }
 
-            if (count($directions) == 1 ) {
-                return view('driver.pages.map', [
-                    'directions' => $directions[0],
-                    'orders' => $orders,
-                    'duration' => $durations[0]
+                // calculating the durations
+                $durations = [$this->totalDuration($directions[0]), $this->totalDuration($directions[1])];
+
+                if (count($directions) == 1 ) {
+                    return view('driver.pages.map', [
+                        'directions' => $directions[0],
+                        'orders' => $orders,
+                        'duration' => $durations[0]
                     ]);
-            }
+                }
 
-            if ($durations[0] <= $durations[1]) {
-                return view('driver.pages.map', [
-                    'directions' => $directions[0],
-                    'orders' => $orders,
-                    'duration' => $durations[0]
+                if ($durations[0] <= $durations[1]) {
+                    return view('driver.pages.map', [
+                        'directions' => $directions[0],
+                        'orders' => $orders,
+                        'duration' => $durations[0]
                     ]);
-            }
+                }
 
-            return view('driver.pages.map', [
-                'directions' => $directions[1],
-                'orders' => $orders,
-                'duration' => $durations[1]
+                return view('driver.pages.map', [
+                    'directions' => $directions[1],
+                    'orders' => $orders,
+                    'duration' => $durations[1]
                 ]);
+            }
         }
 
         return view('driver.pages.map', [
@@ -91,7 +94,7 @@ class MapController extends Controller
             'waypoints' => [$restaurant, $secondDestination],
             'destination' => $firstDestination,
             'departure_time' => 'now'
-        ])->get();
+            ])->get();
 
         // dd(json_decode($directions));
         return json_decode($directions);

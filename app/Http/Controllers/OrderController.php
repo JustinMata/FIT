@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Order;
+use DB;
 use App\Address;
+use App\Driver;
+use App\Order;
+use App\Restaurant;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -27,143 +31,95 @@ class OrderController extends Controller
         }
     }
 
-    public function store()
+    public function store(Request $request)
     {
 
-        $driverLocation = "345+E+William+St,CA";
-        $restaurantLocation = "140+E+San+Carlos+St,CA";
-        $clientLocation = "san+jose+state+university";
+        // Getting restaurant info
+        $restaurant = Restaurant::where('user_id', auth()->user()->id)->first();
+        $restaurantAddress = $this->addGoogleGeocode(Address::where('id', auth()->user()->address_id)->first());
 
-        $directions = \GoogleMaps::load('directions')
-		->setParam ([
-            'origin' => $driverLocation,
-            'waypoints' => ['optimize:true',$restaurantLocation],
-            'destination' => $clientLocation,
-            'departure_time' => 'now'
-            ])
-         ->get();
+        // Selecting driver
+        $driverLocation = $this->findDriver($restaurantAddress);
+        $driver = Driver::where('location_id', $driverLocation->id)->first();
 
-         return view('driver.pages.map', ['directions' => $directions]);
+        // creating delivery address
+        $deliveryAddress = Address::create([
+            'name' => $request->input('delivery_name'),
+            'street1' => $request->input('street1'),
+            'street2' => $request->input('street2'),
+            'city' => $request->input('city'),
+            'postal' => $request->input('zip'),
+            'state' => $request->input('state'),
+            'latitude' => 0,
+            'longitude' => 0
+        ]);
 
-        // if (request('delivery_name') != null) {
-        //     //create a new address for the customer
-        //     $address_id = \App\Address::count() + 1;
+        // getting coordinates for new deliver order
+        $deliveryAddress = $this->addGoogleGeocode($deliveryAddress);
 
-        //     $address = new Address();
-
-        //     $address->name = request('delivery_name');
-        //     $address->street1 = request('street1');
-        //     if (!empty(request('street2'))) $address->street2 = request('street2');
-        //     $address->city = request('city');
-        //     $address->state = request('state');
-        //     $address->postal = request('zip');
-
-        //     $address->save();
-        // }
-
-
-
-        //@TODO: USE GOOGLE API WRAPPER
-
-
-        //use google api to calculate wait time and mileage
-        // $driverLocation = "345+E+William+St,CA";
-        // $restaurantLocation = "140+E+San+Carlos+St,CA";
-
-        // $directions = \GoogleMaps::load('directions')
-        // ->setParam ([
-        //     'origin' => $driverLocation,
-        //     'destination' => $restaurantLocation,
-        //     'departure_time' => 'now'
-        //     ])
-        //  ->get();
-
-        // $url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=$driverLocation&destinations=$restaurantLocation&key=AIzaSyB2i3tIi6Yn9DOzeUQJf3DUcFbFh9IOcOY";
-
-        //fetch json response from googleapis.com:
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_URL, $url);
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        // $response = json_decode(curl_exec($ch), true);
-
-        // //If google responds with a status of OK
-        // //Extract the distance text:
-        // if ($response['status'] == "OK") {
-        //     $dist = $response['rows'][0]['elements'][0]['distance']['text'];
-        //     $dist = (double)str_replace(" mi", "", $dist);
-        //     $time = $response['rows'][0]['elements'][0]['duration']['text'];
-        //     $time = explode(" ", $time);
-        // }
+        //creating order
+        $order = Order::create([
+            'base_rate' => config('api.BASE_RATE'),
+            'mileage_rate' => config('api.MILEAGE_RATE'),
+            'delivery_price' => (config('api.BASE_RATE') + config('api.DELIVERY_PRICE') + (config('api.MILEAGE_RATE') * config('api.TAXES') * $driverLocation->distance)),
+            'taxes' => config('api.TAXES'),
+            'mileage_trip' => $driverLocation->distance,
+            'delivery_name' => $request->input('delivery_name'),
+            'delivery_comments' => $request->input('delivery_comments'),
+            'is_delivered' => false,
+            'restaurant_id' => $restaurant->id,
+            'driver_id' => $driver->id,
+            'address_id' => $deliveryAddress->id,
+            'is_archived' => false,
+            'is_payed' => false,
+            ]);
 
 
-        // //@TODO: USE GOOGLE API WRAPPER
-        // //use google api to calculate wait time and mileage
-        // $destination = str_replace(" ", "+", request('street1'));
-        // $destination .= "," . str_replace(" ", "+", request('city'));
+        //  return view('driver.pages.map', ['directions' => $directions]);
+         return redirect()->action('RestaurantController@show');
 
-        // $url2 = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=$restaurantLocation&destinations=$destination&key=AIzaSyB2i3tIi6Yn9DOzeUQJf3DUcFbFh9IOcOY";
 
-        // //fetch json response from googleapis.com:
-        // $ch2 = curl_init();
-        // curl_setopt($ch2, CURLOPT_URL, $url2);
-        // curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
-        // $response2 = json_decode(curl_exec($ch2), true);
+    }
 
-        // //If google responds with a status of OK
-        // //Extract the distance text:
-        // if ($response2['status'] == "OK") {
-        //     $dist2 = $response2['rows'][0]['elements'][0]['distance']['text'];
-        //     $dist2 = (double)str_replace(" mi", "", $dist2);
-        //     $dist += $dist2;
-        //     $time2 = $response2['rows'][0]['elements'][0]['duration']['text'];
-        //     $time2 = explode(" ", $time2);
-        // }
+    private function findDriver($address){
 
-        // $waitTime = 0;
-        // if (sizeof($time) > 2) {
-        //     $waitTime = ($time[0] * 60) + $time[2];
-        // } else {
-        //     $waitTime = $time[0];
-        // }
+        // Grabs the addresses and calculate the distance to the restaurant address
+        $addressesDistanceID = DB::table("addresses")
+        ->select("addresses.id"
+            ,DB::raw("6371 * acos(cos(radians(" . $address->latitude . "))
+            * cos(radians(addresses.latitude))
+            * cos(radians(addresses.longitude) - radians(" . $address->longitude . "))
+            + sin(radians(" . $address->latitude . "))
+            * sin(radians(addresses.latitude))) AS distance"))
+            ->groupBy("addresses.id")
+            ->get();
 
-        // if (sizeof($time2) > 2) {
-        //     $waitTime += ($time2[0] * 60) + $time2[2];
-        // } else {
-        //     $waitTime += $time2[0];
-        // }
+        // filter out all the address that have null, 0 and are not driver addresses
+        // and return the closest driver id
+        return $addressesDistanceID->filter(function ($address, $key){
+                return !(is_null($address->distance) || (double)$address->distance == 0 || !(Driver::where('location_id', '=', $address->id)->exists()));
+        })->sortBy('distance', SORT_NUMERIC)->first();
+    }
 
-        // if ($waitTime > 30) {
-        //     //do something
-        // }
+    /**
+     * Get lat and lng coords of newly registered user
+     *
+     * @param  array  $address
+     * @return lat and lng coordinates
+     */
+    protected function addGoogleGeocode($address)
+    {
+        $geocode = \GoogleMaps::load('geocoding')
+            ->setParam(['address' => $address->google_formatted_address])
+            ->get();
 
-        // //create a new order
-        // $order = new Order();
+        $response = json_decode($geocode);
 
-        // $order->setBaseRateAttribute(null);
-        // $order->setMileageRateAttribute(null);
+        $address->latitude = $response->results[0]->geometry->location->lat;
+        $address->longitude = $response->results[0]->geometry->location->lng;
 
-        // //calculate delivery price
-        // if ($dist > 1) $deliveryPrice = env('BASE_RATE') + env('MILEAGE_RATE') * ($dist - 1);
-        // else $deliveryPrice = env('BASE_RATE');
+        $address->save();
 
-        // $deliveryPrice += $deliveryPrice * (env('TAXES') / 100);
-        // $order->delivery_price = $deliveryPrice;
-
-        // $order->setTaxesAttribute(null);
-        // $order->mileage_trip = $dist;
-        // $order->delivery_name = request('delivery_name');
-        // if (!empty(request('delivery_comments'))) $order->delivery_comments = request('delivery_comments');
-        // $order->is_delivered = false;
-        // $order->restaurant_id = 1;
-        // $order->driver_id = 1;
-        // $order->address_id = $address_id;
-        // $order->is_archived = false;
-        // $order->is_payed = false;
-
-        // $order->save();
-
-        //redirects to the cart view which still needs to be created. For now it just displays 'order created' if successful
-        // $destination = request('street1') . "," . request('state');
-        // return view('driver.pages.map', $directions);
+        return $address;
     }
 }

@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/restaurant/dashboard', 'RestaurantController@index')->name('restaurantDashboard');
         Route::get('/restaurant/order', 'OrderController@make')->name('restaurantOrder');
         Route::get('/restaurant/orders', 'RestaurantController@show')->name('restaurantOrders');
+        Route::post('/restaurant/order', 'OrderController@store')->name('restaurantOrderStore');
         Route::post('/restaurant/map', 'MapController@show')->name('restaurantMap');
     // });
 });

@@ -50,11 +50,11 @@ class RegisterController extends Controller
         if (auth()->user()->hasRole('admin'))
         {
             return 'admin/dashboard';
-        } 
+        }
         else if (auth()->user()->hasRole('driver'))
         {
             return 'driver/dashboard';
-        } 
+        }
         else if(auth()->user()->hasRole('restaurant'))
         {
             return 'restaurant/dashboard';
@@ -96,8 +96,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+
         $id = DB::table('addresses')->insertGetId([
-            'name' => '',
+            'name' => 'default',
             'street1' => $data['street1'],
             'street2' => $data['street2'],
             'city' => $data['city'],
@@ -171,4 +173,5 @@ class RegisterController extends Controller
 
         return $coords;
     }
+
 }

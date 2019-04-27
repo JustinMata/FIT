@@ -16,14 +16,14 @@
                 <div class="card-header">Place an Order</div>
 
                 <div class="card-body">
-                    <form method="POST" action="/directions">
+                <form method="POST" action="{{route('restaurantOrderStore')}}">
                         @csrf
 
                         <div class="form-group row">
                             <label for="delivery_name" class="col-md-4 col-form-label text-md-right">Delivery Name</label>
                             <div class="col-md-6">
                                 <input id="delivery_name" type="text" class="form-control" name="delivery_name" value="{{ old('delivery_name') }}" required
-                                    autofocus>
+                                autofocus>
                             </div>
                         </div>
 
@@ -53,7 +53,7 @@
 
                             <div class="col-md-6">
                                 <select id="state" type="type" class="form-control" name="state" value="{{ old('state') }}" required>
-    @include('layouts.partials.states')
+                                    @include('layouts.partials.states')
                                 </select>
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                             <label for="delivery_comments" class="col-md-4 col-form-label text-md-right">Comment</label>
                             <div class="col-md-6">
                                 <textarea id="delivery_comments" type="text" class="form-control" name="delivery_comments" rows="3" value="{{ old('delivery_comments') }}"
-                                    autofocus></textarea>
+                                autofocus></textarea>
                             </div>
                         </div>
 
