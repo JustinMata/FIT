@@ -145,4 +145,30 @@ class RegisterController extends Controller
 
         return $user;
     }
+
+    /**
+     * Get lat and lng coords of newly registered user
+     *
+     * @param  array  $address
+     * @return lat and lng coordinates
+     */
+    protected function getCoords(array $address)
+    {
+        $fullAddress = $address['street1'] . '+' . $address['city'] . $address['state'] . '+' . $address['zip'];
+
+        $geocode = \GoogleMaps::load('geocoding')
+            ->setParam(['address' => $fullAddress])
+            ->get();
+
+        $response = json_decode($geocode);
+
+        $lat = $response->results[0]->geometry->location->lat;
+        $lng = $response->results[0]->geometry->location->lng;
+
+        $coords = [];
+        data_fill($coords, 'lat', $lat);
+        data_fill($coords, 'lng', $lng);
+
+        return $coords;
+    }
 }

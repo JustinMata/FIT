@@ -30,11 +30,11 @@ class RestaurantController extends UserController
     {
         if (\Auth::user()->hasAnyRole('admin') && request()->is('restaurant*')) 
         {
-            return view('restaurant.pages.orders', ['orders' => \App\Order::paginate(10), 'drivers' => \App\Driver::all(), 'users' => \App\User::all()]);
+            return view('restaurant.pages.orders', ['orders' => \App\Order::orderBy('is_archived', 'asc')->paginate(10), 'drivers' => \App\Driver::all(), 'users' => \App\User::all()]);
         } else {
             $restaurant = \App\Restaurant::where('user_id', auth()->id())->first();
             $restaurantID = $restaurant->id;
-            return view('restaurant.pages.orders', ['orders' => \App\Order::where('restaurant_id', $restaurantID)->paginate(10), 'drivers' => \App\Driver::all(), 'users' => \App\User::all()]);
+            return view('restaurant.pages.orders', ['orders' => \App\Order::where('restaurant_id', $restaurantID)->orderBy('is_archived', 'asc')->paginate(10), 'drivers' => \App\Driver::all(), 'users' => \App\User::all()]);
         }
     }
 }
