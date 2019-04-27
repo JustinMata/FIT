@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
-use App\Address;
 use DB;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
@@ -27,6 +26,20 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
+    //public function showRegistrationForm()
+    public function showRegistrationForm()
+    {
+        if (request()->get('type') == 'restaurant')
+        {
+            return view('auth.registerRestaurant');
+        }
+        else if (request()->get('type') == 'driver')
+        {
+            return view('auth.registerDriver');
+        }
+        else return redirect('/');
+    }
+
     /**
      * Where to redirect users after registration.
      *
@@ -34,17 +47,19 @@ class RegisterController extends Controller
      */
     protected function redirectTo()
     {
-
-        if(auth()->user()->hasRole('driver'))
+        if (auth()->user()->hasRole('admin'))
         {
-            return '/driver/register';
-        }
+            return 'admin/dashboard';
+        } 
+        else if (auth()->user()->hasRole('driver'))
+        {
+            return 'driver/dashboard';
+        } 
         else if(auth()->user()->hasRole('restaurant'))
         {
-            return '/restaurant/register';
+            return 'restaurant/dashboard';
         }
-
-        return '/';
+        else return '/';
     }
 
     /**
@@ -90,7 +105,7 @@ class RegisterController extends Controller
             'postal' => $data['zip'],
         ]);
 
-        return User::create([
+        $user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
@@ -99,7 +114,61 @@ class RegisterController extends Controller
             'phone_number' => $data['phone_number'],
             'type' => $data['type'],
             'address_id' => $id,
-            'remember_token' => Str::random(10),
         ]);
+
+        if ($user['type'] == "restaurant")
+        {
+            DB::table('restaurants')->insert([
+                'user_id' => $user['id'],
+                'provider' => $data['provider'],
+                'CC_name' => $data['CC_name'],
+                'CC_number' => $data['CC_number'],
+                'CC_expiration' => $data['CC_expiration'],
+                'CC_CVC' => $data['CC_CVC'],
+            ]);
+        }
+        else
+        {
+            DB::table('drivers')->insert([
+                'user_id' => $user['id'],
+                'location_id' => $id,
+                'account_number' => $data['account_number'],
+                'account_routing' => $data['account_routing'],
+                'is_available' => true,
+                'car' => $data['car'],
+                'license_plate' => $data['license_plate'],
+                'license_number' => $data['license_number'],
+                'license_expiration' => $data['license_expiration'],
+                'insurance_number' => $data['insurance_number'],
+            ]);
+        }
+
+        return $user;
+    }
+
+    /**
+     * Get lat and lng coords of newly registered user
+     *
+     * @param  array  $address
+     * @return lat and lng coordinates
+     */
+    protected function getCoords(array $address)
+    {
+        $fullAddress = $address['street1'] . '+' . $address['city'] . $address['state'] . '+' . $address['zip'];
+
+        $geocode = \GoogleMaps::load('geocoding')
+            ->setParam(['address' => $fullAddress])
+            ->get();
+
+        $response = json_decode($geocode);
+
+        $lat = $response->results[0]->geometry->location->lat;
+        $lng = $response->results[0]->geometry->location->lng;
+
+        $coords = [];
+        data_fill($coords, 'lat', $lat);
+        data_fill($coords, 'lng', $lng);
+
+        return $coords;
     }
 }

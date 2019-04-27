@@ -141,7 +141,7 @@ class DatabaseSeeder extends Seeder
         $driver = factory(App\Driver::class, 1)
         ->create([
             'user_id' => $user[0]->id,
-            'location_id' => $addresses[10]->id,
+            'location_id' => $addresses[0]->id,
             'is_available' => true
             ]
         );

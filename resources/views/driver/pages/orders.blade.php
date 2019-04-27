@@ -1,4 +1,4 @@
-@extends('driver.default')
+@extends('driver.default') 
 @section('header')
 <div class="container text-muted">
     <div class="d-flex justify-content-between my-4">
@@ -11,7 +11,7 @@
     </div>
 </div>
 @endsection
-
+ 
 @section('content')
 
 <div class="container text-muted">
@@ -24,22 +24,22 @@
                     <th scope="col">Customer Last Name</th>
                     <th scope="col">Customer Comments</th>
                     <th scope="col">Mileage Trip</th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
-                @php $row = $orders->firstItem();
-                @endphp
-                @foreach ($orders as $order)
+                @php $row = $orders->firstItem(); 
+@endphp @foreach ($orders as $order)
                 <tr>
                     <th scope="{{ $row }}">{{ $row }}</th>
                     <td>{{ explode(" ", $order->delivery_name)[0] }}</td>
                     <td>{{ explode(" ", $order->delivery_name)[1] }}</td>
                     <td>{{ $order->delivery_comments }}</td>
                     <td>{{ $order->mileage_trip }}</td>
+                    <td>{{ $order->is_archived == '0'? 'In-Progress' : 'Delivered' }}</td>
                 </tr>
-                @php $row++;
-                @endphp
-                @endforeach
+                @php $row++; 
+@endphp @endforeach
             </tbody>
         </table>
         {{ $orders->links() }}
