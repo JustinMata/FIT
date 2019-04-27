@@ -15,32 +15,24 @@ Route::get('/', function () {
     return View::make('pages.index');
 })->name('home');
 
-// Route::get('/home', 'HomeController@index')->name('home');
-
-
 /***************************
 * Authentication Auth::routes();
 ***************************/
 // Authentication Routes...
-// Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
+//Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('admin/login', 'Auth\LoginController@login')->name('login');
 Route::post('admin/logout', 'Auth\LoginController@logout')->name('logout');
 
 // Password Reset Routes...
-Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
+//Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+//Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+//Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+//Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
 
 // Registration Routes...
-Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-Route::post('register', 'Auth\RegisterController@register');
+Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('role');
+Route::post('register', 'Auth\RegisterController@register')->name('register');
 
-Route::get('/driver/register', 'DriverController@showRegistrationForm')->name('registerDriver');
-Route::post('/driver/register', 'DriverController@register');
-
-Route::get('/restaurant/register', 'RestaurantController@showRegistrationForm')->name('registerRestaurant');
-Route::post('/restaurant/register', 'RestaurantController@register');
 /***************************
 * END
 ***************************/

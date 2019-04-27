@@ -24,19 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-
-        if($user->hasRole('driver'))
-        {
-            return redirect('/driver/dashboard');
-        }
-        else if($user->hasRole('restaurant'))
-        {
-            return redirect('/restaurant/dashboard');
-        }
-        else if($user->hasRole('admin')){
-            return redirect('/admin/dashboard');
-        }
-        else return redirect('/');
+        
     }
 }

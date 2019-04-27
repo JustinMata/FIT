@@ -29,15 +29,19 @@ class LoginController extends Controller
     // protected $redirectTo = '/';
     protected function redirectTo()
     {
-        if (auth()->user()->hasRole('admin')) {
+        if (auth()->user()->hasRole('admin'))
+        {
             return 'admin/dashboard';
-        } else if(auth()->user()->hasRole('driver')) {
+        } 
+        else if (auth()->user()->hasRole('driver'))
+        {
             return 'driver/dashboard';
-        } else if(auth()->user()->hasRole('restaurant')) {
+        } 
+        else if(auth()->user()->hasRole('restaurant'))
+        {
             return 'restaurant/dashboard';
         }
-
-        return '/';
+        else return '/';
     }
 
     /**

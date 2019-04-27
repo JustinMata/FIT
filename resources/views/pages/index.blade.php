@@ -62,9 +62,9 @@
                             <a class="dropdown-item" href="{{ route('adminDashboard') }}">{{ __('Admin View') }}</a>
                             @else
                             @if (auth()->user()->hasRole('driver')&& Route::has('driverDashboard'))
-                            <a class="nav-link" href="{{ route('driverDashboard') }}">Dashboard</a>
+                            <a class="dropdown-item" href="{{ route('driverDashboard') }}">Dashboard</a>
                             @elseif (auth()->user()->hasRole('restaurant')&& Route::has('restaurantDashboard'))
-                            <a class="nav-link" href="{{ route('restaurantDashboard') }}">Dashboard</a>
+                            <a class="dropdown-item" href="{{ route('restaurantDashboard') }}">Dashboard</a>
                             @endif
                             @endif
                             <div class="dropdown-divider"></div>
@@ -862,89 +862,11 @@
                     <div class="row justify-content-center my-5">
                         <div class="col-md-8">
                             <div class="card">
-                                <div class="card-header">{{ __('Register') }}</div>
+                                <div class="card-header">{{ __('Role') }}</div>
 
                                 <div class="card-body">
-                                    <form method="POST" action="{{ route('register') }}">
+                                    <form method="GET" action="{{ route('role') }}">
                                         @csrf
-
-                                        <div class="form-group row">
-                                            <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('First name') }}</label>
-
-                                            <div class="col-md-6">
-                                                <input id="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ old('first_name') }}" required autofocus>
-
-                                                @if ($errors->has('first_name'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('first_name') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('Last name') }}</label>
-
-                                            <div class="col-md-6">
-                                                <input id="last_name" type="text" class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ old('last_name') }}" required >
-
-                                                @if ($errors->has('last_name'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('last_name') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label for="register-email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                                            <div class="col-md-6">
-                                                <input id="register-email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
-                                                @if ($errors->has('email'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('email') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label for="register-password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                                            <div class="col-md-6">
-                                                <input id="register-password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                                @if ($errors->has('password'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('password') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                                            <div class="col-md-6">
-                                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label for="phone_number" class="col-md-4 col-form-label text-md-right">Phone Number</label>
-
-                                            <div class="col-md-6">
-                                                <input id="phone_number" type="phone_number" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" name="phone_number" value="{{ old('phone_number') }}" required>
-
-                                                @if ($errors->has('phone_number'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('phone_number') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
 
                                         <div class="form-group row">
                                             <label for="type" class="col-md-4 col-form-label text-md-right">Role</label>
@@ -964,212 +886,10 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group row">
-                                            <label for="street1" class="col-md-4 col-form-label text-md-right">Street 1</label>
-                                            <div class="col-md-6">
-                                                <input id="street1" type="text" class="form-control" name="street1" value="{{ old('street1') }}" required >
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label for="street2" class="col-md-4 col-form-label text-md-right">Street 2</label>
-                                            <div class="col-md-6">
-                                                <input id="street2" type="text" class="form-control" name="street2" value="{{ old('street2') }}" >
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label for="city" class="col-md-4 col-form-label text-md-right">City</label>
-                                            <div class="col-md-6">
-                                                <input id="city" type="text" class="form-control" name="city" value="{{ old('city') }}" required >
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label for="state" class="col-md-4 col-form-label text-md-right">State</label>
-
-                                            <div class="col-md-6">
-                                                <select id="state" type="type" class="form-control" name="state" value="{{ old('state') }}" required>
-                                                    @include('layouts.partials.states')
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label for="zip" class="col-md-4 col-form-label text-md-right">Zip Code</label>
-                                            <div class="col-md-6">
-                                                <input id="zip" type="text" class="form-control" name="zip" value="{{ old('zip') }}" required >
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row driver-form collapse">
-                                            <label for="account_number" class="col-md-4 col-form-label text-md-right">{{ __('Account Number') }}</label>
-
-                                            <div class="col-md-6">
-                                                <input id="account_number" type="text" class="form-control{{ $errors->has('account_number') ? ' is-invalid' : '' }}" name="account_number" value="{{ old('account_number') }}"  >
-
-                                                @if ($errors->has('account_number'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('account_number') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row driver-form collapse">
-                                            <label for="account_routing" class="col-md-4 col-form-label text-md-right">{{ __('Account Routing') }}</label>
-
-                                            <div class="col-md-6">
-                                                <input id="account_routing" type="text" class="form-control{{ $errors->has('account_routing') ? ' is-invalid' : '' }}" name="account_routing" value="{{ old('account_routing') }}"  >
-
-                                                @if ($errors->has('account_routing'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('account_routing') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row driver-form collapse">
-                                            <label for="car" class="col-md-4 col-form-label text-md-right">Car</label>
-                                            <div class="col-md-6">
-                                                <input id="car" type="text" class="form-control{{ $errors->has('car') ? ' is-invalid' : '' }}" name="car" value="{{ old('car') }}"  >
-
-                                                @if ($errors->has('car'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('car') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row driver-form collapse">
-                                            <label for="license_plate" class="col-md-4 col-form-label text-md-right">License Plate</label>
-                                            <div class="col-md-6">
-                                                <input id="license_plate" type="text" class="form-control{{ $errors->has('license_plate') ? ' is-invalid' : '' }}" name="license_plate" value="{{ old('license_plate') }}"  >
-
-                                                @if ($errors->has('license_plate'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('license_plate') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row driver-form collapse">
-                                            <label for="license_number" class="col-md-4 col-form-label text-md-right">License Number</label>
-                                            <div class="col-md-6">
-                                                <input id="license_number" type="text" class="form-control{{ $errors->has('license_number') ? ' is-invalid' : '' }}" name="license_number" value="{{ old('license_number') }}"  >
-
-                                                @if ($errors->has('license_number'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('license_number') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row driver-form collapse">
-                                            <label for="license_expiration" class="col-md-4 col-form-label text-md-right">License Expiration</label>
-                                            <div class="col-md-6">
-                                                <input id="license_expiration" type="date" class="form-control{{ $errors->has('license_expiration') ? ' is-invalid' : '' }}" name="license_expiration" value="{{ old('license_expiration') }}"  >
-
-                                                @if ($errors->has('license_expiration'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('license_expiration') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row driver-form collapse">
-                                            <label for="insurance_number" class="col-md-4 col-form-label text-md-right">Insurance Number</label>
-                                            <div class="col-md-6">
-                                                <input id="insurance_number" type="text" class="form-control{{ $errors->has('insurance_number') ? ' is-invalid' : '' }}" name="insurance_number" value="{{ old('insurance_number') }}"  >
-
-                                                @if ($errors->has('insurance_number'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('insurance_number') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row restaurant-form collapse">
-                                            <label for="provider" class="col-md-4 col-form-label text-md-right">Provider</label>
-
-                                            <div class="col-md-6">
-                                                <select id="provider" type="type" class="form-control{{ $errors->has('provider') ? ' is-invalid' : '' }}" name="provider" value="{{ old('provider') }}" >
-                                                    <option value="VISA">VISA</option>
-                                                    <option value="AMEX">AMEX</option>
-                                                    <option value="DISCOVERY">DISCOVERY</option>
-                                                </select>
-
-                                                @if ($errors->has('provider'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('provider') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row restaurant-form collapse">
-                                            <label for="CC_name" class="col-md-4 col-form-label text-md-right">{{ __('CC Name') }}</label>
-
-                                            <div class="col-md-6">
-                                                <input id="CC_name" type="text" class="form-control{{ $errors->has('CC_name') ? ' is-invalid' : '' }}" name="CC_name" value="{{ old('CC_name') }}"  >
-
-                                                @if ($errors->has('CC_name'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('CC_name') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row restaurant-form collapse">
-                                            <label for="CC_number" class="col-md-4 col-form-label text-md-right">{{ __('CC Number') }}</label>
-
-                                            <div class="col-md-6">
-                                                <input id="CC_number" type="text" class="form-control{{ $errors->has('CC_number') ? ' is-invalid' : '' }}" name="CC_number" value="{{ old('CC_number') }}"  >
-
-                                                @if ($errors->has('CC_number'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('CC_number') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row restaurant-form collapse">
-                                            <label for="CC_expiration" class="col-md-4 col-form-label text-md-right">CC Expiration</label>
-                                            <div class="col-md-6">
-                                                <input id="CC_expiration" type="date" class="form-control{{ $errors->has('CC_expiration') ? ' is-invalid' : '' }}" name="CC_expiration" value="{{ old('CC_expiration') }}"  >
-
-                                                @if ($errors->has('CC_expiration'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('CC_expiration') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row restaurant-form collapse">
-                                            <label for="CC_CVC" class="col-md-4 col-form-label text-md-right">CC CVC</label>
-                                            <div class="col-md-6">
-                                                <input id="CC_CVC" type="text" class="form-control{{ $errors->has('CC_CVC') ? ' is-invalid' : '' }}" name="CC_CVC" value="{{ old('CC_CVC') }}"  >
-
-                                                @if ($errors->has('CC_CVC'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('CC_CVC') }}</strong>
-                                                </span>
-                                                @endif
-                                            </div>
-                                        </div>
                                         <div class="form-group row mb-0">
                                             <div class="col-md-6 offset-md-4">
                                                 <button type="submit" class="btn btn-primary">
-                                                    {{ __('Register') }}
+                                                    {{ __('Go') }}
                                                 </button>
                                             </div>
                                         </div>
@@ -1197,51 +917,7 @@
     <!-- Custom scripts for this template -->
     <script src="{{ asset('js/agency.min.js') }}"></script>
 
-    <script>
-        // $('#login-modal').on('shown.bs.modal', function () {
-            //     $('#myInput').trigger('focus')
-            // })
 
-            $(document).on('change', '#type', function() {
-                var value = $("#type option:selected").val();
-
-                if(value === ''){
-                    $('.driver-form').collapse('hide').find('input').removeAttr('required');
-                    $('.restaurant-form').collapse('hide').find('input').removeAttr('required');
-                    $('#register-modal').find('form').attr('action', '{{ route("register") }}');
-                }
-
-                if(value === 'driver'){
-                    $('.driver-form').collapse('hide').find('input').removeAttr('required');
-                    $('.restaurant-form').collapse('hide').find('input').removeAttr('required');
-                    $('.driver-form').collapse('show').find('input').attr('required');
-                    $('#register-modal').find('form').attr('action', '{{ route("registerDriver") }}');
-                }
-
-                if(value === 'restaurant'){
-                    $('.driver-form').collapse('hide').find('input').removeAttr('required');
-                    $('.restaurant-form').collapse('hide').find('input').removeAttr('required');
-                    $('.restaurant-form').collapse('show').find('input').attr('required');
-                    $('#register-modal').find('form').attr('action', '{{ route("registerRestaurant") }}');
-                }
-
-                $('#tip .ttip').show();
-            });
-
-            $("#type").change(function() {
-                var value = $("#type option:selected").val();
-
-
-
-            });
-
-            // $('#register-modal').find('button').click(function(){
-                //     $('#register-modal').find('form').submit();
-                // });
-
-
-
-            </script>
 
             @if (count($errors) > 0)
             <script>
@@ -1251,6 +927,6 @@
             </script>
             @endif
 
-        </body>
+</body>
 
-        </html>
+</html>
