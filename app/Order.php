@@ -57,4 +57,30 @@ class Order extends Model
     {
         return $this->hasOne('App\Driver');
     }
+
+    /**
+    * Get the user's full name.
+    *
+    * @return string
+    */
+    public function getStatusAttribute()
+    {
+        $status = "";
+
+        if(!$this->is_archived)
+        {
+            if(!$this->is_delivered){
+                $status = 'in-progress';
+            }else{
+                $status = 'completed';
+            }
+        } else {
+            if(!$this->is_delivered){
+                $status = 'cancelled';
+            }else{
+                $status = 'archived';
+            }
+        }
+        return $status;
+    }
 }

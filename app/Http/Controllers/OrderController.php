@@ -78,6 +78,34 @@ class OrderController extends Controller
 
     public function cancel(Request $request){
 
+        $order = Order::where('id', $request->input('order-id'))->first();
+
+        $order->is_archived = true;
+
+        $order->save();
+
+        return redirect()->action('RestaurantController@show');
+    }
+
+    public function archive(Request $request){
+
+        $order = Order::where('id', $request->input('order-id'))->first();
+
+        $order->is_archived = true;
+        $order->is_delivered = true;
+
+        $order->save();
+
+        return redirect()->action('RestaurantController@show');
+    }
+
+    public function delete(Request $request){
+
+        $order = Order::where('id', $request->input('order-id'))->first();
+
+        $order->delete();
+
+        return redirect()->action('RestaurantController@show');
     }
 
     private function findDriver($address)

@@ -1,4 +1,4 @@
-@extends('restaurant.default') 
+@extends('restaurant.default')
 @section('header')
 <div class="container text-muted">
     <div class="d-flex justify-content-between my-4">
@@ -19,17 +19,17 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Customer Name</th>
-                    <th scope="col">Customer Comments</th>
-                    <th scope="col">Delivery Price</th>
-                    <th scope="col">Driver Name</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">{{ __('#') }}</th>
+                    <th scope="col">{{ __('Customer Name') }}</th>
+                    <th scope="col">{{ __('Customer Comments') }}</th>
+                    <th scope="col">{{ __('Delivery Price') }}</th>
+                    <th scope="col">{{ __('Driver Name') }}</th>
+                    <th scope="col">{{ __('Status') }}</th>
+                    <th scope="col">{{ __('Action') }}</th>
                 </tr>
             </thead>
             <tbody>
-                @php $row = $orders->firstItem(); 
+                @php $row = $orders->firstItem();
                 @endphp @foreach ($orders as $order)
                 <tr>
                     <th scope="{{ $row }}">{{ $row }}</th>
@@ -37,15 +37,32 @@
                     <td>{{ $order->delivery_comments }}</td>
                     <td>${{ $order->delivery_price }}</td>
                     <td>{{ $users[$drivers[$order->driver_id - 1]->user_id - 1]->first_name }} {{ $users[$drivers[$order->driver_id - 1]->user_id - 1]->last_name }}</td>
-                    <td>{{ $order->is_archived == '0'? 'In-Progress' : 'Delivered' }}</td>
+                    <td>{{ ucfirst(strtolower($order->status)) }}</td>
                     <td>
-                    <form action="{{route(orderCancel)}}">
-                        <a href="" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Primary link</a>
-                    </form>
+                        @if ($order->status == "cancelled")
+                        <form action="{{route('orderArchive')}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="order-id" class="form-control" id="order-id" value="{{$order->id}}">
+                            <button type="submit" class="btn btn-secondary btn-sm">{{ __('Archive') }}</button>
+                        </form>
+                        @elseif ($order->status == "archived")
+                        <form action="{{route('orderDelete')}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="order-id" class="form-control" id="order-id" value="{{$order->id}}">
+                            <button type="submit" class="btn btn-secondary btn-sm">{{ __('Delete') }}</button>
+                        </form>
+                        @else
+                        <form action="{{route('orderCancel')}}" method="POST">
+                                @csrf
+                                <input type="hidden" name="order-id" class="form-control" id="order-id" value="{{$order->id}}">
+                                <button type="submit" class="btn btn-secondary btn-sm">{{ __('Cancel') }}</button>
+                            </form>
+                        @endif
+
                     </td>
 
                 </tr>
-                @php $row++; 
+                @php $row++;
                 @endphp @endforeach
             </tbody>
         </table>

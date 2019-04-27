@@ -28,7 +28,7 @@ class RestaurantController extends UserController
      */
     public function show()
     {
-        if (\Auth::user()->hasAnyRole('admin') && request()->is('restaurant*')) 
+        if (\Auth::user()->hasAnyRole('admin') && request()->is('restaurant*'))
         {
             return view('restaurant.pages.orders', ['orders' => \App\Order::orderBy('is_archived', 'asc')->paginate(10), 'drivers' => \App\Driver::all(), 'users' => \App\User::all()]);
         } else {
