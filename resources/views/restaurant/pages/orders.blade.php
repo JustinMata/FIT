@@ -25,6 +25,7 @@
                     <th scope="col">Delivery Price</th>
                     <th scope="col">Driver Name</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,16 +36,21 @@
                     <td>{{ $order->delivery_name }}</td>
                     <td>{{ $order->delivery_comments }}</td>
                     <td>${{ $order->delivery_price }}</td>
-                    <td>{{ $users[$drivers[$order->driver_id - 1]->user_id - 1]->first_name }} {{ $users[$drivers[$order->driver_id
-                        - 1]->user_id - 1]->last_name }}</td>
-                        <td>{{ $order->is_archived == '0'? 'In-Progress' : 'Delivered' }}</td>
-                    </tr>
-                    @php $row++; 
-                    @endphp @endforeach
-                </tbody>
-            </table>
-            {{ $orders->links() }}
-        </div>
+                    <td>{{ $users[$drivers[$order->driver_id - 1]->user_id - 1]->first_name }} {{ $users[$drivers[$order->driver_id - 1]->user_id - 1]->last_name }}</td>
+                    <td>{{ $order->is_archived == '0'? 'In-Progress' : 'Delivered' }}</td>
+                    <td>
+                    <form action="{{route(orderCancel)}}">
+                        <a href="" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Primary link</a>
+                    </form>
+                    </td>
+
+                </tr>
+                @php $row++; 
+                @endphp @endforeach
+            </tbody>
+        </table>
+        {{ $orders->links() }}
     </div>
+</div>
 </P>
 @endsection
