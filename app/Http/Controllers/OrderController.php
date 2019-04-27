@@ -22,10 +22,10 @@ class OrderController extends Controller
     public function make()
     {
         if ((Auth::user()->hasAnyRole('admin') || Auth::user()->hasAnyRole('restaurant')) && request()->is('restaurant*')) {
-                return view('restaurant.pages.orderForm');
-            } else {
-                return redirect('/');
-            }
+            return view('restaurant.pages.orderForm');
+        } else {
+            return redirect('/');
+        }
     }
 
     public function store(Request $request)
@@ -54,11 +54,23 @@ class OrderController extends Controller
         // getting coordinates for new deliver order
         $deliveryAddress = $this->addGoogleGeocode($deliveryAddress);
 
+
+        // first mile is always free, so taking that into account
+        $distance = $driverLocation->distance;
+        if ($distance > 1) $distance -= 1;
+        else $distance = 0;
+
+        // price without taxes
+        $price = ($distance * config('api.MILEAGE_RATE')) + config('api.BASE_RATE');
+
+        // taxes
+        $taxes = $price * (config('api.TAXES') * .01);
+
         //creating order
         $order = Order::create([
             'base_rate' => config('api.BASE_RATE'),
             'mileage_rate' => config('api.MILEAGE_RATE'),
-            'delivery_price' => (config('api.BASE_RATE') + config('api.DELIVERY_PRICE') + (config('api.MILEAGE_RATE') * config('api.TAXES') * $driverLocation->distance)),
+            'delivery_price' => $price + $taxes,
             'taxes' => config('api.TAXES'),
             'mileage_trip' => $driverLocation->distance,
             'delivery_name' => $request->input('delivery_name'),
