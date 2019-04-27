@@ -21,14 +21,11 @@ class OrderController extends Controller
 
     public function make()
     {
-        if ((Auth::user()->hasAnyRole('admin') || Auth::user()->hasAnyRole('restaurant')) && request()->is('restaurant*'))
-        {
-            return view('restaurant.pages.orderForm');
-        }
-        else
-        {
-            return redirect('/');
-        }
+        if ((Auth::user()->hasAnyRole('admin') || Auth::user()->hasAnyRole('restaurant')) && request()->is('restaurant*')) {
+                return view('restaurant.pages.orderForm');
+            } else {
+                return redirect('/');
+            }
     }
 
     public function store(Request $request)
@@ -72,8 +69,8 @@ class OrderController extends Controller
             'address_id' => $deliveryAddress->id,
             'is_archived' => false,
             'is_payed' => false,
-            ]
-        );
+        ]);
+
 
         //  return view('driver.pages.map', ['directions' => $directions]);
          return redirect()->action('RestaurantController@show');
@@ -83,23 +80,26 @@ class OrderController extends Controller
 
     }
 
-    private function findDriver($address){
+    private function findDriver($address)
+    {
 
         // Grabs the addresses and calculate the distance to the restaurant address
         $addressesDistanceID = DB::table("addresses")
-        ->select("addresses.id"
-            ,DB::raw("6371 * acos(cos(radians($address->latitude))
+            ->select(
+                "addresses.id",
+                DB::raw("6371 * acos(cos(radians(" . $address->latitude . "))
             * cos(radians(addresses.latitude))
-            * cos(radians(addresses.longitude) - radians($address->longitude))
-            + sin(radians($address->latitude))
-            * sin(radians(addresses.latitude))) AS distance"))
+            * cos(radians(addresses.longitude) - radians(" . $address->longitude . "))
+            + sin(radians(" . $address->latitude . "))
+            * sin(radians(addresses.latitude))) AS distance")
+            )
             ->groupBy(["addresses.id", "distance"])
             ->get();
 
         // filter out all the address that have null, 0 and are not driver addresses
         // and return the closest driver id
-        return $addressesDistanceID->filter( function ($address, $key) {
-                return !(is_null($address->distance) || (double)$address->distance == 0 || !(Driver::where('location_id', '=', $address->id)->exists()));
+        return $addressesDistanceID->filter(function ($address, $key) {
+            return !(is_null($address->distance) || (double)$address->distance == 0 || !(Driver::where('location_id', '=', $address->id)->exists()));
         })->sortBy('distance', SORT_NUMERIC)->first();
     }
 
