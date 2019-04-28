@@ -1,4 +1,4 @@
-@extends('driver.default') 
+@extends('driver.default')
 @section('header')
 <div class="container text-muted">
     <div class="d-flex justify-content-between my-4">
@@ -11,7 +11,7 @@
     </div>
 </div>
 @endsection
- 
+
 @section('content')
 
 <div class="container text-muted">
@@ -20,26 +20,32 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Customer First Name</th>
-                    <th scope="col">Customer Last Name</th>
-                    <th scope="col">Customer Comments</th>
-                    <th scope="col">Mileage Trip</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">{{ __('Customer Name') }}</th>
+                    <th scope="col">{{ __('Customer Comments') }}</th>
+                    <th scope="col">{{ __('Mileage Trip') }}</th>
+                    <th scope="col">{{ __('Status') }}</th>
+                    <th scope="col">{{ __('Action') }}</th>
                 </tr>
             </thead>
             <tbody>
-                @php $row = $orders->firstItem(); 
-@endphp @foreach ($orders as $order)
+                @php $row = $orders->firstItem();
+                @endphp @foreach ($orders as $order)
                 <tr>
                     <th scope="{{ $row }}">{{ $row }}</th>
-                    <td>{{ explode(" ", $order->delivery_name)[0] }}</td>
-                    <td>{{ explode(" ", $order->delivery_name)[1] }}</td>
+                    <td>{{ $order->delivery_name }}</td>
                     <td>{{ $order->delivery_comments }}</td>
                     <td>{{ $order->mileage_trip }}</td>
-                    <td>{{ $order->is_archived == '0'? 'In-Progress' : 'Delivered' }}</td>
+                    <td>{{ ucfirst(strtolower($order->status)) }}</td>
+                    <td>
+                        <form action="{{route('driverOrderCancel')}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="order-id" class="form-control" id="order-id" value="{{$order->id}}">
+                            <button type="submit" class="btn btn-secondary btn-sm">{{ __('Cancel') }}</button>
+                        </form>
+                    </td>
                 </tr>
-                @php $row++; 
-@endphp @endforeach
+                @php $row++;
+                @endphp @endforeach
             </tbody>
         </table>
         {{ $orders->links() }}

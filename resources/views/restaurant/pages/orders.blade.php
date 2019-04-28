@@ -30,44 +30,73 @@
             </thead>
             <tbody>
                 @php $row = $orders->firstItem();
-                @endphp @foreach ($orders as $order)
+                @endphp
+                @foreach ($orders as $order)
                 <tr>
                     <th scope="{{ $row }}">{{ $row }}</th>
                     <td>{{ $order->delivery_name }}</td>
                     <td>{{ $order->delivery_comments }}</td>
                     <td>${{ $order->delivery_price }}</td>
-                    <td>{{ $users[$drivers[$order->driver_id - 1]->user_id - 1]->first_name }} {{ $users[$drivers[$order->driver_id - 1]->user_id - 1]->last_name }}</td>
+                    <td>
+                        @if (auth()->user()->hasRole('admin'))
+                        <form action="{{route('adminChangeDriver')}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="order-id" class="form-control order-id" value="{{$order->id}}">
+                            <select name="driver-id" class="form-control driver-id">
+                                @foreach ($drivers as $driver)
+                                @if ($driver->id == $order->driver_id)
+                                <option value="{{ $driver->id }}" selected>{{$driver->user()->first()->full_name}} </option>
+                                @else
+                                <option value="{{ $driver->id }}">{{$driver->user()->first()->full_name}} </option>
+                                @endif
+                                @endforeach
+                            </select>
+                            {{-- <button type="submit" class="btn btn-secondary btn-sm">{{ __('Archive') }}</button> --}}
+                        </form>
+                        @else
+                        {{ $order->driver()->first()->user()->first()->full_name}}
+                        @endif
+                    </td>
                     <td>{{ ucfirst(strtolower($order->status)) }}</td>
                     <td>
                         @if ($order->status == "cancelled")
-                        <form action="{{route('orderArchive')}}" method="POST">
+                        <form action="{{route('restaurantOrderArchive')}}" method="POST">
                             @csrf
                             <input type="hidden" name="order-id" class="form-control" id="order-id" value="{{$order->id}}">
                             <button type="submit" class="btn btn-secondary btn-sm">{{ __('Archive') }}</button>
                         </form>
                         @elseif ($order->status == "archived")
-                        <form action="{{route('orderDelete')}}" method="POST">
+                        <form action="{{route('restaurantOrderDelete')}}" method="POST">
                             @csrf
                             <input type="hidden" name="order-id" class="form-control" id="order-id" value="{{$order->id}}">
                             <button type="submit" class="btn btn-secondary btn-sm">{{ __('Delete') }}</button>
                         </form>
                         @else
-                        <form action="{{route('orderCancel')}}" method="POST">
-                                @csrf
-                                <input type="hidden" name="order-id" class="form-control" id="order-id" value="{{$order->id}}">
-                                <button type="submit" class="btn btn-secondary btn-sm">{{ __('Cancel') }}</button>
-                            </form>
+                        <form action="{{route('restaurantOrderCancel')}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="order-id" class="form-control" id="order-id" value="{{$order->id}}">
+                            <button type="submit" class="btn btn-secondary btn-sm">{{ __('Cancel') }}</button>
+                        </form>
                         @endif
 
                     </td>
 
                 </tr>
                 @php $row++;
-                @endphp @endforeach
+                @endphp
+                @endforeach
             </tbody>
         </table>
         {{ $orders->links() }}
     </div>
 </div>
 </P>
+@endsection
+
+@section('scripts')
+<script>
+    $(document).on('change', '.driver-id', function() {
+        $(this).parents('form').submit();
+    });
+</script>
 @endsection

@@ -44,12 +44,14 @@ Route::middleware(['auth'])->group(function () {
     // admin routes
     Route::middleware(['admin'])->group(function () {
         Route::get('/admin/dashboard', 'AdminController@index')->name('adminDashboard');
+        Route::post('/admin/changeDriver', 'AdminController@changeDriver')->name('adminChangeDriver');
     });
 
     // Route::middleware(['admin'])->group(function () {
         // driver routes
         Route::get('/driver/dashboard', 'DriverController@index')->name('driverDashboard');
         Route::get('/driver/orders', 'DriverController@show')->name('driverOrders');
+        Route::post('/driver/cancel', 'OrderController@cancel')->name('driverOrderCancel');
         Route::get('/driver/map','MapController@show')->name('driverMap');
     // });
     // restaurant routes
@@ -58,9 +60,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/restaurant/order', 'OrderController@make')->name('restaurantOrder');
         Route::get('/restaurant/orders', 'RestaurantController@show')->name('restaurantOrders');
         Route::post('/restaurant/order', 'OrderController@store')->name('restaurantOrderStore');
-        Route::post('/restaurant/cancel', 'OrderController@cancel')->name('orderCancel');
-        Route::post('/restaurant/archive', 'OrderController@archive')->name('orderArchive');
-        Route::post('/restaurant/delete', 'OrderController@delete')->name('orderDelete');
+        Route::post('/restaurant/cancel', 'OrderController@cancel')->name('restaurantOrderCancel');
+        Route::post('/restaurant/archive', 'OrderController@archive')->name('restaurantOrderArchive');
+        Route::post('/restaurant/delete', 'OrderController@delete')->name('restaurantOrderDelete');
         Route::post('/restaurant/map', 'MapController@show')->name('restaurantMap');
     // });
 });

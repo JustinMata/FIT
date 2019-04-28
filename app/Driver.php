@@ -8,7 +8,7 @@ class Driver extends User
 {
     // use HasRoles;
 
-    // protected $guard_name = 'driver';
+    protected $guard_name = [];
 
     /**
      * Get the user that is associated with the driver.
@@ -17,15 +17,6 @@ class Driver extends User
     {
         return $this->belongsTo('App\User');
     }
-
-        /**
-     * Get the drivers associated with the order.
-     */
-    // public function address()
-    // {
-    //     // return $this->hasMany('App\Address', 'id', 'location_id');
-    //     return $this->hasOne('App\Address');
-    // }
 
     /**
      * Get the drivers associated with the order.
@@ -44,7 +35,16 @@ class Driver extends User
         return $this->hasMany('App\Order');
     }
 
-    protected $fillable = [
-        'account_number', 'account_routing', 'car', 'license_plate', 'license_number', 'license_expiration', 'insurance_number',
-    ];
+    // /**
+    // * Get the user's full name.
+    // *
+    // * @return string
+    // */
+    // public function getFullNameAttribute()
+    // {
+    //     // dd($this);
+    //     // $user = User::where('id', $this->user_id )->first();
+    //     return $user->user()->first()->full_name;
+    // }
+
 }

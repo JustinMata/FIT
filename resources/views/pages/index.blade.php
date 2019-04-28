@@ -919,13 +919,13 @@
 
 
 
-            @if (count($errors) > 0)
-            <script>
-                $( document ).ready(function() {
-                    $('#login-modal').modal('show');
-                });
-            </script>
-            @endif
+    @if (count($errors) > 0)
+    <script>
+        $( document ).ready(function() {
+            $('#login-modal').modal('show');
+        });
+    </script>
+    @endif
 
 </body>
 

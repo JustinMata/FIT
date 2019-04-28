@@ -54,7 +54,6 @@ class OrderController extends Controller
         // getting coordinates for new deliver order
         $deliveryAddress = $this->addGoogleGeocode($deliveryAddress);
 
-
         // first mile is always free, so taking that into account
         $distance = $driverLocation->distance;
         if ($distance > 1) $distance -= 1;
@@ -72,7 +71,7 @@ class OrderController extends Controller
             'mileage_rate' => config('api.MILEAGE_RATE'),
             'delivery_price' => $price + $taxes,
             'taxes' => config('api.TAXES'),
-            'mileage_trip' => $driverLocation->distance,
+            'mileage_trip' => number_format($driverLocation->distance, 2),
             'delivery_name' => $request->input('delivery_name'),
             'delivery_comments' => $request->input('delivery_comments'),
             'is_delivered' => false,
@@ -96,7 +95,13 @@ class OrderController extends Controller
 
         $order->save();
 
-        return redirect()->action('RestaurantController@show');
+        if (request()->is('restaurant*')) {
+            return redirect()->action('RestaurantController@show');
+        } else if(request()->is('driver*')) {
+            return redirect()->action('DriverController@show');
+        }
+
+        return redirect('/');
     }
 
     public function archive(Request $request){
@@ -157,10 +162,11 @@ class OrderController extends Controller
 
         $response = json_decode($geocode);
 
-        $address->latitude = $response->results[0]->geometry->location->lat;
-        $address->longitude = $response->results[0]->geometry->location->lng;
-
-        $address->save();
+        if ($response->status == 'OK') {
+            $address->latitude = $response->results[0]->geometry->location->lat;
+            $address->longitude = $response->results[0]->geometry->location->lng;
+            $address->save();
+        }
 
         return $address;
     }

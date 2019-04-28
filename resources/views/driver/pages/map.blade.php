@@ -40,10 +40,15 @@
         // var directions = {!! json_encode($directions) !!}
         var directionsService = new google.maps.DirectionsService();
         var directionsDisplay = new google.maps.DirectionsRenderer();
+        var center = '37.27951800,-121.86790500';
+
+        if (directions.status === 'OK') {
+            center = directions.routes[0].legs[0].start_location;
+        }
 
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 11,
-            center: directions.routes[0].legs[0].start_location
+            center: center
         });
 
         directionsDisplay.setMap(map)

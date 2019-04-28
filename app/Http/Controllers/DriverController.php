@@ -33,7 +33,7 @@ class DriverController extends UserController
         } else {
             $driver = \App\Driver::where('user_id', auth()->id())->first();
             $driverID = $driver->id;
-            return view('driver.pages.orders', ['orders' => \App\Order::where('driver_id', $driverID)->where('is_archived', '1')->paginate(10)]);
+            return view('driver.pages.orders', ['orders' => \App\Order::where('driver_id', $driverID)->paginate(10)]);
         }
     }
 }

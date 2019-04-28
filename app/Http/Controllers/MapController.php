@@ -24,6 +24,7 @@ class MapController extends Controller
             $destinations = [];
 
             $userID = auth()->user()->id;
+
             // Getting driver location
             $driver = Driver::where('user_id', $userID)->first();
             $driverLocation = Address::where('id', $driver->location_id)->first();
@@ -38,7 +39,7 @@ class MapController extends Controller
                 $restaurantID = $orders->first()->restaurant_id;
                 $restaurant = Restaurant::where('id', $restaurantID)->first();
                 $restaurantLocation = Address::where('id', $restaurant->user()->first()->address_id)->first();
-                // $destinations['restaurant'] = $restaurantLocation->google_geocode_address;
+
                 data_fill($destinations, 'restaurant', $restaurantLocation->google_geocode_address);
 
                 // Setting the delivery addresses
@@ -54,16 +55,20 @@ class MapController extends Controller
                     $directions[] =  $this->getDirections($destinations['driver'], $destinations['restaurant'], $destinations['delivery'][1], $destinations['delivery'][0]);
                 }
 
+                // dd($destinations);
                 // calculating the durations
-                $durations = [$this->totalDuration($directions[0]), $this->totalDuration($directions[1])];
-
                 if (count($directions) == 1 ) {
+                    $durations[] = $this->totalDuration($directions[0]);
+
                     return view('driver.pages.map', [
                         'directions' => $directions[0],
                         'orders' => $orders,
                         'duration' => $durations[0]
                     ]);
                 }
+
+                // calculating the durations
+                $durations = [$this->totalDuration($directions[0]), $this->totalDuration($directions[1])];
 
                 if ($durations[0] <= $durations[1]) {
                     return view('driver.pages.map', [
@@ -85,7 +90,7 @@ class MapController extends Controller
             'directions' => null,
             'orders' => $orders,
             'duration' => []
-            ])->withErrors(['warning' => 'There was an error retrieving your location']);
+        ])->withErrors(['warning' => 'There was an error retrieving your location']);
     }
 
     private function getDirections($driver, $restaurant, $firstDestination, $secondDestination = null){
@@ -96,7 +101,6 @@ class MapController extends Controller
             'departure_time' => 'now'
             ])->get();
 
-        // dd(json_decode($directions));
         return json_decode($directions);
     }
 

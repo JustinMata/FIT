@@ -16,5 +16,7 @@
 
     @yield('map')
 
+    @yield('scripts')
+
 </body>
 </html>
