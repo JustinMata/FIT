@@ -16,8 +16,9 @@ class AdminController extends UserController
     public function index()
     {
         $user = Auth::user();
+        $address = \App\Address::where('id', $user->address_id)->first();
 
-        return view('admin.pages.dashboard', ['user' => $user]);
+        return view('admin.pages.dashboard', compact('user','address'));
     }
 
     /**
