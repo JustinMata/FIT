@@ -39,4 +39,31 @@ class DriverController extends UserController
             return view('driver.pages.orders', ['orders' => \App\Order::where('driver_id', $driverID)->paginate(10)]);
         }
     }
+
+    /**
+     * Show the orders in table.
+     *
+     * @return void
+     */
+    public function updateLocation(Request $request)
+    {
+
+        $input = $request->all();
+
+        $driver = \App\Driver::where('id', $request->input('driverID'))->first();
+
+        $location = $driver->location()->first();
+
+        $location->latitude = $request->input('result.lat');
+        $location->longitude = $request->input('result.lng');
+
+        // if($location->save())
+        // {
+            $response =  ['success'=>'New geolocation saved!'];
+            return response()->json($response, 200);
+        // } else {
+        //     $response =  ['error'=>'Could not save new geolocation!'];
+        //     return response()->json($response, 200);
+        // }
+    }
 }
