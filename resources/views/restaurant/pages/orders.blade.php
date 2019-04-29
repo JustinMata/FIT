@@ -1,17 +1,14 @@
-@extends('restaurant.default')
+@extends('restaurant.default') 
 @section('header')
 <div class="container text-muted">
     <div class="d-flex justify-content-between my-4">
         <div>
             <h1>Restaurant Orders</h1>
         </div>
-        <div>
-            <h3>Showing {{ $orders->firstItem() }} to {{ $orders->lastItem() }} of {{$orders->total()}} total orders</h3>
-        </div>
     </div>
 </div>
 @endsection
-
+ 
 @section('content')
 
 <div class="container text-muted">
@@ -29,9 +26,8 @@
                 </tr>
             </thead>
             <tbody>
-                @php $row = $orders->firstItem();
-                @endphp
-                @foreach ($orders as $order)
+                @php $row = $orders->firstItem(); 
+@endphp @foreach ($orders as $order)
                 <tr>
                     <th scope="{{ $row }}">{{ $row }}</th>
                     <td>{{ $order->delivery_name }}</td>
@@ -52,9 +48,7 @@
                                 @endforeach
                             </select>
                         </form>
-                        @else
-                        {{ $order->driver()->first()->user()->first()->full_name}}
-                        @endhasanyrole
+                        @else {{ $order->driver()->first()->user()->first()->full_name}} @endhasanyrole
                     </td>
                     <td>{{ ucfirst(strtolower($order->status)) }}</td>
                     <td>
@@ -81,21 +75,24 @@
                     </td>
 
                 </tr>
-                @php $row++;
-                @endphp
-                @endforeach
+                @php $row++; 
+@endphp @endforeach
             </tbody>
         </table>
         {{ $orders->links() }}
     </div>
+    <div>
+        <h3>Showing {{ $orders->firstItem() }} to {{ $orders->lastItem() }} of {{$orders->total()}} total orders</h3>
+    </div>
 </div>
 </P>
 @endsection
-
+ 
 @section('scripts')
 <script>
     $(document).on('change', '.driver-id', function() {
         $(this).parents('form').submit();
     });
+
 </script>
 @endsection
