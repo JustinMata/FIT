@@ -34,21 +34,24 @@
 <script>
     var directions = {!! json_encode($directions) !!}
     var position = [37.27951800, -121.86790500];
-    var marker;
+    var marker, directionsFormatted;
     
     console.log( directions)
     
-    var directionsFormatted = getCoordinates( directions );
+    if(directions !== null)
+    {
+        directionsFormatted = getCoordinates( directions );
+    }
     
     function initMap() {
         
         // var directions = {!! json_encode($directions) !!}
         var directionsService = new google.maps.DirectionsService();
         var directionsDisplay = new google.maps.DirectionsRenderer();
-        var center = '37.27951800,-121.86790500';
+        var center = new google.maps.LatLng(37.27951800, -121.86790500);
         
         
-        if (directions.status === 'OK') {
+        if (directions !== null && directions.status === 'OK') {
             center = directions.routes[0].legs[0].start_location;
         }
         
@@ -72,9 +75,13 @@
         directionsDisplay.setMap(map)
         directionsDisplay.setPanel(document.getElementById('directionsPanel'))
         
-        calculateAndDisplayRoute(directionsService, directionsDisplay)
+        if(directions !== null){
+            calculateAndDisplayRoute(directionsService, directionsDisplay);
+        }
         
-        for (var i = 0; i < directionsFormatted.length; i++)
+        @if($orders->first() !== null)
+        @if($orders->first()->driver()->first() !== null)
+        for (var i = 0; i < directionsFormatted.length; i++){
         (function(i) {
             setTimeout(function() {
                 var result = [directionsFormatted[i].coordinates.lat, directionsFormatted[i].coordinates.lng];
@@ -89,7 +96,7 @@
                     url: "{{ route('driverUpdateLocation') }}",
                     data: {
                         coords: result,
-                        driverID: {{ $orders->first()->driver()->first()->id }},
+                        driverID: {{ $orders->first()->driver()->first()->id}},
                     },
                     success:function(data){
                         console.log(data.success);
@@ -97,6 +104,9 @@
                 });
             }, i * 3000);
         })(i);
+    }
+        @endif
+        @endif
         
         // google.maps.event.addListener(map, 'click', function(event) {
             //     var result = [event.latLng.lat(), event.latLng.lng()];
@@ -178,11 +188,16 @@
                 return locations;
             }
             
-            var numDeltas = directionsFormatted.length;
+            var numDeltas;
             var delay = 10; //milliseconds
             var i = 0;
             var deltaLat;
             var deltaLng;
+
+            if(directions !== null)
+            {
+                numDeltas = directionsFormatted.length;
+            }
             
             function transition(result, duration){
                 console.log(result);

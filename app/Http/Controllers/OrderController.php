@@ -30,13 +30,12 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-
         // Getting restaurant info
         $restaurant = Restaurant::where('user_id', auth()->user()->id)->first();
         $restaurantAddress = $this->addGoogleGeocode(Address::where('id', auth()->user()->address_id)->first());
 
         // Selecting driver
-        $driverLocation = $this->findDriver($restaurantAddress);
+        $driverLocation = $this->findDriver($restaurant, $restaurantAddress);
         $driver = Driver::where('location_id', $driverLocation->id)->first();
 
         // creating delivery address
@@ -125,7 +124,7 @@ class OrderController extends Controller
         return redirect()->action('RestaurantController@show');
     }
 
-    private function findDriver($address)
+    private function findDriver($restaurant, $address)
     {
 
         // Grabs the addresses and calculate the distance to the restaurant address
@@ -143,7 +142,7 @@ class OrderController extends Controller
 
         // filter out all the address that have null, 0 and are not driver addresses
         // and return the closest driver id
-        $addressDistanceID = $addressesDistanceID->filter(function ($address, $key) {
+        $addressDistanceID = $addressesDistanceID->filter(function ($address, $key) use ($restaurant) {
             // $data = [];
             // $data['driver'] = $driver = Driver::where('location_id', '=', $address->id)->first();
             // $data['foundDriver'] = $foundDriver =  !is_null($driver) && $driver->orders()->get()->count() < 2;
@@ -152,7 +151,19 @@ class OrderController extends Controller
             // dump($data);
 
             $driver = Driver::where('location_id', '=', $address->id)->first();
-            $foundDriver =  !is_null($driver) && $driver->orders()->get()->count() < 2;
+
+            $foundDriver = false;
+            if(!is_null($driver))
+            {
+                if($driver->orders()->get()->count() == 0){
+                    $foundDriver = true;
+                } else if($driver->orders()->get()->count() == 1){
+                    if($driver->orders()->where('restaurant_id', $restaurant->id)->exists()){
+                        $foundDriver = true;
+                    }
+                }
+            }
+            // $foundDriver =  !is_null($driver) && $driver->orders()->get()->count() < 2;
 
             return $foundDriver && !(is_null($address->distance) || (double)$address->distance == 0 );
         })->sortBy('distance', SORT_NUMERIC)->first();

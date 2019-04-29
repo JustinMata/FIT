@@ -48,6 +48,8 @@ class MapController extends Controller
                         data_fill($destinations, "delivery.$key", Address::where('id', $order->address_id)->first()->google_geocode_address);
                     });
 
+                    // dd($destinations);
+
                     // dd(count($destinations['delivery']));
                     if (count($destinations['delivery']) == 1) {
                         $directions[] =  $this->getDirections($destinations['driver'], $destinations['restaurant'], $destinations['delivery'][0]);
@@ -211,6 +213,7 @@ class MapController extends Controller
         $directions =  \GoogleMaps::load('directions')->setParam([
             'origin' => $driver,
             'waypoints' => [$restaurant, $secondDestination],
+            'optimizeWaypoints' => false,
             'destination' => $firstDestination,
             'departure_time' => 'now'
             ])->get();
