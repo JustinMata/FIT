@@ -125,7 +125,7 @@
         var locations = [];
 
         console.log(locations);
-        for (var i = 1; i < directions.routes[0].legs.length; i++) {
+        for (var i = 0; i < directions.routes[0].legs.length; i++) {
 
             for (let j = 0; j < directions.routes[0].legs[i].steps.length; j++) {
                 var lng = directions.routes[0].legs[i].steps[j].start_location.lng;
@@ -162,24 +162,23 @@
     }
 
     var numDeltas = 100;
-    // var delay = 10; //milliseconds
+    var delay = 10; //milliseconds
     var i = 0;
-    var delta = [];
-    // var deltaLat;
-    // var deltaLng;
+    var deltaLat;
+    var deltaLng;
 
     function transition(result, duration){
         console.log(result);
+        console.log(duration);
         i = 0;
-        delta = [];
-        delta.push((result[0] - position[0])/numDeltas);
-        delta.push((result[1] - position[1])/numDeltas);
+        deltaLat = (result[0] - position[0])/numDeltas;
+        deltaLng = (result[1] - position[1])/numDeltas;
         moveMarker(duration);
     }
 
     function moveMarker(duration){
-        position[0] += delta[0];
-        position[1] += delta[1];
+        position[0] += deltaLat;
+        position[1] += deltaLng;
         var latlng = new google.maps.LatLng(position[0], position[1]);
         marker.setTitle("Latitude:"+position[0]+" | Longitude:"+position[1]);
         marker.setPosition(latlng);
