@@ -54,8 +54,8 @@ class DriverController extends UserController
 
         $location = $driver->location()->first();
 
-        $location->latitude = $request->input('result.lat');
-        $location->longitude = $request->input('result.lng');
+        // $location->latitude = $request->input(json_decode('result.lat');
+        // $location->longitude = $request->input('result.lng');
 
         // if($location->save())
         // {

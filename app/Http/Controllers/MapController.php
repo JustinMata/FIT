@@ -104,7 +104,7 @@ class MapController extends Controller
                 $restaurant = $user->restaurant()->first();
                 $restaurantAddress = $user->address()->first();
 
-                dd($restaurantAddress);
+                // dd($restaurantAddress);
                 // Getting driver location
                 $driver = Driver::where('user_id', $userID)->first();
                 $driverLocation = Address::where('id', $driver->location_id)->first();
@@ -195,8 +195,6 @@ class MapController extends Controller
         });
 
         $driver->order()->get()->each(function($driverEntry, $key) use (&$deliveries){
-
-
             $deliveries =  $driverEntry->address()->first();
         });
 

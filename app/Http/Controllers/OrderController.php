@@ -143,9 +143,22 @@ class OrderController extends Controller
 
         // filter out all the address that have null, 0 and are not driver addresses
         // and return the closest driver id
-        return $addressesDistanceID->filter(function ($address, $key) {
-            return !(is_null($address->distance) || (double)$address->distance == 0 || !(Driver::where('location_id', '=', $address->id)->exists()));
+        $addressDistanceID = $addressesDistanceID->filter(function ($address, $key) {
+            // $data = [];
+            // $data['driver'] = $driver = Driver::where('location_id', '=', $address->id)->first();
+            // $data['foundDriver'] = $foundDriver =  !is_null($driver) && $driver->orders()->get()->count() < 2;
+            // $data['orderNumbers'] = (!is_null($driver))?$driver->orders()->get()->count(): null;
+            // $data['info'] = $address;
+            // dump($data);
+
+            $driver = Driver::where('location_id', '=', $address->id)->first();
+            $foundDriver =  !is_null($driver) && $driver->orders()->get()->count() < 2;
+
+            return $foundDriver && !(is_null($address->distance) || (double)$address->distance == 0 );
         })->sortBy('distance', SORT_NUMERIC)->first();
+
+        // dd($addressDistanceID);
+        return $addressDistanceID;
     }
 
     /**
