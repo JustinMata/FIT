@@ -1,9 +1,9 @@
-@extends('driver.default')
+@extends('restaurant.default')
 
 @section('header')
 <div class="container text-muted">
     <div class="row my-4">
-        <h1>Driver Map</h1>
+        <h1>Restaurant Map</h1>
     </div>
 </div>
 @endsection
@@ -14,11 +14,15 @@
     <div id="map" class="col-9 embed-responsive-item"></div>
     <div id="panels" class="offset-9 col-3 embed-responsive-item" style="overflow-y: scroll;">
         <div id="selectPanel" class="mb-4">
-            <label for="orders"><b>Cancel order:</b></label>
-            <form action="{{route('driverOrderCancel')}}" method="POST">
+            <form action="{{route('restaurantMapOrder')}}" method="POST">
                 @csrf
-                <input type="hidden" name="order-id" class="form-control" id="order-id" value="{{$order->id}}">
-                <button type="submit" class="btn btn-secondary btn-sm">{{ __('Cancel') }}</button>
+                <label for="orders"><b>Current orders:</b></label>
+                <select name="order-id" class="form-control" id="order-id">
+                    <option value="#">Choose an order</option>
+                    @foreach ($orders as $order)
+                    <option value="{{$order->id}}">{{$order->delivery_name}}</option>
+                    @endforeach
+                </select>
             </form>
         </div>
         <div id="directionsPanel">
@@ -89,6 +93,10 @@
                 }
             });
         }
+
+        $(document).on('change', '#order-id', function() {
+            $(this).parents('form').submit();
+        });
     </script>
 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key={{config('googlemaps.key')}}&callback=initMap"></script>

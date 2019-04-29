@@ -38,7 +38,7 @@
                     <td>{{ $order->delivery_comments }}</td>
                     <td>${{ $order->delivery_price }}</td>
                     <td>
-                        @if (auth()->user()->hasRole('admin'))
+                        @hasanyrole('admin')
                         <form action="{{route('adminChangeDriver')}}" method="POST">
                             @csrf
                             <input type="hidden" name="order-id" class="form-control order-id" value="{{$order->id}}">
@@ -51,11 +51,10 @@
                                 @endif
                                 @endforeach
                             </select>
-                            {{-- <button type="submit" class="btn btn-secondary btn-sm">{{ __('Archive') }}</button> --}}
                         </form>
                         @else
                         {{ $order->driver()->first()->user()->first()->full_name}}
-                        @endif
+                        @endhasanyrole
                     </td>
                     <td>{{ ucfirst(strtolower($order->status)) }}</td>
                     <td>

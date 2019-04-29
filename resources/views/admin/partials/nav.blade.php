@@ -18,11 +18,11 @@
 
                 @else
                 <a id="navbarDropdown" class="nav-item nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                    {{ Auth::user()->first_name }} <span class="caret"></span>
+                    {{ auth()->user()->first_name }} <span class="caret"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    @if (Auth::user()->hasRole('admin'))
+                    @if (auth()->user()->hasRole('admin'))
                     <a class="dropdown-item" href="{{ route('driverDashboard') }}">{{ __('Driver View') }}</a>
                     <a class="dropdown-item" href="{{ route('restaurantDashboard') }}">{{ __('Restaurant View') }}</a>
                     <a class="dropdown-item" href="{{ route('adminDashboard') }}">{{ __('Admin View') }}</a>

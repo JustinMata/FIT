@@ -61,7 +61,7 @@
                             <a class="dropdown-item" href="{{ route('restaurantDashboard') }}">{{ __('Restaurant View') }}</a>
                             <a class="dropdown-item" href="{{ route('adminDashboard') }}">{{ __('Admin View') }}</a>
                             @else
-                            @if (auth()->user()->hasRole('driver')&& Route::has('driverDashboard'))
+                            @if (auth()->user()->hasRole('driver') && Route::has('driverDashboard'))
                             <a class="dropdown-item" href="{{ route('driverDashboard') }}">Dashboard</a>
                             @elseif (auth()->user()->hasRole('restaurant')&& Route::has('restaurantDashboard'))
                             <a class="dropdown-item" href="{{ route('restaurantDashboard') }}">Dashboard</a>

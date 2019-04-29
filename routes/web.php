@@ -42,20 +42,22 @@ Route::post('register', 'Auth\RegisterController@register')->name('register');
 ***************************/
 Route::middleware(['auth'])->group(function () {
     // admin routes
-    Route::middleware(['admin'])->group(function () {
+
+    Route::group(['middleware' => ['role:admin']], function () {
         Route::get('/admin/dashboard', 'AdminController@index')->name('adminDashboard');
         Route::post('/admin/changeDriver', 'AdminController@changeDriver')->name('adminChangeDriver');
     });
 
-    // Route::middleware(['admin'])->group(function () {
-        // driver routes
+    // driver routes
+    Route::group(['middleware' => ['role:admin|driver']], function () {
         Route::get('/driver/dashboard', 'DriverController@index')->name('driverDashboard');
         Route::get('/driver/orders', 'DriverController@show')->name('driverOrders');
         Route::post('/driver/cancel', 'OrderController@cancel')->name('driverOrderCancel');
         Route::get('/driver/map','MapController@show')->name('driverMap');
-    // });
+    });
+
     // restaurant routes
-    // Route::middleware(['restaurant'])->group(function () {
+    Route::group(['middleware' => ['role:admin|restaurant']], function () {
         Route::get('/restaurant/dashboard', 'RestaurantController@index')->name('restaurantDashboard');
         Route::get('/restaurant/order', 'OrderController@make')->name('restaurantOrder');
         Route::get('/restaurant/orders', 'RestaurantController@show')->name('restaurantOrders');
@@ -63,8 +65,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/restaurant/cancel', 'OrderController@cancel')->name('restaurantOrderCancel');
         Route::post('/restaurant/archive', 'OrderController@archive')->name('restaurantOrderArchive');
         Route::post('/restaurant/delete', 'OrderController@delete')->name('restaurantOrderDelete');
-        Route::post('/restaurant/map', 'MapController@show')->name('restaurantMap');
-    // });
+        Route::get('/restaurant/map', 'MapController@show')->name('restaurantMap');
+        Route::post('/restaurant/map/order', 'MapController@select')->name('restaurantMapOrder');
+    });
 });
 /***************************
 * END

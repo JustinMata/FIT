@@ -13,8 +13,13 @@ class Address extends Model
      */
     protected $table = 'addresses';
 
+    /**
+    * The attributes that are mass assignable.
+    *
+    * @var array
+    */
     protected $fillable = [
-        'name', 'number', 'street1', 'city', 'state', 'postal'
+        'name', 'number', 'street1', 'street2', 'city', 'state', 'postal'
     ];
 
     /**
@@ -22,7 +27,7 @@ class Address extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->hasOne('App\User');
     }
 
     /**

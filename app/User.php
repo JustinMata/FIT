@@ -18,7 +18,13 @@ class User extends Authenticatable
     * @var array
     */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'phone_number', 'type', 'address_id',
+        'first_name',
+         'last_name',
+         'email',
+         'password',
+         'phone_number',
+         'type',
+         'address_id'
     ];
 
     /**
@@ -27,7 +33,8 @@ class User extends Authenticatable
     * @var array
     */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -64,13 +71,22 @@ class User extends Authenticatable
         return $this->hasManyThrough('App\Address', 'App\Driver');
     }
 
+    /**
+     * Get the drivers associated with the order.
+     */
+    public function address()
+    {
+        return $this->belongsTo('App\Address');
+    }
+
      /**
      * Get the drivers associated with the order.
      */
     public function orders()
     {
-        if($this->hasRole('driver'))
+        if($this->hasRole('driver')){
             return $this->hasManyThrough('App\Address', 'App\Driver');
+        }
 
         if ($this->hasRole('restaurant')) {
             return $this->hasManyThrough('App\Address', 'App\Restaurant');
@@ -87,8 +103,8 @@ class User extends Authenticatable
         return "{$this->first_name} {$this->last_name}";
     }
 
-    public function hasRole($role)
-    {
-        return User::where('id', $this->id)->value('type') == strtoupper($role);
-    }
+    // public function hasRole($role)
+    // {
+    //     return User::where('id', $this->id)->value('type') == strtoupper($role);
+    // }
 }

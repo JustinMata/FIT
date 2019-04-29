@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Address;
+use App\Driver;
+use App\Restaurant;
 use App\User;
-use DB;
-use Illuminate\Support\Str;
+// use DB;
+// use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -25,42 +28,6 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
-
-    //public function showRegistrationForm()
-    public function showRegistrationForm()
-    {
-        if (request()->get('type') == 'restaurant')
-        {
-            return view('auth.registerRestaurant');
-        }
-        else if (request()->get('type') == 'driver')
-        {
-            return view('auth.registerDriver');
-        }
-        else return redirect('/');
-    }
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected function redirectTo()
-    {
-        if (auth()->user()->hasRole('admin'))
-        {
-            return 'admin/dashboard';
-        }
-        else if (auth()->user()->hasRole('driver'))
-        {
-            return 'driver/dashboard';
-        }
-        else if(auth()->user()->hasRole('restaurant'))
-        {
-            return 'restaurant/dashboard';
-        }
-        else return '/';
-    }
 
     /**
      * Create a new controller instance.
@@ -89,6 +56,29 @@ class RegisterController extends Controller
     }
 
     /**
+     * Where to redirect users after registration.
+     *
+     * @var string
+     */
+    protected function redirectTo()
+    {
+        if (auth()->user()->hasRole('admin'))
+        {
+            return 'admin/dashboard';
+        }
+        else if (auth()->user()->hasRole('driver'))
+        {
+            return 'driver/dashboard';
+        }
+        else if(auth()->user()->hasRole('restaurant'))
+        {
+            return 'restaurant/dashboard';
+        }
+        else return '/';
+    }
+
+
+    /**
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
@@ -98,7 +88,7 @@ class RegisterController extends Controller
     {
 
 
-        $id = DB::table('addresses')->insertGetId([
+        $address = Address::create([
             'name' => 'default',
             'street1' => $data['street1'],
             'street2' => $data['street2'],
@@ -106,6 +96,9 @@ class RegisterController extends Controller
             'state' => $data['state'],
             'postal' => $data['zip'],
         ]);
+
+        $address = $this->addGoogleGeocode($address);
+        $address->save();
 
         $user = User::create([
             'first_name' => $data['first_name'],
@@ -115,25 +108,27 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'phone_number' => $data['phone_number'],
             'type' => $data['type'],
-            'address_id' => $id,
+            'address_id' => $address->id,
         ]);
 
-        if ($user['type'] == "restaurant")
+        if ($user->type == 'restaurant')
         {
-            DB::table('restaurants')->insert([
-                'user_id' => $user['id'],
+            Restaurant::create([
+                'user_id' => $user->id,
                 'provider' => $data['provider'],
                 'CC_name' => $data['CC_name'],
                 'CC_number' => $data['CC_number'],
                 'CC_expiration' => $data['CC_expiration'],
                 'CC_CVC' => $data['CC_CVC'],
             ]);
+
+            $user->assignRole('restaurant');
         }
         else
         {
-            DB::table('drivers')->insert([
-                'user_id' => $user['id'],
-                'location_id' => $id,
+            Driver::create([
+                'user_id' => $user->id,
+                'location_id' => $address->id,
                 'account_number' => $data['account_number'],
                 'account_routing' => $data['account_routing'],
                 'is_available' => true,
@@ -143,9 +138,26 @@ class RegisterController extends Controller
                 'license_expiration' => $data['license_expiration'],
                 'insurance_number' => $data['insurance_number'],
             ]);
+
+            $user->assignRole('driver');
         }
 
         return $user;
+    }
+
+
+    //public function showRegistrationForm()
+    public function showRegistrationForm()
+    {
+        if (request()->get('type') == 'restaurant')
+        {
+            return view('auth.registerRestaurant');
+        }
+        else if (request()->get('type') == 'driver')
+        {
+            return view('auth.registerDriver');
+        }
+        else return redirect('/');
     }
 
     /**
@@ -154,24 +166,21 @@ class RegisterController extends Controller
      * @param  array  $address
      * @return lat and lng coordinates
      */
-    protected function getCoords(array $address)
+    protected function addGoogleGeocode($address)
     {
-        $fullAddress = $address['street1'] . '+' . $address['city'] . $address['state'] . '+' . $address['zip'];
-
         $geocode = \GoogleMaps::load('geocoding')
-            ->setParam(['address' => $fullAddress])
+            ->setParam(['address' => $address->google_formatted_address])
             ->get();
 
         $response = json_decode($geocode);
 
-        $lat = $response->results[0]->geometry->location->lat;
-        $lng = $response->results[0]->geometry->location->lng;
+        if ($response->status == 'OK') {
+            $address->latitude = $response->results[0]->geometry->location->lat;
+            $address->longitude = $response->results[0]->geometry->location->lng;
+            $address->save();
+        }
 
-        $coords = [];
-        data_fill($coords, 'lat', $lat);
-        data_fill($coords, 'lng', $lng);
-
-        return $coords;
+        return $address;
     }
 
 }

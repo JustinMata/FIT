@@ -59,7 +59,7 @@ class Order extends Model
     }
 
     /**
-    * Get the user's full name.
+    * Get the order status.
     *
     * @return string
     */
