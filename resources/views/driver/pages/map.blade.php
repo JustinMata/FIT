@@ -63,6 +63,7 @@
         marker = new google.maps.Marker({
             position: center,
             map: map,
+            icon: '{!! asset('img/marker-icon.png') !!}',
             title: "Latitude:"+position[0]+" | Longitude:"+position[1]
         });
 
@@ -161,7 +162,7 @@
         return locations;
     }
 
-    var numDeltas = 100;
+    var numDeltas = directionsFormatted.length;
     var delay = 10; //milliseconds
     var i = 0;
     var deltaLat;
@@ -182,9 +183,9 @@
         var latlng = new google.maps.LatLng(position[0], position[1]);
         marker.setTitle("Latitude:"+position[0]+" | Longitude:"+position[1]);
         marker.setPosition(latlng);
-        if(i!=numDeltas){
+        if(i != numDeltas){
             i++;
-            setTimeout(moveMarker, duration);
+            setTimeout(moveMarker, delay);
         }
     }
     </script>
