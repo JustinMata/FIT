@@ -15,12 +15,15 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
+
+    $password = Hash::make('password');
+
     return [
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        'password' => $password, // password
         'phone_number' => $faker->numerify('##########'),
         'type' => $faker->randomElement(['DRIVER', 'RESTAURANT']),
         'address_id' => $faker->unique()->numberBetween(1, App\Address::count()),
