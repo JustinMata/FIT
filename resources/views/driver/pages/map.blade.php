@@ -77,8 +77,8 @@
             (function(i) {
                 setTimeout(function() {
                     var result = [directionsFormatted[i].coordinates.lat, directionsFormatted[i].coordinates.lng];
-                    transition(result);
-                }, i * directionsFormatted[i].duration * 100);
+                    transition(result, directionsFormatted[i].duration);
+                }, i * 3000);
             })(i);
 
         // google.maps.event.addListener(map, 'click', function(event) {
@@ -162,28 +162,30 @@
     }
 
     var numDeltas = 100;
-    var delay = 10; //milliseconds
+    // var delay = 10; //milliseconds
     var i = 0;
-    var deltaLat;
-    var deltaLng;
+    var delta = [];
+    // var deltaLat;
+    // var deltaLng;
 
-    function transition(result){
+    function transition(result, duration){
         console.log(result);
         i = 0;
-        deltaLat = (result[0] - position[0])/numDeltas;
-        deltaLng = (result[1] - position[1])/numDeltas;
-        moveMarker();
+        delta = [];
+        delta.push((result[0] - position[0])/numDeltas);
+        delta.push((result[1] - position[1])/numDeltas);
+        moveMarker(duration);
     }
 
-    function moveMarker(){
-        position[0] += deltaLat;
-        position[1] += deltaLng;
+    function moveMarker(duration){
+        position[0] += delta[0];
+        position[1] += delta[1];
         var latlng = new google.maps.LatLng(position[0], position[1]);
         marker.setTitle("Latitude:"+position[0]+" | Longitude:"+position[1]);
         marker.setPosition(latlng);
         if(i!=numDeltas){
             i++;
-            setTimeout(moveMarker, delay);
+            setTimeout(moveMarker, duration);
         }
     }
     </script>
