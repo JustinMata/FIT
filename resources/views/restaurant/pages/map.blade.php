@@ -1,5 +1,4 @@
-@extends('restaurant.default')
-
+@extends('restaurant.default') 
 @section('header')
 <div class="container text-muted">
     <div class="row my-4">
@@ -7,10 +6,9 @@
     </div>
 </div>
 @endsection
-
-
+ 
 @section('content')
-<div class="container embed-responsive embed-responsive-16by9 my-4" >
+<div class="container embed-responsive embed-responsive-16by9 my-4">
     <div id="map" class="col-9 embed-responsive-item"></div>
     <div id="panels" class="offset-9 col-3 embed-responsive-item" style="overflow-y: scroll;">
         <div id="selectPanel" class="mb-4">
@@ -31,7 +29,7 @@
     </div>
 </div>
 @endsection
-
+ 
 @section('map')
 <script>
     var directions = {!! json_encode($directions) !!}
@@ -43,9 +41,10 @@
         // var directions = {!! json_encode($directions) !!}
         var directionsService = new google.maps.DirectionsService();
         var directionsDisplay = new google.maps.DirectionsRenderer();
-        var center = '37.27951800,-121.86790500';
+        // var center = '37.27951800,-121.86790500';
 
-        if (directions.status === 'OK') {
+        var center = new google.maps.LatLng([37.27951800,-121.86790500]);
+        if (directions !== null && directions.status === 'OK') {
             center = directions.routes[0].legs[0].start_location;
         }
 
@@ -57,7 +56,9 @@
         directionsDisplay.setMap(map)
         directionsDisplay.setPanel(document.getElementById('directionsPanel'))
 
-        calculateAndDisplayRoute(directionsService, directionsDisplay)
+         if (directions !== null) {
+            calculateAndDisplayRoute(directionsService, directionsDisplay)
+         }
     }
 
     function calculateAndDisplayRoute(directionsService, directionsDisplay) {
@@ -95,12 +96,77 @@
         }
 
         $(document).on('change', '#order-id', function() {
-            $(this).parents('form').submit();
+            var selectedOrder = $(this).val();
+
+            $.ajaxSetup({
+                   headers: {
+                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   },
+               });
+               $.ajax({
+                   type: 'POST',
+                   url: "{{ route('restaurantMapOrder') }}",
+                   data: {
+                       'order-id': selectedOrder,
+                   },
+                   success: function(data){
+                       console.log(data);
+                       directions = data.directions;
+                       initMap();
+
+
+
+                   }
+               });
+
+            // $.ajaxSetup({
+            //         headers: {
+            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //         },
+            //     });
+
+            // $.ajax({
+            //     type:"POST",
+            //     url: "{{route('restaurantMapOrder')}}",
+            //     data:{ 
+            //         'order-id': selectedOrder 
+            //         },
+            //     contentType: "application/json; charset=utf-8",
+            //     dataType: "Json",
+            //     success :function(response) {
+            //         console.log(response)
+            // }
+            // });
+            //$(this).parents('form').submit();
         });
-    </script>
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{config('googlemaps.key')}}&callback=initMap"></script>
-    @endsection
+</script>
 
+<script>
+    // $("#order-id").on('change', function(){
+    //     var selectedOrder = $(this).val();
 
+    //     $.ajaxSetup({
+    //                headers: {
+    //                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //                },
+    //            });
 
+    //     $.ajax({
+    //         type:"POST",
+    //         url: "{{route('restaurantMapOrder')}}",
+    //         data:{ 
+    //             'order-id': selectedOrder 
+    //             },
+    //         contentType: "application/json; charset=utf-8",
+    //         dataType: "Json",
+    //         success :function(response) {
+    //             console.log(response)
+    //     }
+    //     });
+    //     });
+
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{config('googlemaps.key')}}&callback=initMap"></script>
+@endsection

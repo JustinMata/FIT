@@ -16,8 +16,8 @@ Route::get('/', function () {
 })->name('home');
 
 /***************************
-* Authentication Auth::routes();
-***************************/
+ * Authentication Auth::routes();
+ ***************************/
 // Authentication Routes...
 //Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('admin/login', 'Auth\LoginController@login')->name('login');
@@ -34,12 +34,12 @@ Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('ro
 Route::post('register', 'Auth\RegisterController@register')->name('register');
 
 /***************************
-* END
-***************************/
+ * END
+ ***************************/
 
 /***************************
-* Authenticated routes
-***************************/
+ * Authenticated routes
+ ***************************/
 Route::middleware(['auth'])->group(function () {
     // admin routes
 
@@ -53,9 +53,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/driver/dashboard', 'DriverController@index')->name('driverDashboard');
         Route::get('/driver/orders', 'DriverController@show')->name('driverOrders');
         Route::post('/driver/cancel', 'OrderController@cancel')->name('driverOrderCancel');
-        Route::get('/driver/map','MapController@show')->name('driverMap');
-        Route::post('/driver/location','DriverController@updateLocation')->name('driverUpdateLocation');
-
+        Route::get('/driver/map', 'MapController@show')->name('driverMap');
+        Route::post('/driver/location', 'DriverController@updateLocation')->name('driverUpdateLocation');
     });
 
     // restaurant routes
@@ -72,12 +71,12 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 /***************************
-* END
-***************************/
+ * END
+ ***************************/
 
 /***************************
-* TESTING PAGES
-***************************/
+ * TESTING PAGES
+ ***************************/
 
 //currently working on them but should be able to successfully create an order and address
 Route::get('/order', 'OrderController@make')->name('order');
@@ -87,8 +86,8 @@ Route::get('/test', 'TestController@test')->name('test');
 Route::get('/queries', 'QueryController@index')->name('queries');
 
 /**
-* @TODO: move the logic to a controller and maybe create an adapter
-*/
+ * @TODO: move the logic to a controller and maybe create an adapter
+ */
 Route::get('/googleApi', function () {
 
     $params = [
@@ -98,26 +97,23 @@ Route::get('/googleApi', function () {
     ];
 
     $response = \GoogleMaps::load('distanceMatrix')
-    ->setParam($params)
-    ->get();
+        ->setParam($params)
+        ->get();
 
     var_dump($response);
 
     $response = \GoogleMaps::load('geocoding')
-    ->setParam([
-        'address'    => 'santa cruz',
-        'components' => [
-            'administrative_area'  => 'TX',
-            'country'              => 'US',
+        ->setParam([
+            'address'    => 'santa cruz',
+            'components' => [
+                'administrative_area'  => 'TX',
+                'country'              => 'US',
             ]
 
-            ])
-            ->get();
-        });
+        ])
+        ->get();
+});
 
-        /***************************
-        * END
-        ***************************/
-
-
-
+/***************************
+ * END
+ ***************************/
