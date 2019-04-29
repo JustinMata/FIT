@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class RestaurantController extends UserController
@@ -18,7 +18,10 @@ class RestaurantController extends UserController
      */
     public function index()
     {
-        return view('restaurant.pages.dashboard');
+        $user = Auth::user();
+        $address = \App\Address::where('id', $user->address_id)->first();
+
+        return view('restaurant.pages.dashboard', compact('user','address'));
     }
 
     /**

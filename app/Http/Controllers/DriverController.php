@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DriverController extends UserController
 {
@@ -18,7 +18,10 @@ class DriverController extends UserController
      */
     public function index()
     {
-        return view('driver.pages.dashboard');
+        $user = Auth::user();
+        $address = \App\Address::where('id', $user->address_id)->first();
+
+        return view('driver.pages.dashboard', compact('user','address'));
     }
 
     /**
