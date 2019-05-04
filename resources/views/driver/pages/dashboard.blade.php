@@ -1,5 +1,4 @@
-@extends('driver.default')
-
+@extends('driver.default') 
 @section('header')
 <section class="jumbotron">
     <div class="container text-center">
@@ -14,13 +13,12 @@
             <li>Email: {{ $user->email }}</li>
             <li>Phone Number: {{ $user->phone_number }}</li>
             <li>Address: {{$address->street1}}, {{$address->city}}, {{$address->state}} {{$address->postal}}</li>
+            <li>Total Earnings: $@isset($driver['totalEarnings']) {{ $driver->totalEarnings }} @endisset</li>
         </ul>
     </div>
-                
+
 </section>
 @endsection
-
-
+ 
 @section('content')
-
 @endsection

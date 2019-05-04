@@ -15,15 +15,16 @@ class Driver extends User
     protected $table = 'drivers';
 
     /**
-    * The attributes that are mass assignable.
-    *
-    * @var array
-    */
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'user_id',
         'location_id',
         'account_number',
         'account_routing',
+        'totalEarnings',
         'is_available',
         'car',
         'license_plate',
@@ -56,5 +57,4 @@ class Driver extends User
     {
         return $this->hasMany('App\Order');
     }
-
 }

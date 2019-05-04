@@ -62,19 +62,13 @@ class RegisterController extends Controller
      */
     protected function redirectTo()
     {
-        if (auth()->user()->hasRole('admin'))
-        {
-            return 'admin/dashboard';
-        }
-        else if (auth()->user()->hasRole('driver'))
-        {
-            return 'driver/dashboard';
-        }
-        else if(auth()->user()->hasRole('restaurant'))
-        {
-            return 'restaurant/dashboard';
-        }
-        else return '/';
+        if (auth()->user()->hasRole('admin')) {
+                return 'admin/dashboard';
+            } else if (auth()->user()->hasRole('driver')) {
+                return 'driver/dashboard';
+            } else if (auth()->user()->hasRole('restaurant')) {
+                return 'restaurant/dashboard';
+            } else return '/';
     }
 
 
@@ -111,36 +105,34 @@ class RegisterController extends Controller
             'address_id' => $address->id,
         ]);
 
-        if ($user->type == 'restaurant')
-        {
-            Restaurant::create([
-                'user_id' => $user->id,
-                'provider' => $data['provider'],
-                'CC_name' => $data['CC_name'],
-                'CC_number' => $data['CC_number'],
-                'CC_expiration' => $data['CC_expiration'],
-                'CC_CVC' => $data['CC_CVC'],
-            ]);
+        if ($user->type == 'restaurant') {
+                Restaurant::create([
+                    'user_id' => $user->id,
+                    'provider' => $data['provider'],
+                    'CC_name' => $data['CC_name'],
+                    'CC_number' => $data['CC_number'],
+                    'CC_expiration' => $data['CC_expiration'],
+                    'CC_CVC' => $data['CC_CVC'],
+                ]);
 
-            $user->assignRole('restaurant');
-        }
-        else
-        {
-            Driver::create([
-                'user_id' => $user->id,
-                'location_id' => $address->id,
-                'account_number' => $data['account_number'],
-                'account_routing' => $data['account_routing'],
-                'is_available' => true,
-                'car' => $data['car'],
-                'license_plate' => $data['license_plate'],
-                'license_number' => $data['license_number'],
-                'license_expiration' => $data['license_expiration'],
-                'insurance_number' => $data['insurance_number'],
-            ]);
+                $user->assignRole('restaurant');
+            } else {
+                Driver::create([
+                    'user_id' => $user->id,
+                    'location_id' => $address->id,
+                    'account_number' => $data['account_number'],
+                    'account_routing' => $data['account_routing'],
+                    'totalEarnings' => 0,
+                    'is_available' => true,
+                    'car' => $data['car'],
+                    'license_plate' => $data['license_plate'],
+                    'license_number' => $data['license_number'],
+                    'license_expiration' => $data['license_expiration'],
+                    'insurance_number' => $data['insurance_number'],
+                ]);
 
-            $user->assignRole('driver');
-        }
+                $user->assignRole('driver');
+            }
 
         return $user;
     }
@@ -149,15 +141,11 @@ class RegisterController extends Controller
     //public function showRegistrationForm()
     public function showRegistrationForm()
     {
-        if (request()->get('type') == 'restaurant')
-        {
-            return view('auth.registerRestaurant');
-        }
-        else if (request()->get('type') == 'driver')
-        {
-            return view('auth.registerDriver');
-        }
-        else return redirect('/');
+        if (request()->get('type') == 'restaurant') {
+                return view('auth.registerRestaurant');
+            } else if (request()->get('type') == 'driver') {
+                return view('auth.registerDriver');
+            } else return redirect('/');
     }
 
     /**
@@ -182,5 +170,4 @@ class RegisterController extends Controller
 
         return $address;
     }
-
 }

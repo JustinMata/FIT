@@ -19,9 +19,12 @@ class DriverController extends UserController
     public function index()
     {
         $user = Auth::user();
+        if ($user->hasRole('driver')) $driver = \App\Driver::where('user_id', $user->id)->first();
+        else $driver = [];
+
         $address = \App\Address::where('id', $user->address_id)->first();
 
-        return view('driver.pages.dashboard', compact('user','address'));
+        return view('driver.pages.dashboard', compact('user', 'driver', 'address'));
     }
 
     /**
@@ -59,11 +62,22 @@ class DriverController extends UserController
 
         // if($location->save())
         // {
-            $response =  ['success'=>'New geolocation saved!'];
-            return response()->json($response, 200);
+        $response =  ['success' => 'New geolocation saved!'];
+        return response()->json($response, 200);
         // } else {
         //     $response =  ['error'=>'Could not save new geolocation!'];
         //     return response()->json($response, 200);
         // }
+    }
+
+    /**
+     * Deliver the order.
+     *
+     * @return void
+     */
+    public function deliver(Order $order)
+    {
+        $order->is_delivered = true;
+        $order->save();
     }
 }
