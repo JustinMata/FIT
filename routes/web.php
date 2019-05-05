@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/driver/dashboard', 'DriverController@index')->name('driverDashboard');
         Route::get('/driver/orders', 'DriverController@show')->name('driverOrders');
         Route::post('/driver/cancel', 'OrderController@cancel')->name('driverOrderCancel');
+        Route::post('driver/deliver', 'DriverController@deliver')->name('driverOrderDeliver');
         Route::get('/driver/map', 'MapController@show')->name('driverMap');
         Route::post('/driver/location', 'DriverController@updateLocation')->name('driverUpdateLocation');
     });
