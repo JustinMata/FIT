@@ -19,6 +19,9 @@ class MapController extends Controller
      */
     public function show()
     {
+        if (auth()->check() && (auth()->user()->hasRole('admin'))) {
+            return redirect()->back();
+        }
 
         if (request()->is('*driver*')) {
             if (auth()->check() && (auth()->user()->hasAnyRole(['driver', 'admin']))) {

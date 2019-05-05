@@ -27,6 +27,31 @@ class DatabaseSeeder extends Seeder
 
         $entryNumber = (int)$this->command->ask('How many entries do you want to create?', 200);
 
+        // create permissions
+        Permission::create(['name' => 'user_create']);
+        Permission::create(['name' => 'user_update']);
+        Permission::create(['name' => 'user_delete']);
+        Permission::create(['name' => 'order_create']);
+        Permission::create(['name' => 'order_cancel']);
+        Permission::create(['name' => 'order_accept']);
+        Permission::create(['name' => 'order_decline']);
+
+        $this->command->info('Permissions generated!');
+
+        // create roles and assign created permissions
+        $role = Role::create(['name' => 'admin'])
+        ->givePermissionTo(Permission::all());
+
+        // create roles and assign created permissions
+        $role = Role::create(['name' => 'restaurant'])
+        ->givePermissionTo(['order_create', 'order_cancel']);
+
+        // create roles and assign created permissions
+        $role = Role::create(['name' => 'driver'])
+        ->givePermissionTo(['order_accept', 'order_decline']);
+
+        $this->command->info('Roles generated!');
+
         // Generating addresses
         $addresses = factory(App\Address::class, $entryNumber)->create();
 
@@ -51,6 +76,7 @@ class DatabaseSeeder extends Seeder
                     'location_id' => $address->id
                     ]
                 );
+                $user[0]->assignRole('driver');
             } else {
                 DB::table('users')
                 ->where('id', $user[0]->id)
@@ -61,6 +87,7 @@ class DatabaseSeeder extends Seeder
                     'user_id' => $user[0]->id,
                     ]
                 );
+                $user[0]->assignRole('restaurant');
             }
         });
 
@@ -95,31 +122,6 @@ class DatabaseSeeder extends Seeder
         });
 
         $this->command->info('Orders generated!');
-
-        // create permissions
-        Permission::create(['name' => 'user_create']);
-        Permission::create(['name' => 'user_update']);
-        Permission::create(['name' => 'user_delete']);
-        Permission::create(['name' => 'order_create']);
-        Permission::create(['name' => 'order_cancel']);
-        Permission::create(['name' => 'order_accept']);
-        Permission::create(['name' => 'order_decline']);
-
-        $this->command->info('Permissions generated!');
-
-        // create roles and assign created permissions
-        $role = Role::create(['name' => 'admin'])
-        ->givePermissionTo(Permission::all());
-
-        // create roles and assign created permissions
-        $role = Role::create(['name' => 'restaurant'])
-        ->givePermissionTo(['order_create', 'order_cancel']);
-
-        // create roles and assign created permissions
-        $role = Role::create(['name' => 'driver'])
-        ->givePermissionTo(['order_accept', 'order_decline']);
-
-        $this->command->info('Roles generated!');
 
         $password = Hash::make('password');
 
