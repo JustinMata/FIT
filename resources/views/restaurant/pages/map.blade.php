@@ -33,8 +33,14 @@
 @section('map')
 <script>
     var directions = {!! json_encode($directions) !!}
-
+    var position = [37.27951800, -121.86790500];
+    var marker, directionsFormatted;
     console.log( directions)
+
+    if(directions !== null)
+    {
+        directionsFormatted = getCoordinates( directions );
+    }
 
     function initMap() {
 
@@ -53,12 +59,51 @@
             center: center
         });
 
+        marker = new google.maps.Marker({
+            position: center,
+            map: map,
+            icon: '{!! asset('img/marker-icon.png') !!}',
+            title: "Latitude:"+position[0]+" | Longitude:"+position[1]
+        });
+
         directionsDisplay.setMap(map)
         directionsDisplay.setPanel(document.getElementById('directionsPanel'))
 
          if (directions !== null) {
             calculateAndDisplayRoute(directionsService, directionsDisplay)
          }
+
+        @if($orders->first() !== null)
+        @if($orders->first()->driver()->first() !== null)
+        @if($directions !== null)
+        for (var i = 0; i < directionsFormatted.length; i++){
+        (function(i) {
+            setTimeout(function() {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('driverUpdateLocation') }}",
+                    data: {
+                        driverID: {{ $orders->first()->driver()->first()->id}},
+                    },
+                    success:function(data){
+                    // var driverCoordinates = [data.lat, directionsFormatted[i].coordinates.lng];
+                    // transition(driverCoordinates, directionsFormatted[i].duration);
+
+
+                        console.log(data);
+                    }
+                });
+            }, i * 3000);
+        })(i);
+    }
+        @endif
+        @endif
+        @endif
     }
 
     function calculateAndDisplayRoute(directionsService, directionsDisplay) {
@@ -82,11 +127,6 @@
             destination: end,
             travelMode: 'DRIVING'
         };
-
-        // var marker = new google.maps.Marker({
-            //     position: myLatlng,
-            //     title:"Hello World!"
-            // });
 
             directionsService.route(request, function(response, status) {
                 if (status == 'OK') {
@@ -118,54 +158,9 @@
 
                    }
                });
-
-            // $.ajaxSetup({
-            //         headers: {
-            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //         },
-            //     });
-
-            // $.ajax({
-            //     type:"POST",
-            //     url: "{{route('restaurantMapOrder')}}",
-            //     data:{ 
-            //         'order-id': selectedOrder 
-            //         },
-            //     contentType: "application/json; charset=utf-8",
-            //     dataType: "Json",
-            //     success :function(response) {
-            //         console.log(response)
-            // }
-            // });
-            //$(this).parents('form').submit();
         });
 
-</script>
-
-<script>
-    // $("#order-id").on('change', function(){
-    //     var selectedOrder = $(this).val();
-
-    //     $.ajaxSetup({
-    //                headers: {
-    //                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //                },
-    //            });
-
-    //     $.ajax({
-    //         type:"POST",
-    //         url: "{{route('restaurantMapOrder')}}",
-    //         data:{ 
-    //             'order-id': selectedOrder 
-    //             },
-    //         contentType: "application/json; charset=utf-8",
-    //         dataType: "Json",
-    //         success :function(response) {
-    //             console.log(response)
-    //     }
-    //     });
-    //     });
-
+        
 </script>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key={{config('googlemaps.key')}}&callback=initMap"></script>

@@ -84,8 +84,8 @@
         for (var i = 0; i < directionsFormatted.length; i++){
         (function(i) {
             setTimeout(function() {
-                var result = [directionsFormatted[i].coordinates.lat, directionsFormatted[i].coordinates.lng];
-                transition(result, directionsFormatted[i].duration);
+                var driverCoordinates = [directionsFormatted[i].coordinates.lat, directionsFormatted[i].coordinates.lng];
+                transition(driverCoordinates, directionsFormatted[i].duration);
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -95,11 +95,11 @@
                     type: 'POST',
                     url: "{{ route('driverUpdateLocation') }}",
                     data: {
-                        coords: result,
+                        coords: driverCoordinates,
                         driverID: {{ $orders->first()->driver()->first()->id}},
                     },
                     success:function(data){
-                        console.log(data.success);
+                        console.log(data);
                     }
                 });
             }, i * 3000);
@@ -108,10 +108,6 @@
         @endif
         @endif
         
-        // google.maps.event.addListener(map, 'click', function(event) {
-            //     var result = [event.latLng.lat(), event.latLng.lng()];
-            //     transition(result);
-            // });
         }
         
         function calculateAndDisplayRoute(directionsService, directionsDisplay) {
@@ -135,11 +131,6 @@
                 destination: end,
                 travelMode: 'DRIVING'
             };
-            
-            // var marker = new google.maps.Marker({
-                //     position: myLatlng,
-                //     title:"Hello World!"
-                // });
                 
                 directionsService.route(request, function(response, status) {
                     if (status == 'OK') {

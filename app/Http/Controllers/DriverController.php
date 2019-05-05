@@ -54,16 +54,16 @@ class DriverController extends UserController
 
         $location = $driver->location()->first();
 
-        // $location->latitude = $request->input(json_decode('result.lat');
-        // $location->longitude = $request->input('result.lng');
+        $location->latitude = $request->input('coords')[0];
+        $location->longitude = $request->input('coords')[1];
 
-        // if($location->save())
-        // {
+        if($location->save())
+        {
             $response =  ['success'=>'New geolocation saved!'];
-            return response()->json($response, 200);
-        // } else {
-        //     $response =  ['error'=>'Could not save new geolocation!'];
-        //     return response()->json($response, 200);
-        // }
+            return response()->json($location, 200);
+        } else {
+            $response =  ['error'=>'Could not save new geolocation!'];
+            return response()->json($response, 400);
+        }
     }
 }
