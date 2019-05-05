@@ -19,9 +19,23 @@ class DriverController extends UserController
     public function index()
     {
         $user = Auth::user();
+
+        $driver = [];
+        $currentOrder = [];
+        $customerAddress = [];
+
+        if ($user->hasRole('driver')) {
+            $driver = \App\Driver::where('user_id', $user->id)->first();
+            $order = \App\Order::where('driver_id', $driver->id)->where('is_delivered', false);
+            if ($order->first()) {
+                $currentOrder = $order->first();
+                $customerAddress = \App\Address::where('id', $currentOrder->address_id)->first();
+            }
+        }
+
         $address = \App\Address::where('id', $user->address_id)->first();
 
-        return view('driver.pages.dashboard', compact('user','address'));
+        return view('driver.pages.dashboard', compact('user', 'driver', 'currentOrder', 'customerAddress', 'address'));
     }
 
     /**
@@ -65,5 +79,27 @@ class DriverController extends UserController
             $response =  ['error'=>'Could not save new geolocation!'];
             return response()->json($response, 400);
         }
+    }
+
+    /**
+     * Deliver the order.
+     *
+     * @return void
+     */
+    public function deliver(Request $request)
+    {
+        $order = \App\Order::where('id', $request->input('order-id'))->first();
+
+        $order->is_delivered = true;
+
+        $order->save();
+
+        $driver = \App\Driver::where('id', $order->driver_id)->first();
+
+        $driver->totalEarnings += $order->delivery_price / 2;
+
+        $driver->save();
+
+        return redirect()->action('DriverController@index');
     }
 }

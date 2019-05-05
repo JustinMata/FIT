@@ -20,6 +20,7 @@
                     <th scope="col">{{ __('Customer Name') }}</th>
                     <th scope="col">{{ __('Customer Comments') }}</th>
                     <th scope="col">{{ __('Mileage Trip') }}</th>
+                    <th scope="col">{{ __('Earnings') }}</th>
                     <th scope="col">{{ __('Status') }}</th>
                     <th scope="col">{{ __('Action') }}</th>
                 </tr>
@@ -32,6 +33,7 @@
                     <td>{{ $order->delivery_name }}</td>
                     <td>{{ $order->delivery_comments }}</td>
                     <td>{{ $order->mileage_trip }}</td>
+                    <td>${{ number_format((float)$order->delivery_price / 2, 2, '.', '') }}</td>
                     <td>{{ ucfirst(strtolower($order->status)) }}</td>
                     <td>
                         <form action="{{route('driverOrderCancel')}}" method="POST">

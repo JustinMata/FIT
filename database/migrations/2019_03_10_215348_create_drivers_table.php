@@ -19,6 +19,7 @@ class CreateDriversTable extends Migration
             $table->bigInteger('location_id')->unsigned();
             $table->string('account_number');
             $table->string('account_routing');
+            $table->decimal('totalEarnings', 8, 2);
             $table->boolean('is_available')->comment('false not available, true available');
             $table->longText('car');
             $table->string('license_plate');
@@ -42,7 +43,7 @@ class CreateDriversTable extends Migration
      * @return void
      */
     public function down()
-    {   
+    {
         Schema::dropIfExists('drivers');
     }
 }
