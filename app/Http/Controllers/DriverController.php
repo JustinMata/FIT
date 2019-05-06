@@ -26,7 +26,7 @@ class DriverController extends UserController
 
         if ($user->hasRole('driver')) {
             $driver = \App\Driver::where('user_id', $user->id)->first();
-            $order = \App\Order::where('driver_id', $driver->id)->where('is_delivered', false);
+            $order = \App\Order::where('driver_id', $driver->id)->where('is_delivered', false)->where('is_archived', false);
             if ($order->first()) {
                 $currentOrder = $order->first();
                 $customerAddress = \App\Address::where('id', $currentOrder->address_id)->first();
@@ -93,6 +93,8 @@ class DriverController extends UserController
         $order->is_delivered = true;
 
         $order->save();
+
+        app(OrderController::class)->archiveOrder($order);
 
         $driver = \App\Driver::where('id', $order->driver_id)->first();
 

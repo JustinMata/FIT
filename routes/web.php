@@ -65,7 +65,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/restaurant/orders', 'RestaurantController@show')->name('restaurantOrders');
         Route::post('/restaurant/order', 'OrderController@store')->name('restaurantOrderStore');
         Route::post('/restaurant/cancel', 'OrderController@cancel')->name('restaurantOrderCancel');
-        Route::post('/restaurant/archive', 'OrderController@archive')->name('restaurantOrderArchive');
         Route::post('/restaurant/delete', 'OrderController@delete')->name('restaurantOrderDelete');
         Route::get('/restaurant/map', 'MapController@show')->name('restaurantMap');
         Route::post('/restaurant/map/order', 'MapController@select')->name('restaurantMapOrder');

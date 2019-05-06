@@ -1,4 +1,4 @@
-@extends('driver.default') 
+@extends('driver.default')
 @section('header')
 <div class="container text-muted">
     <div class="d-flex justify-content-between my-4">
@@ -8,7 +8,7 @@
     </div>
 </div>
 @endsection
- 
+
 @section('content')
 
 <div class="container text-muted">
@@ -26,8 +26,8 @@
                 </tr>
             </thead>
             <tbody>
-                @php $row = $orders->firstItem(); 
-@endphp @foreach ($orders as $order)
+                @php $row = $orders->firstItem();
+                @endphp @foreach ($orders as $order)
                 <tr>
                     <th scope="{{ $row }}">{{ $row }}</th>
                     <td>{{ $order->delivery_name }}</td>
@@ -36,15 +36,25 @@
                     <td>${{ number_format((float)$order->delivery_price / 2, 2, '.', '') }}</td>
                     <td>{{ ucfirst(strtolower($order->status)) }}</td>
                     <td>
-                        <form action="{{route('driverOrderCancel')}}" method="POST">
+                        @if ($order->status == "in-progress")
+                        <form action="{{route('restaurantOrderCancel')}}" method="POST">
                             @csrf
-                            <input type="hidden" name="order-id" class="form-control" id="order-id" value="{{$order->id}}">
-                            <button type="submit" class="btn btn-secondary btn-sm">{{ __('Cancel') }}</button>
+                            <input type="hidden" name="order-id" class="form-control" id="order-id"
+                                value="{{$order->id}}">
+                            <button type="submit" class="btn btn-danger btn-sm">{{ __('Cancel') }}</button>
                         </form>
+                        @else
+                        <form action="{{route('restaurantOrderDelete')}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="order-id" class="form-control" id="order-id"
+                                value="{{$order->id}}">
+                            <button type="submit" class="btn btn-danger btn-sm">{{ __('Delete') }}</button>
+                        </form>
+                        @endif
                     </td>
                 </tr>
-                @php $row++; 
-@endphp @endforeach
+                @php $row++;
+                @endphp @endforeach
             </tbody>
         </table>
         {{ $orders->links() }}
