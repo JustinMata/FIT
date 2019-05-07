@@ -6,7 +6,7 @@ use DB;
 use App\Address;
 use App\Driver;
 use App\Order;
-use App\Restaurant;
+use App\Restaurant; 
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -21,7 +21,11 @@ class OrderController extends Controller
 
     public function make()
     {
-        if ((Auth::user()->hasAnyRole('admin') || Auth::user()->hasAnyRole('restaurant')) && request()->is('restaurant*')) {
+        if (auth()->check() && (auth()->user()->hasRole('admin'))) {
+            return redirect()->back();
+        }
+
+        if (Auth::user()->hasRole('restaurant') && request()->is('restaurant*')) {
             return view('restaurant.pages.orderForm');
         } else {
             return redirect('/');
@@ -78,7 +82,7 @@ class OrderController extends Controller
             'driver_id' => $driver->id,
             'address_id' => $deliveryAddress->id,
             'is_archived' => false,
-            'is_payed' => false,
+            'is_payed' => true,
         ]);
 
 
@@ -88,14 +92,9 @@ class OrderController extends Controller
 
     public function cancel(Request $request)
     {
-
         $order = Order::where('id', $request->input('order-id'))->first();
 
-        $order->is_archived = true;
-
-        $order->save();
-
-        archiveOrder($order);
+        $this->archiveOrder($order);
 
         if (request()->is('restaurant*')) {
             return redirect()->action('RestaurantController@show');
@@ -108,15 +107,12 @@ class OrderController extends Controller
 
     public function archive(Request $request)
     {
-
         $order = Order::where('id', $request->input('order-id'))->first();
 
-        $order->is_archived = true;
         $order->is_delivered = true;
-
         $order->save();
 
-        archiveOrder($order);
+        $this->archiveOrder($order);
 
         return redirect()->action('RestaurantController@show');
     }
@@ -124,7 +120,6 @@ class OrderController extends Controller
     public function archiveOrder(Order $order)
     {
         $order->is_archived = true;
-
         $order->save();
 
         $archivedOrder = \App\OrderArchive::create([
@@ -148,7 +143,6 @@ class OrderController extends Controller
 
     public function delete(Request $request)
     {
-
         $order = Order::where('id', $request->input('order-id'))->first();
 
         $order->delete();
@@ -158,7 +152,6 @@ class OrderController extends Controller
 
     private function findDriver($restaurant, $address)
     {
-
         // Grabs the addresses and calculate the distance to the restaurant address
         $addressesDistanceID = DB::table("addresses")
             ->select(

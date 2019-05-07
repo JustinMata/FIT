@@ -79,7 +79,7 @@
                             <label for="phone_number" class="col-md-4 col-form-label text-md-right">Phone Number</label>
 
                             <div class="col-md-6">
-                                <input id="phone_number" type="phone_number" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" name="phone_number" value="{{ old('phone_number') }}" required>
+                                <input id="phone_number" type="number" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" name="phone_number" value="{{ old('phone_number') }}" required>
 
                                 @if ($errors->has('phone_number'))
                                 <span class="invalid-feedback" role="alert">
@@ -93,15 +93,7 @@
                             <label for="type" class="col-md-4 col-form-label text-md-right">Role</label>
 
                             <div class="col-md-6">
-                                <select id="type" type="type" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type" value="{{ old('type') }}" required>
-                                    <option value="restaurant">Restaurant</option>
-                                </select>
-
-                                @if ($errors->has('type'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('type') }}</strong>
-                                </span>
-                                @endif
+                                <div id="type" type="text" class="form-control" name="type" value="restaurant" required>Restaurant</div>
                             </div>
                         </div>
 
@@ -157,7 +149,7 @@
                         <div class="form-group row">
                             <label for="zip" class="col-md-4 col-form-label text-md-right">Zip Code</label>
                             <div class="col-md-6">
-                                <input id="zip" type="text" class="form-control{{ $errors->has('zip') ? ' is-invalid' : '' }}" name="zip" value="{{ old('zip') }}" required autofocus>
+                                <input id="zip" type="number" class="form-control{{ $errors->has('zip') ? ' is-invalid' : '' }}" name="zip" value="{{ old('zip') }}" required autofocus>
                             </div>
 
                             @if ($errors->has('zip'))
@@ -203,7 +195,7 @@
                             <label for="CC_number" class="col-md-4 col-form-label text-md-right">{{ __('CC Number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="CC_number" type="text" class="form-control{{ $errors->has('CC_number') ? ' is-invalid' : '' }}" name="CC_number" value="{{ old('CC_number') }}" required autofocus>
+                                <input id="CC_number" type="number" class="form-control{{ $errors->has('CC_number') ? ' is-invalid' : '' }}" name="CC_number" value="{{ old('CC_number') }}" required autofocus>
 
                                 @if ($errors->has('CC_number'))
                                 <span class="invalid-feedback" role="alert">
@@ -229,7 +221,7 @@
                         <div class="form-group row">
                             <label for="CC_CVC" class="col-md-4 col-form-label text-md-right">CC CVC</label>
                             <div class="col-md-6">
-                                <input id="CC_CVC" type="text" class="form-control{{ $errors->has('CC_CVC') ? ' is-invalid' : '' }}" name="CC_CVC" value="{{ old('CC_CVC') }}" required autofocus>
+                                <input id="CC_CVC" type="number" class="form-control{{ $errors->has('CC_CVC') ? ' is-invalid' : '' }}" name="CC_CVC" value="{{ old('CC_CVC') }}" required autofocus>
 
                                 @if ($errors->has('CC_CVC'))
                                 <span class="invalid-feedback" role="alert">

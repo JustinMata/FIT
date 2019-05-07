@@ -22,7 +22,6 @@
                     <th scope="col">{{ __('Mileage Trip') }}</th>
                     <th scope="col">{{ __('Earnings') }}</th>
                     <th scope="col">{{ __('Status') }}</th>
-                    <th scope="col">{{ __('Action') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,23 +34,6 @@
                     <td>{{ $order->mileage_trip }}</td>
                     <td>${{ number_format((float)$order->delivery_price / 2, 2, '.', '') }}</td>
                     <td>{{ ucfirst(strtolower($order->status)) }}</td>
-                    <td>
-                        @if ($order->status == "in-progress")
-                        <form action="{{route('restaurantOrderCancel')}}" method="POST">
-                            @csrf
-                            <input type="hidden" name="order-id" class="form-control" id="order-id"
-                                value="{{$order->id}}">
-                            <button type="submit" class="btn btn-danger btn-sm">{{ __('Cancel') }}</button>
-                        </form>
-                        @else
-                        <form action="{{route('restaurantOrderDelete')}}" method="POST">
-                            @csrf
-                            <input type="hidden" name="order-id" class="form-control" id="order-id"
-                                value="{{$order->id}}">
-                            <button type="submit" class="btn btn-danger btn-sm">{{ __('Delete') }}</button>
-                        </form>
-                        @endif
-                    </td>
                 </tr>
                 @php $row++;
                 @endphp @endforeach

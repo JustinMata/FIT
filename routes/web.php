@@ -74,17 +74,6 @@ Route::middleware(['auth'])->group(function () {
  * END
  ***************************/
 
-/***************************
- * TESTING PAGES
- ***************************/
-
-//currently working on them but should be able to successfully create an order and address
-Route::get('/order', 'OrderController@make')->name('order');
-
-Route::get('/test', 'TestController@test')->name('test');
-
-Route::get('/queries', 'QueryController@index')->name('queries');
-
 /**
  * @TODO: move the logic to a controller and maybe create an adapter
  */
