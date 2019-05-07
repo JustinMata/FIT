@@ -93,7 +93,7 @@
                             <label for="type" class="col-md-4 col-form-label text-md-right">Role</label>
 
                             <div class="col-md-6">
-                                <div id="type" type="text" class="form-control" name="type" value="restaurant" required>Restaurant</div>
+                                <input id="type" type="text" class="form-control" name="type" value="restaurant" readonly="readonly" tabindex="-1" required>
                             </div>
                         </div>
 
@@ -239,6 +239,11 @@
                             </div>
                         </div>
                     </form>
+                    @if (!$errors->isEmpty())
+                        @php
+                            // dd($errors);
+                        @endphp
+                    @endif
                 </div>
             </div>
         </div>
