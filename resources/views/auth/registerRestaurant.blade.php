@@ -239,11 +239,6 @@
                             </div>
                         </div>
                     </form>
-                    @if (!$errors->isEmpty())
-                        @php
-                            // dd($errors);
-                        @endphp
-                    @endif
                 </div>
             </div>
         </div>

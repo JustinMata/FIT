@@ -93,7 +93,7 @@
                             <label for="type" class="col-md-4 col-form-label text-md-right">Role</label>
 
                             <div class="col-md-6">
-                                <div id="type" type="text" class="form-control" name="type" value="driver" required>Driver</div>
+                                <input id="type" type="text" class="form-control" name="type" value="driver" readonly="readonly" tabindex="-1" required>
                             </div>
                         </div>
 
@@ -204,7 +204,7 @@
                             <label for="license_plate" class="col-md-4 col-form-label text-md-right">License Plate</label>
                             <div class="col-md-6">
                                 <input id="license_plate" type="text" class="form-control{{ $errors->has('license_plate') ? ' is-invalid' : '' }}" name="license_plate" value="{{ old('license_plate') }}" required autofocus>
-                                
+
                                 @if ($errors->has('license_plate'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('license_plate') }}</strong>
