@@ -95,12 +95,3 @@
             </div>
         </div>
     </div>
-
-
-    @if (count($errors) > 0)
-        <script>
-            $( document ).ready(function() {
-            $('#login-modal').modal('show');
-            });
-        </script>
-    @endif

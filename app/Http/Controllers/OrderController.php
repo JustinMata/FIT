@@ -6,7 +6,7 @@ use DB;
 use App\Address;
 use App\Driver;
 use App\Order;
-use App\Restaurant;
+use App\Restaurant; 
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -21,7 +21,11 @@ class OrderController extends Controller
 
     public function make()
     {
-        if ((Auth::user()->hasAnyRole('admin') || Auth::user()->hasAnyRole('restaurant')) && request()->is('restaurant*')) {
+        if (auth()->check() && (auth()->user()->hasRole('admin'))) {
+            return redirect()->back();
+        }
+
+        if (Auth::user()->hasRole('restaurant') && request()->is('restaurant*')) {
             return view('restaurant.pages.orderForm');
         } else {
             return redirect('/');
@@ -78,45 +82,67 @@ class OrderController extends Controller
             'driver_id' => $driver->id,
             'address_id' => $deliveryAddress->id,
             'is_archived' => false,
-            'is_payed' => false,
+            'is_payed' => true,
         ]);
 
 
         //  return view('driver.pages.map', ['directions' => $directions]);
-         return redirect()->action('RestaurantController@show');
+        return redirect()->action('RestaurantController@show');
     }
 
-    public function cancel(Request $request){
-
+    public function cancel(Request $request)
+    {
         $order = Order::where('id', $request->input('order-id'))->first();
 
-        $order->is_archived = true;
-
-        $order->save();
+        $this->archiveOrder($order);
 
         if (request()->is('restaurant*')) {
             return redirect()->action('RestaurantController@show');
-        } else if(request()->is('driver*')) {
+        } else if (request()->is('driver*')) {
             return redirect()->action('DriverController@show');
         }
 
         return redirect('/');
     }
 
-    public function archive(Request $request){
-
+    public function archive(Request $request)
+    {
         $order = Order::where('id', $request->input('order-id'))->first();
 
-        $order->is_archived = true;
         $order->is_delivered = true;
-
         $order->save();
+
+        $this->archiveOrder($order);
 
         return redirect()->action('RestaurantController@show');
     }
 
-    public function delete(Request $request){
+    public function archiveOrder(Order $order)
+    {
+        $order->is_archived = true;
+        $order->save();
 
+        $archivedOrder = \App\OrderArchive::create([
+            'base_rate' => $order->base_rate,
+            'mileage_rate' => $order->mileage_rate,
+            'delivery_price' => $order->delivery_price,
+            'taxes' => $order->taxes,
+            'mileage_trip' => $order->mileage_trip,
+            'delivery_name' => $order->delivery_name,
+            'delivery_comments' => $order->delivery_comments,
+            'is_delivered' => $order->is_delivered,
+            'restaurant_id' => $order->restaurant_id,
+            'driver_id' => $order->driver_id,
+            'address_id' => $order->address_id,
+            'is_archived' => true,
+            'is_payed' => $order->is_payed,
+        ]);
+
+        $archivedOrder->save();
+    }
+
+    public function delete(Request $request)
+    {
         $order = Order::where('id', $request->input('order-id'))->first();
 
         $order->delete();
@@ -126,7 +152,6 @@ class OrderController extends Controller
 
     private function findDriver($restaurant, $address)
     {
-
         // Grabs the addresses and calculate the distance to the restaurant address
         $addressesDistanceID = DB::table("addresses")
             ->select(
@@ -153,19 +178,18 @@ class OrderController extends Controller
             $driver = Driver::where('location_id', '=', $address->id)->first();
 
             $foundDriver = false;
-            if(!is_null($driver))
-            {
-                if($driver->orders()->get()->count() == 0){
+            if (!is_null($driver)) {
+                if ($driver->orders()->get()->count() == 0) {
                     $foundDriver = true;
-                } else if($driver->orders()->get()->count() == 1){
-                    if($driver->orders()->where('restaurant_id', $restaurant->id)->exists()){
+                } else if ($driver->orders()->get()->count() == 1) {
+                    if ($driver->orders()->where('restaurant_id', $restaurant->id)->exists()) {
                         $foundDriver = true;
                     }
                 }
             }
             // $foundDriver =  !is_null($driver) && $driver->orders()->get()->count() < 2;
 
-            return $foundDriver && !(is_null($address->distance) || (double)$address->distance == 0 );
+            return $foundDriver && !(is_null($address->distance) || (double)$address->distance == 0);
         })->sortBy('distance', SORT_NUMERIC)->first();
 
         // dd($addressDistanceID);

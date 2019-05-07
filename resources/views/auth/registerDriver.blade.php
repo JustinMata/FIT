@@ -79,7 +79,7 @@
                             <label for="phone_number" class="col-md-4 col-form-label text-md-right">Phone Number</label>
 
                             <div class="col-md-6">
-                                <input id="phone_number" type="phone_number" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" name="phone_number" value="{{ old('phone_number') }}" required>
+                                <input id="phone_number" type="number" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" name="phone_number" value="{{ old('phone_number') }}" required>
 
                                 @if ($errors->has('phone_number'))
                                 <span class="invalid-feedback" role="alert">
@@ -93,15 +93,7 @@
                             <label for="type" class="col-md-4 col-form-label text-md-right">Role</label>
 
                             <div class="col-md-6">
-                                <select id="type" type="type" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type" value="{{ old('type') }}" required>
-                                    <option value="driver">Driver</option>
-                                </select>
-
-                                @if ($errors->has('type'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('type') }}</strong>
-                                </span>
-                                @endif
+                                <div id="type" type="text" class="form-control" name="type" value="driver" required>Driver</div>
                             </div>
                         </div>
 
@@ -142,7 +134,7 @@
                             <label for="state" class="col-md-4 col-form-label text-md-right">State</label>
 
                             <div class="col-md-6">
-                                <select id="state" type="type" class="form-control{{ $errors->has('state') ? ' is-invalid' : '' }}" name="state" value="{{ old('state') }}" required>
+                                <select id="state" type="text" class="form-control{{ $errors->has('state') ? ' is-invalid' : '' }}" name="state" value="{{ old('state') }}" required>
                                     @include('layouts.partials.states')
                                 </select>
                             </div>
@@ -157,7 +149,7 @@
                         <div class="form-group row">
                             <label for="zip" class="col-md-4 col-form-label text-md-right">Zip Code</label>
                             <div class="col-md-6">
-                                <input id="zip" type="text" class="form-control{{ $errors->has('zip') ? ' is-invalid' : '' }}" name="zip" value="{{ old('zip') }}" required autofocus>
+                                <input id="zip" type="number" class="form-control{{ $errors->has('zip') ? ' is-invalid' : '' }}" name="zip" value="{{ old('zip') }}" required autofocus>
                             </div>
 
                             @if ($errors->has('zip'))
@@ -171,7 +163,7 @@
                             <label for="account_number" class="col-md-4 col-form-label text-md-right">{{ __('Account Number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="account_number" type="text" class="form-control{{ $errors->has('account_number') ? ' is-invalid' : '' }}" name="account_number" value="{{ old('account_number') }}" required autofocus>
+                                <input id="account_number" type="number" class="form-control{{ $errors->has('account_number') ? ' is-invalid' : '' }}" name="account_number" value="{{ old('account_number') }}" required autofocus>
 
                                 @if ($errors->has('account_number'))
                                 <span class="invalid-feedback" role="alert">
@@ -185,7 +177,7 @@
                             <label for="account_routing" class="col-md-4 col-form-label text-md-right">{{ __('Account Routing') }}</label>
 
                             <div class="col-md-6">
-                                <input id="account_routing" type="text" class="form-control{{ $errors->has('account_routing') ? ' is-invalid' : '' }}" name="account_routing" value="{{ old('account_routing') }}" required autofocus>
+                                <input id="account_routing" type="number" class="form-control{{ $errors->has('account_routing') ? ' is-invalid' : '' }}" name="account_routing" value="{{ old('account_routing') }}" required autofocus>
 
                                 @if ($errors->has('account_routing'))
                                 <span class="invalid-feedback" role="alert">
