@@ -48,10 +48,40 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'confirmed', 'min:8'],
+            'name' => 'required|string|max:50',
+            'street1' => 'required|string|max:50',
+            'street2' => 'nullable|string|max:50',
+            'city' => 'required|string|max:50',
+            'state' => 'required|string|max:50',
+            'postal' => 'required|regex:/\b\d{5}\b/',
+            'first_name' => 'required|string|max:50',
+            'last_name' => 'required|string|max:50',
+            'email' => 'required|email|unique:users',
+            'password' => [
+                'required',
+                'string',
+                'min:8',             // must be at least 10 characters in length
+                // 'regex:/[a-z]/',      // must contain at least one lowercase letter
+                // 'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                // 'regex:/[0-9]/',      // must contain at least one digit
+                // 'regex:/[@$!%*#?&]/', // must contain a special character
+            ],
+            'password_confirmation' => 'confirmed',
+            'phone_number' => 'required|string|max:50',
+            'type' => 'required|string|max:50',
+            'provider' => 'required_if:type,RESTAURANT|string|max:50',
+            'CC_name' => 'required_if:type,RESTAURANT|string|max:50',
+            'CC_number' => 'required_if:type,RESTAURANT|string|max:16',
+            'CC_expiration' => 'required_if:type,RESTAURANT|string|max:50',
+            'CC_CVC' => 'required_if:type,RESTAURANT|string|max:3',
+
+            'account_number' => 'required_if:type,DRIVER',
+            'account_routing' => 'required_if:type,DRIVER',
+            'car' => 'required_if:type,DRIVER',
+            'license_plate' => 'required_if:type,DRIVER|string|max:10',
+            'license_number' => 'required_if:type,DRIVER|string|max:10',
+            'license_expiration' => 'required_if:type,DRIVER|string|max:50',
+            'insurance_number' => 'required_if:type,DRIVER|string|max:20',
         ]);
     }
 
@@ -80,7 +110,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
 
         $address = Address::create([
             'name' => 'default',
