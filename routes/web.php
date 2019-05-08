@@ -19,7 +19,7 @@ Route::get('/', function () {
  * Authentication Auth::routes();
  ***************************/
 // Authentication Routes...
-//Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('admin/login', 'Auth\LoginController@login')->name('login');
 Route::post('admin/logout', 'Auth\LoginController@logout')->name('logout');
 
