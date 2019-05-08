@@ -69,12 +69,13 @@ class RegisterController extends Controller
                 'required',
                 Rule::in(['restaurant', 'driver'])
             ],
+            // restaurant validation
             'provider' => 'required_if:type,restaurant|string|max:50',
             'CC_name' => 'required_if:type,restaurant|string|max:50',
             'CC_number' => 'required_if:type,restaurant|string|max:16',
             'CC_expiration' => 'required_if:type,restaurant|string|max:50',
             'CC_CVC' => 'required_if:type,restaurant|string|max:3',
-
+            // driver validation
             'name' => 'required_if:type,driver|string|max:50',
             'account_number' => 'required_if:type,driver',
             'account_routing' => 'required_if:type,driver',
