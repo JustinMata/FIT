@@ -16,7 +16,7 @@
                 <div class="card-header">Place an Order</div>
 
                 <div class="card-body">
-                <form method="POST" action="{{route('restaurantOrderStore')}}">
+                <form method="POST" action="{{route('restaurantOrderStore')}}" onsubmit="myButton.disabled = true; return true;">
                         @csrf
 
                         <div class="form-group row">
@@ -75,7 +75,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">Place Order</button>
+                                <button type="submit" class="btn btn-primary" name="myButton">Place Order</button>
                             </div>
                         </div>
 

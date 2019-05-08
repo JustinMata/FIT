@@ -75,7 +75,6 @@ class RegisterController extends Controller
             'CC_expiration' => 'required_if:type,restaurant|string|max:50',
             'CC_CVC' => 'required_if:type,restaurant|string|max:3',
 
-            'name' => 'required_if:type,driver|string|max:50',
             'account_number' => 'required_if:type,driver',
             'account_routing' => 'required_if:type,driver',
             'car' => 'required_if:type,driver',

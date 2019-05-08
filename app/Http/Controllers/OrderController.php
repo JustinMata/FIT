@@ -157,10 +157,10 @@ class OrderController extends Controller
             ->select(
                 "addresses.id",
                 DB::raw("6371 * acos(cos(radians(" . $address->latitude . "))
-            * cos(radians(addresses.latitude))
-            * cos(radians(addresses.longitude) - radians(" . $address->longitude . "))
-            + sin(radians(" . $address->latitude . "))
-            * sin(radians(addresses.latitude))) AS distance")
+                        * cos(radians(addresses.latitude))
+                        * cos(radians(addresses.longitude) - radians(" . $address->longitude . "))
+                        + sin(radians(" . $address->latitude . "))
+                        * sin(radians(addresses.latitude))) AS distance")
             )
             ->groupBy(["addresses.id", "distance"])
             ->get();

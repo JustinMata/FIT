@@ -77,7 +77,7 @@
                     @else
                     <li class="nav-item">
                         {{-- @if (Route::has('login')) --}}
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#login-modal">Login</a>
+                        <a class="nav-link" href="{{ route('login') }}">Login</a>
                         {{-- @endif --}}
                     </li>
                     <li class="nav-item">
@@ -473,28 +473,28 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input class="form-control" id="name" type="text" placeholder="Your Name *" required="required" data-validation-required-message="Please enter your name.">
+                                    <input class="form-control" id="name" type="text" placeholder="Your Name *" required="required" data-validation-required-message="Please enter your name." disabled>
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" id="email-contact" type="email" placeholder="Your Email *" required="required" data-validation-required-message="Please enter your email address.">
+                                    <input class="form-control" id="email-contact" type="email" placeholder="Your Email *" required="required" data-validation-required-message="Please enter your email address." disabled>
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" required="required" data-validation-required-message="Please enter your phone number.">
+                                    <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" required="required" data-validation-required-message="Please enter your phone number." disabled>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <textarea class="form-control" id="message" placeholder="Your Message *" required="required" data-validation-required-message="Please enter a message."></textarea>
+                                    <textarea class="form-control" id="message" placeholder="Your Message *" required="required" data-validation-required-message="Please enter a message." disabled></textarea>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
                             <div class="col-lg-12 text-center">
                                 <div id="success"></div>
-                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Send Message</button>
+                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit" disabled>Send Message</button>
                             </div>
                         </div>
                     </form>
@@ -513,29 +513,29 @@
                 <div class="col-md-4">
                     <ul class="list-inline social-buttons">
                         <li class="list-inline-item">
-                            <a href="#">
+                            <p href="#">
                                 <i class="fab fa-twitter"></i>
-                            </a>
+                            </p>
                         </li>
                         <li class="list-inline-item">
-                            <a href="#">
+                            <p href="#">
                                 <i class="fab fa-facebook-f"></i>
-                            </a>
+                            </p>
                         </li>
                         <li class="list-inline-item">
-                            <a href="#">
+                            <p href="#">
                                 <i class="fab fa-linkedin-in"></i>
-                            </a>
+                            </p>
                         </li>
                     </ul>
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline quicklinks">
                         <li class="list-inline-item">
-                            <a href="#">Privacy Policy</a>
+                            <p href="#">Privacy Policy</p>
                         </li>
                         <li class="list-inline-item">
-                            <a href="#">Terms of Use</a>
+                            <p href="#">Terms of Use</p>
                         </li>
                     </ul>
                 </div>
@@ -767,7 +767,7 @@
         </div>
     </div>
 
-    <!-- Modal 7 -->
+    <!-- Modal 7 
     <div class="portfolio-modal modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -847,7 +847,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <!-- Modal 8 -->
     <div class="portfolio-modal modal fade" id="register-modal" tabindex="-1" role="dialog" aria-hidden="true">
