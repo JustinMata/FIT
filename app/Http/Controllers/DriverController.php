@@ -21,21 +21,30 @@ class DriverController extends UserController
         $user = Auth::user();
 
         $driver = [];
-        $currentOrder = [];
-        $customerAddress = [];
+        $orders = [];
+        $firstCustomerAddress = [];
+        $secondCustomerAddress = [];
 
         if ($user->hasRole('driver')) {
             $driver = \App\Driver::where('user_id', $user->id)->first();
-            $order = \App\Order::where('driver_id', $driver->id)->where('is_delivered', false)->where('is_archived', false);
-            if ($order->first()) {
-                $currentOrder = $order->first();
-                $customerAddress = \App\Address::where('id', $currentOrder->address_id)->first();
+            $orders = \App\Order::where('driver_id', $driver->id)->where('is_delivered', false)->where('is_archived', false)->get();
+            if (count($orders) > 0) {
+                $firstCustomerAddress = \App\Address::where('id', $orders->get(0)->address_id)->first();
+                if (count($orders) > 1) $secondCustomerAddress = \App\Address::where('id', $orders->get(1)->address_id)->first();
             }
+            // $firstOrder = $orders->first();
+            // $firstCustomerAddress = \App\Address::where('id', $firstOrder->address_id)->first();
+            // $secondOrder = [];
+            // $secondCustomerAddress = [];
+            // if ($orders->count > 1) {
+            //     $secondOrder = $orders->get(2);
+            //     $secondCustomerAddress = \App\Address::where('id', $secondOrder->address_id)->first();
+            // }
         }
 
         $address = \App\Address::where('id', $user->address_id)->first();
 
-        return view('driver.pages.dashboard', compact('user', 'driver', 'currentOrder', 'customerAddress', 'address'));
+        return view('driver.pages.dashboard', compact('user', 'driver', 'orders', 'firstCustomerAddress', 'secondCustomerAddress', 'address'));
     }
 
     /**
@@ -71,12 +80,11 @@ class DriverController extends UserController
         $location->latitude = $request->input('coords')[0];
         $location->longitude = $request->input('coords')[1];
 
-        if($location->save())
-        {
-            $response =  ['success'=>'New geolocation saved!'];
+        if ($location->save()) {
+            $response =  ['success' => 'New geolocation saved!'];
             return response()->json($location, 200);
         } else {
-            $response =  ['error'=>'Could not save new geolocation!'];
+            $response =  ['error' => 'Could not save new geolocation!'];
             return response()->json($response, 400);
         }
     }
@@ -99,6 +107,22 @@ class DriverController extends UserController
         $driver = \App\Driver::where('id', $order->driver_id)->first();
 
         $driver->totalEarnings += $order->delivery_price / 2;
+
+        $driver->save();
+
+        return redirect()->action('DriverController@index');
+    }
+
+    /**
+     * Toggle availability for driver.
+     *
+     * @return void
+     */
+    public function available(Request $request)
+    {
+        $driver = \App\Driver::where('id', $request->input('driver-id'))->first();
+
+        $driver->is_available = !$driver->is_available;
 
         $driver->save();
 

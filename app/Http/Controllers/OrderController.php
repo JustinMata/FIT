@@ -6,7 +6,7 @@ use DB;
 use App\Address;
 use App\Driver;
 use App\Order;
-use App\Restaurant; 
+use App\Restaurant;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -175,7 +175,7 @@ class OrderController extends Controller
             // $data['info'] = $address;
             // dump($data);
 
-            $driver = Driver::where('location_id', '=', $address->id)->first();
+            $driver = Driver::where('location_id', '=', $address->id)->where('is_available', true)->first();
 
             $foundDriver = false;
             if (!is_null($driver)) {
