@@ -51,6 +51,7 @@ Route::middleware(['auth'])->group(function () {
     // driver routes
     Route::group(['middleware' => ['role:admin|driver']], function () {
         Route::get('/driver/dashboard', 'DriverController@index')->name('driverDashboard');
+        Route::post('driver/available', 'DriverController@available')->name('driverAvailability');
         Route::get('/driver/orders', 'DriverController@show')->name('driverOrders');
         Route::post('/driver/cancel', 'OrderController@cancel')->name('driverOrderCancel');
         Route::post('driver/deliver', 'DriverController@deliver')->name('driverOrderDeliver');
