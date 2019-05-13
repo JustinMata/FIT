@@ -186,8 +186,8 @@ class OrderController extends Controller
 
 
         $destinations = [];
-        data_fill($destinations, 'restaurant', $restaurantAddress->google_formatted_address);
-        data_fill($destinations, "delivery.0", $deliveryAddress->google_formatted_address);
+        data_fill($destinations, 'restaurant', $restaurantAddress->google_geocode_address);
+        data_fill($destinations, "delivery.0", $deliveryAddress->google_geocode_address);
 
         // making class static methods available
         $class = __CLASS__;
@@ -204,7 +204,7 @@ class OrderController extends Controller
             // If driver exists
             if (!is_null($driver)) {
 
-                data_fill($destinations, 'driver', $driver->location()->first()->google_formatted_address);
+                data_fill($destinations, 'driver', $driver->location()->first()->google_geocode_address);
                 // Getting driver order count
                 $orderCount = $driver->orders()->get()->count();
 
@@ -232,7 +232,7 @@ class OrderController extends Controller
                             $index = count($destinations['delivery']);
 
                             // Adding order destination to array
-                            data_fill($destinations, "delivery.$index", $firstOrder->address()->first()->google_formatted_address);
+                            data_fill($destinations, "delivery.$index", $firstOrder->address()->first()->google_geocode_address);
 
                             $foundDriver = true;
                         }

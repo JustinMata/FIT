@@ -61,7 +61,7 @@ class Address extends Model
     */
     public function getGoogleFormattedAddressAttribute()
     {
-        return "{$this->street1}+{$this->street2}+{$this->city}+{$this->postal}";
+        return "{$this->street1},{$this->city},{$this->state} {$this->postal}";
     }
 
     /**

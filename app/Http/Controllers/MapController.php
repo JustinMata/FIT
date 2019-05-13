@@ -201,7 +201,7 @@ class MapController extends Controller
         $restaurantLocation = Address::where('id', $restaurant->user()->first()->address_id)->first();
 
         data_fill($destinations, 'restaurant', $restaurantLocation->google_geocode_address);
-
+        // dd($destinations);
         // // getting all orders
 
         $orders = Order::where(['restaurant_id' => $restaurant->id, 'is_archived' => false])->get();
