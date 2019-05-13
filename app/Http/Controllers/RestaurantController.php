@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\ViewErrorBag;
 
 class RestaurantController extends UserController
 {
@@ -31,13 +32,15 @@ class RestaurantController extends UserController
      */
     public function show()
     {
+        $errors = session()->get('errors', app(ViewErrorBag::class));
+
         if (\Auth::user()->hasAnyRole('admin') && request()->is('restaurant*'))
         {
-            return view('restaurant.pages.orders', ['orders' => \App\Order::orderBy('is_archived', 'asc')->paginate(10), 'drivers' => \App\Driver::all(), 'users' => \App\User::all()]);
+            return view('restaurant.pages.orders', ['orders' => \App\Order::orderBy('is_archived', 'asc')->paginate(10), 'drivers' => \App\Driver::all(), 'users' => \App\User::all()])->with('errors', $errors);
         } else {
             $restaurant = \App\Restaurant::where('user_id', auth()->id())->first();
             $restaurantID = $restaurant->id;
-            return view('restaurant.pages.orders', ['orders' => \App\Order::where('restaurant_id', $restaurantID)->orderBy('is_archived', 'asc')->paginate(10), 'drivers' => \App\Driver::all(), 'users' => \App\User::all()]);
+            return view('restaurant.pages.orders', ['orders' => \App\Order::where('restaurant_id', $restaurantID)->orderBy('is_archived', 'asc')->paginate(10), 'drivers' => \App\Driver::all(), 'users' => \App\User::all()])->with('errors', $errors);
         }
     }
 }

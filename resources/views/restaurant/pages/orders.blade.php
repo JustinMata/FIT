@@ -12,6 +12,16 @@
 @section('content')
 
 <div class="container text-muted">
+    @if ($errors->any())
+        <div class="alert alert-danger" role="alert">
+            <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="row  my-4">
         <table class="table">
             <thead>

@@ -62,6 +62,14 @@ class Order extends Model
         return $this->belongsTo('App\Driver');
     }
 
+     /**
+     * Get the drivers associated with the order.
+     */
+    public function address()
+    {
+        return $this->belongsTo('App\Address');
+    }
+
     /**
      * Get the order status.
      *

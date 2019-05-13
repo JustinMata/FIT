@@ -36,11 +36,12 @@ class OrderController extends Controller
     {
         // Getting restaurant info
         $restaurant = Restaurant::where('user_id', auth()->user()->id)->first();
-        $restaurantAddress = $this->addGoogleGeocode(Address::where('id', auth()->user()->address_id)->first());
+        $restaurantAddress =  Address::where('id', auth()->user()->address_id)->first();
 
-        // Selecting driver
-        $driverLocation = $this->findDriver($restaurant, $restaurantAddress);
-        $driver = Driver::where('location_id', $driverLocation->id)->first();
+        // Adding long lat to address
+        $this->addGoogleGeocode($restaurantAddress);
+
+        // dump($restaurantAddress);
 
         // creating delivery address
         $deliveryAddress = Address::create([
@@ -55,39 +56,52 @@ class OrderController extends Controller
         ]);
 
         // getting coordinates for new deliver order
-        $deliveryAddress = $this->addGoogleGeocode($deliveryAddress);
+        $this->addGoogleGeocode($deliveryAddress);
 
-        // first mile is always free, so taking that into account
-        $distance = $driverLocation->distance;
-        if ($distance > 1) $distance -= 1;
-        else $distance = 0;
+        // dump($deliveryAddress);
 
-        // price without taxes
-        $price = ($distance * config('api.MILEAGE_RATE')) + config('api.BASE_RATE');
+        // Selecting driver
+        $driverLocation = $this->findDriver($restaurant, $restaurantAddress, $deliveryAddress);
 
-        // taxes
-        $taxes = $price * (config('api.TAXES') * .01);
+        // dd($driverLocation);
 
-        //creating order
-        $order = Order::create([
-            'base_rate' => config('api.BASE_RATE'),
-            'mileage_rate' => config('api.MILEAGE_RATE'),
-            'delivery_price' => $price + $taxes,
-            'taxes' => config('api.TAXES'),
-            'mileage_trip' => number_format($driverLocation->distance, 2),
-            'delivery_name' => $request->input('delivery_name'),
-            'delivery_comments' => $request->input('delivery_comments'),
-            'is_delivered' => false,
-            'restaurant_id' => $restaurant->id,
-            'driver_id' => $driver->id,
-            'address_id' => $deliveryAddress->id,
-            'is_archived' => false,
-            'is_payed' => true,
-        ]);
+        if (!is_null($driverLocation)) {
 
 
-        //  return view('driver.pages.map', ['directions' => $directions]);
-        return redirect()->action('RestaurantController@show');
+
+            $driver = Driver::where('location_id', $driverLocation->id)->first();
+
+            // first mile is always free, so taking that into account
+            $distance = $driverLocation->distance;
+            if ($distance > 1) $distance -= 1;
+            else $distance = 0;
+
+            // price without taxes
+            $price = ($distance * config('api.MILEAGE_RATE')) + config('api.BASE_RATE');
+
+            // taxes
+            $taxes = $price * (config('api.TAXES') * .01);
+
+            //creating order
+            $order = Order::create([
+                'base_rate' => config('api.BASE_RATE'),
+                'mileage_rate' => config('api.MILEAGE_RATE'),
+                'delivery_price' => $price + $taxes,
+                'taxes' => config('api.TAXES'),
+                'mileage_trip' => number_format($driverLocation->distance, 2),
+                'delivery_name' => $request->input('delivery_name'),
+                'delivery_comments' => $request->input('delivery_comments'),
+                'is_delivered' => false,
+                'restaurant_id' => $restaurant->id,
+                'driver_id' => $driver->id,
+                'address_id' => $deliveryAddress->id,
+                'is_archived' => false,
+                'is_payed' => true,
+            ]);
+            return redirect()->action('RestaurantController@show');
+        }
+
+        return redirect()->action('RestaurantController@show')->withErrors(['driverNotFound' => 'We could not find a driver to complete the delivery!']);
     }
 
     public function cancel(Request $request)
@@ -150,50 +164,136 @@ class OrderController extends Controller
         return redirect()->action('RestaurantController@show');
     }
 
-    private function findDriver($restaurant, $address)
+    private function findDriver($restaurant, $restaurantAddress, $deliveryAddress)
     {
-        // Grabs the addresses and calculate the distance to the restaurant address
+        // Grabs the addresses that correspond to driver addresses, calculate the distance and gives
+        // results that are ordered by distance, filters out nulls and 0.0 distances.
         $addressesDistanceID = DB::table("addresses")
+            ->join('drivers', 'drivers.location_id', '=', 'addresses.id')
             ->select(
                 "addresses.id",
-                DB::raw("6371 * acos(cos(radians(" . $address->latitude . "))
+                DB::raw("6371 * acos(cos(radians(" . $restaurantAddress->latitude . "))
                         * cos(radians(addresses.latitude))
-                        * cos(radians(addresses.longitude) - radians(" . $address->longitude . "))
-                        + sin(radians(" . $address->latitude . "))
+                        * cos(radians(addresses.longitude) - radians(" . $restaurantAddress->longitude . "))
+                        + sin(radians(" . $restaurantAddress->latitude . "))
                         * sin(radians(addresses.latitude))) AS distance")
             )
             ->groupBy(["addresses.id", "distance"])
-            ->get();
+            ->orderBy("distance")
+            ->get()->filter(function ($value) {
+                return !($value->distance == null || $value->distance == 0);
+            });
+
+
+        $destinations = [];
+        data_fill($destinations, 'restaurant', $restaurantAddress->google_formatted_address);
+        data_fill($destinations, "delivery.0", $deliveryAddress->google_formatted_address);
+
+        // making class static methods available
+        $class = __CLASS__;
 
         // filter out all the address that have null, 0 and are not driver addresses
         // and return the closest driver id
-        $addressDistanceID = $addressesDistanceID->filter(function ($address, $key) use ($restaurant) {
-            // $data = [];
-            // $data['driver'] = $driver = Driver::where('location_id', '=', $address->id)->first();
-            // $data['foundDriver'] = $foundDriver =  !is_null($driver) && $driver->orders()->get()->count() < 2;
-            // $data['orderNumbers'] = (!is_null($driver))?$driver->orders()->get()->count(): null;
-            // $data['info'] = $address;
-            // dump($data);
-
-            $driver = Driver::where('location_id', '=', $address->id)->where('is_available', true)->first();
+        $addressDistanceID = $addressesDistanceID->filter(function ($address, $key) use ($restaurant, &$destinations, $class) {
 
             $foundDriver = false;
+
+            // Getting driver associated with location
+            $driver = Driver::where('location_id', '=', $address->id)->where('is_available', true)->first();
+
+            // If driver exists
             if (!is_null($driver)) {
-                if ($driver->orders()->get()->count() == 0) {
-                    $foundDriver = true;
-                } else if ($driver->orders()->get()->count() == 1) {
-                    if ($driver->orders()->where('restaurant_id', $restaurant->id)->exists()) {
+
+                data_fill($destinations, 'driver', $driver->location()->first()->google_formatted_address);
+                // Getting driver order count
+                $orderCount = $driver->orders()->get()->count();
+
+                // if driver already has 2 orders skip
+                if($orderCount < 2){
+
+                    // if 0 order found river
+                    if ($orderCount == 0) {
+                        // print_r("has no orders($key):");
+                        // dump($destinations);
                         $foundDriver = true;
+                    // if already has order make sure it's from same restaurant
+                    } else if ($orderCount == 1) {
+
+                        // Getting existing driver order
+                        $firstOrder = $driver->orders()->where([
+                            ['restaurant_id', '=', $restaurant->id],
+                            ['is_archived', '=', false]
+                            ])->first();
+
+                        // Checking if order exists
+                        if (!is_null($firstOrder)) {
+
+                            // making sure we get the right array index
+                            $index = count($destinations['delivery']);
+
+                            // Adding order destination to array
+                            data_fill($destinations, "delivery.$index", $firstOrder->address()->first()->google_formatted_address);
+
+                            $foundDriver = true;
+                        }
+                    }
+
+                    $directions = '';
+
+                    // if we have a driver, we calculate best route and timing
+                    if($foundDriver){
+
+                        if(count($destinations['delivery']) == 1)
+                        {
+                            $directions = \GoogleMaps::load('directions')->setParam([
+                                'origin' => $destinations['delivery'],
+                                'waypoints' => [$destinations['restaurant']],
+                                'optimizeWaypoints' => false,
+                                'destination' => $destinations['delivery'][0],
+                                'departure_time' => 'now'
+                            ])->get();
+
+                        } else if(count($destinations['delivery']) == 2) {
+
+                            $directions = \GoogleMaps::load('directions')->setParam([
+                                'origin' => $destinations['driver'],
+                                'waypoints' => [$destinations['restaurant'], $destinations['delivery'][1]],
+                                'optimizeWaypoints' => false,
+                                'destination' => $destinations['delivery'][0],
+                                'departure_time' => 'now'
+                            ])->get();
+                        }
+
+                        $duration = $class::totalDuration(json_decode($directions));
+
+                        if($duration > 1800)
+                        {
+                            $foundDriver = false;
+                        }
                     }
                 }
             }
-            // $foundDriver =  !is_null($driver) && $driver->orders()->get()->count() < 2;
 
-            return $foundDriver && !(is_null($address->distance) || (double)$address->distance == 0);
+            return $foundDriver;
+
         })->sortBy('distance', SORT_NUMERIC)->first();
 
-        // dd($addressDistanceID);
         return $addressDistanceID;
+    }
+
+    protected function getDirections($driver, $restaurant, $firstDestination, $secondDestination = null)
+    {
+        $directions =  \GoogleMaps::load('directions')->setParam([
+            'origin' => $driver,
+            'waypoints' => [$restaurant, $secondDestination],
+            'optimizeWaypoints' => false,
+            'destination' => $firstDestination,
+            'departure_time' => 'now'
+        ])->get();
+
+
+        // dd($directions);
+        return json_decode($directions);
     }
 
     /**
@@ -202,7 +302,7 @@ class OrderController extends Controller
      * @param  array  $address
      * @return lat and lng coordinates
      */
-    protected function addGoogleGeocode($address)
+    protected function addGoogleGeocode(&$address)
     {
         $geocode = \GoogleMaps::load('geocoding')
             ->setParam(['address' => $address->google_formatted_address])
@@ -216,6 +316,22 @@ class OrderController extends Controller
             $address->save();
         }
 
-        return $address;
+        // return $address;
+    }
+
+    /**
+     * Get lat and lng coords of newly registered user
+     *
+     * @param  array  $address
+     * @return lat and lng coordinates
+     */
+    public static function totalDuration($direction) {
+        $durations = [];
+
+        if ($direction->status == 'OK') {
+            $durations = data_get($direction, 'routes.*.legs.*.duration.value');
+        }
+
+        return array_sum($durations);
     }
 }

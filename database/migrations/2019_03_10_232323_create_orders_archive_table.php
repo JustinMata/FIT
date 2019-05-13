@@ -21,7 +21,7 @@ class CreateOrdersArchiveTable extends Migration
             $table->decimal('taxes', 8, 2);
             $table->decimal('mileage_trip', 8, 2);
             $table->string('delivery_name', 50);
-            $table->string('delivery_comments', 200);
+            $table->string('delivery_comments', 200)->nullable();
             $table->boolean('is_delivered')->comment('false = not delivered, true = delivered');
             $table->bigInteger('restaurant_id')->unsigned();
             $table->bigInteger('driver_id')->unsigned()->nullable();

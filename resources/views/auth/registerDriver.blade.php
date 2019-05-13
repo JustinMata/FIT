@@ -259,6 +259,11 @@
                                 </button>
                             </div>
                         </div>
+                        @if (!$errors->isEmpty())
+                            @php
+                                dd($errors->all());
+                            @endphp
+                        @endif
                     </form>
                 </div>
             </div>
